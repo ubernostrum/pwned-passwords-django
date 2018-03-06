@@ -9,8 +9,8 @@ class PwnedPasswordsTests(TestCase):
 
     """
     sample_password = 'swordfish'
-    sample_password_prefix = '4f571'
-    sample_password_suffix = '81dcaade980555f2ce6755ca425f00658be'
+    sample_password_prefix = '4F571'
+    sample_password_suffix = '81DCAADE980555F2CE6755CA425F00658BE'
 
     def _get_mock(self, response_text=None):
         if response_text is None:

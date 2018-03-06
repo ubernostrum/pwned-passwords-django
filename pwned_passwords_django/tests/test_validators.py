@@ -45,7 +45,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         """
         request_mock = self._get_mock(
             response_text='{}:5'.format(
-                self.sample_password_suffix.replace('a', '3')
+                self.sample_password_suffix.replace('A', '3')
             )
         )
         with mock.patch('requests.get', request_mock):

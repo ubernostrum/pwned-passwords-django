@@ -11,7 +11,7 @@ def pwned_password(password):
     Checks a password against the Pwned Passwords database.
 
     """
-    password_hash = hashlib.sha1(password.encode('utf-8')).hexdigest()
+    password_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
     prefix, suffix = password_hash[:5], password_hash[5:]
     results = {
         l[0]: int(l[1]) for l in
