@@ -36,9 +36,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
             with mock.patch('requests.get', request_mock):
                 self.client.post(self.test_url, data=payload)
                 request_mock.assert_called_with(
-                    API_ENDPOINT.format(
+                    url=API_ENDPOINT.format(
                         self.sample_password_prefix
-                    )
+                    ),
+                    timeout=0.6,
                 )
 
         for payload in (
@@ -120,9 +121,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
             with mock.patch('requests.get', request_mock):
                 self.client.post(self.test_url, data=payload)
                 request_mock.assert_called_with(
-                    API_ENDPOINT.format(
+                    url=API_ENDPOINT.format(
                         self.sample_password_prefix
-                    )
+                    ),
+                    timeout=0.6,
                 )
 
         for payload in (

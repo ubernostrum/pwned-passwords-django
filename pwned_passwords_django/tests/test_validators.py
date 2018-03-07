@@ -33,9 +33,10 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 ):
                     validate_password(self.sample_password)
                 request_mock.assert_called_with(
-                    api.API_ENDPOINT.format(
+                    url=api.API_ENDPOINT.format(
                         self.sample_password_prefix
-                    )
+                    ),
+                    timeout=0.6,
                 )
 
     def test_not_compromised(self):
@@ -51,7 +52,8 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         with mock.patch('requests.get', request_mock):
             validate_password(self.sample_password)
             request_mock.assert_called_with(
-                api.API_ENDPOINT.format(
+                url=api.API_ENDPOINT.format(
                     self.sample_password_prefix
-                )
+                ),
+                timeout=0.6,
             )
