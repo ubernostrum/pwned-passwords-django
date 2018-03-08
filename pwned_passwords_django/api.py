@@ -13,9 +13,10 @@ def pwned_password(password):
     """
     password_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
     prefix, suffix = password_hash[:5], password_hash[5:]
-    results = {
-        l[0]: int(l[1]) for l in
-        (line.split(':') for line in
-         requests.get(API_ENDPOINT.format(prefix)).text.splitlines())
-    }
-    return results.get(suffix)
+    results = [
+        int(line.split(':')[1]) for line in
+        requests.get(API_ENDPOINT.format(prefix)).text.splitlines()
+        if line.startswith(suffix)
+    ]
+    if results:
+        return results[0]
