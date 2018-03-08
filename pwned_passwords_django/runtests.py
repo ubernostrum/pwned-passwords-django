@@ -1,10 +1,10 @@
 """
 A standalone test runner script, configuring the minimum settings
-required for django-pwned-passwords' tests to execute.
+required for pwned-passwords-django' tests to execute.
 
 Re-use at your own risk: many Django applications will require full
 settings and/or templates in order to execute their tests, while
-django-pwned-passwords does not.
+pwned-passwords-django does not.
 
 """
 
@@ -17,7 +17,7 @@ APP_DIR = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, APP_DIR)
 
 
-# Technically, django-pwned-passwords does not require any of these
+# Technically, pwned-passwords-django does not require any of these
 # settings; it doesn't even need to be in INSTALLED_APPS in order to
 # work.
 #
