@@ -36,7 +36,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                     url=api.API_ENDPOINT.format(
                         self.sample_password_prefix
                     ),
-                    timeout=0.6,
+                    timeout=api.REQUEST_TIMEOUT,
                 )
 
     def test_not_compromised(self):
@@ -55,5 +55,5 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 url=api.API_ENDPOINT.format(
                     self.sample_password_prefix
                 ),
-                timeout=0.6,
+                timeout=api.REQUEST_TIMEOUT,
             )

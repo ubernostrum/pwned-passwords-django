@@ -5,6 +5,7 @@ import requests
 
 
 API_ENDPOINT = 'https://api.pwnedpasswords.com/range/{}'
+REQUEST_TIMEOUT = 0.6  # 600ms
 log = logging.getLogger(__name__)
 
 
@@ -20,7 +21,7 @@ def pwned_password(password):
             int(line.partition(':')[2])
             for line in requests.get(
                 url=API_ENDPOINT.format(prefix),
-                timeout=0.6,
+                timeout=REQUEST_TIMEOUT,
             ).text.splitlines()
             if line.startswith(suffix)
         ]

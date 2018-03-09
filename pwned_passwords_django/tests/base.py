@@ -18,3 +18,6 @@ class PwnedPasswordsTests(TestCase):
         requests_get_mock = mock.MagicMock()
         requests_get_mock.return_value.text = response_text
         return requests_get_mock
+
+    def _get_exception_mock(self, exception):
+        return mock.MagicMock(side_effect=exception)

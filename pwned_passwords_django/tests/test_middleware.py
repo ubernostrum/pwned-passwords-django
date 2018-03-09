@@ -3,7 +3,7 @@ import mock
 from django.test import override_settings
 from django.urls import reverse
 
-from ..api import API_ENDPOINT
+from ..api import API_ENDPOINT, REQUEST_TIMEOUT
 
 from .base import PwnedPasswordsTests
 
@@ -39,7 +39,7 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
                     url=API_ENDPOINT.format(
                         self.sample_password_prefix
                     ),
-                    timeout=0.6,
+                    timeout=REQUEST_TIMEOUT,
                 )
 
         for payload in (
@@ -124,7 +124,7 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
                     url=API_ENDPOINT.format(
                         self.sample_password_prefix
                     ),
-                    timeout=0.6,
+                    timeout=REQUEST_TIMEOUT,
                 )
 
         for payload in (

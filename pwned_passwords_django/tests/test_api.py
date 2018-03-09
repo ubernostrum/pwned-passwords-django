@@ -29,7 +29,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                     url=api.API_ENDPOINT.format(
                         self.sample_password_prefix
                     ),
-                    timeout=0.6,
+                    timeout=api.REQUEST_TIMEOUT,
                 )
                 self.assertEqual(count, result)
 
@@ -49,7 +49,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                 url=api.API_ENDPOINT.format(
                     self.sample_password_prefix
                 ),
-                timeout=0.6,
+                timeout=api.REQUEST_TIMEOUT,
             )
             self.assertEqual(None, result)
 
@@ -66,7 +66,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                 url=api.API_ENDPOINT.format(
                     self.sample_password_prefix
                 ),
-                timeout=0.6,
+                timeout=api.REQUEST_TIMEOUT,
             )
             self.assertEqual(0, result)
 
@@ -84,13 +84,13 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                 url=api.API_ENDPOINT.format(
                     self.sample_password_prefix
                 ),
-                timeout=0.6,
+                timeout=api.REQUEST_TIMEOUT,
             )
             self.assertEqual(None, result)
 
     def test_bad_text(self):
         """
-        Handle non-numeric count gracefully
+        Non-numeric counts in API response are handled gracefully.
 
         """
         request_mock = self._get_mock(
@@ -104,7 +104,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
     def test_bad_response_no_colon(self):
         """
-        Handle malformed response with no colon gracefully
+        Malformed API responses with no colon are handled gracefully.
 
         """
         request_mock = self._get_mock(
@@ -116,7 +116,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
     def test_bad_response_many_colons(self):
         """
-        Handle malformed response with too many colons gracefully
+        Malformed API responses with too many colons are gracefully.
 
         """
         request_mock = self._get_mock(
@@ -130,20 +130,20 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
     def test_timeout(self):
         """
-        Connection timeout response is handled gracefully
+        Connection timeouts to the API are handled gracefully.
 
         """
-        request_mock = mock.MagicMock(side_effect=requests.ConnectTimeout())
+        request_mock = self._get_exception_mock(requests.ConnectTimeout())
         with mock.patch('requests.get', request_mock):
             result = api.pwned_password(self.sample_password)
             self.assertEqual(None, result)
 
     def test_http_error(self):
         """
-        A non-200 HTTP response is handled gracefully
+        non-200 HTTP responses from the API are handled gracefully.
 
         """
-        request_mock = mock.MagicMock(side_effect=requests.HTTPError())
+        request_mock = self._get_exception_mock(requests.HTTPError())
         with mock.patch('requests.get', request_mock):
             result = api.pwned_password(self.sample_password)
             self.assertEqual(None, result)
