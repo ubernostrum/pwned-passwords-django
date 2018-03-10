@@ -25,9 +25,9 @@ def pwned_password(password):
             ).text.splitlines()
             if line.startswith(suffix)
         ]
-    except (requests.RequestException, ValueError):
+    except (requests.RequestException, ValueError) as e:
         # Gracefully handle timeouts and HTTP error response codes.
-        log.exception('Error checking pwnedpasswords')
+        log.warning('An error occurred checking pwnedpasswords: %s' % e)
         return None
 
     if results:
