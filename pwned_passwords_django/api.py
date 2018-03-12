@@ -27,7 +27,9 @@ def pwned_password(password):
         ]
     except (requests.RequestException, ValueError) as e:
         # Gracefully handle timeouts and HTTP error response codes.
-        log.warning('Skipping pwnedpasswords check as an error occurred: %r', e)
+        log.warning(
+            'Skipping pwnedpasswords check as an error occurred: %r', e
+        )
         return None
 
     if results:
