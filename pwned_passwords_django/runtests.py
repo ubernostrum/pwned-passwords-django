@@ -31,7 +31,7 @@ SETTINGS_DICT = {
     'DATABASES': {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(APP_DIR, 'db.sqlite3'),
+            'NAME': ':memory:',
         },
     },
     'MIDDLEWARE': (
@@ -51,11 +51,10 @@ def run_tests():
     from django.conf import settings
     settings.configure(**SETTINGS_DICT)
 
-    # Then, call django.setup() to initialize the application cache
+    # Then, call django.setup() to initialize the application registry
     # and other bits:
     import django
-    if hasattr(django, 'setup'):
-        django.setup()
+    django.setup()
 
     # Now we instantiate a test runner...
     from django.test.utils import get_runner
