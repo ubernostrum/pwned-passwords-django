@@ -63,7 +63,7 @@ def run_tests():
     # And then we run tests and return the results.
     test_runner = TestRunner(verbosity=2, interactive=True)
     failures = test_runner.run_tests(['pwned_passwords_django.tests'])
-    sys.exit(bool(failures))
+    sys.exit(failures)
 
 
 if __name__ == '__main__':
