@@ -16,7 +16,7 @@ class PwnedPasswordsValidator(object):
 
     def validate(self, password, user=None):
         if api.pwned_password(password):
-            raise ValidationError(self.PWNED_MESSAGE)
+            raise ValidationError(self.PWNED_MESSAGE, code='pwned_password')
 
     def get_help_text(self):
         return self.HELP_MESSAGE  # pragma: no cover
