@@ -46,3 +46,39 @@ Using the password validator
    changes a user's password in other ways. If you manipulate user
    passwords through means other than the high-level APIs listed
    above, you'll need to manually check passwords.
+
+
+Changing the error message
+==========================
+
+To change the error or help message shown to the user, you can set it
+in the ``OPTIONS`` dictionary like so:
+
+.. code-block:: python
+
+   AUTH_PASSWORD_VALIDATORS = [
+       {
+           'NAME': 'pwned_passwords_django.validators.PwnedPasswordsValidator',
+           'OPTIONS': {
+               'error_message': 'That password was pwned',
+               'help_message': 'Your password can\'t be a commonly used password.',
+           }
+       },
+   ]
+
+The amount of times the password has appeared in a breach can also be included
+in the error message, including a plural form:
+
+.. code-block:: python
+
+   AUTH_PASSWORD_VALIDATORS = [
+       {
+           'NAME': 'pwned_passwords_django.validators.PwnedPasswordsValidator',
+           'OPTIONS': {
+               'error_message': (
+                  'Pwned %(amount)d time',
+                  'Pwned %(amount)d times',
+               )
+           }
+       },
+   ]
