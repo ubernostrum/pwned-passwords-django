@@ -3,6 +3,9 @@ import mock
 from django.test import TestCase
 
 
+from .. import api
+
+
 class PwnedPasswordsTests(TestCase):
     """
     Base test-case class defining some common code.
@@ -11,6 +14,7 @@ class PwnedPasswordsTests(TestCase):
     sample_password = 'swordfish'
     sample_password_prefix = '4F571'
     sample_password_suffix = '81DCAADE980555F2CE6755CA425F00658BE'
+    user_agent = {'User-Agent': api.USER_AGENT}
 
     def _get_mock(self, response_text=None):
         if response_text is None:

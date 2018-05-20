@@ -39,6 +39,7 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
                     url=API_ENDPOINT.format(
                         self.sample_password_prefix
                     ),
+                    headers=self.user_agent,
                     timeout=REQUEST_TIMEOUT,
                 )
 
@@ -124,6 +125,7 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
                     url=API_ENDPOINT.format(
                         self.sample_password_prefix
                     ),
+                    headers=self.user_agent,
                     timeout=REQUEST_TIMEOUT,
                 )
 

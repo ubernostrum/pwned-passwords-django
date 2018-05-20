@@ -29,6 +29,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                     url=api.API_ENDPOINT.format(
                         self.sample_password_prefix
                     ),
+                    headers=self.user_agent,
                     timeout=api.REQUEST_TIMEOUT,
                 )
                 self.assertEqual(count, result)
@@ -49,6 +50,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                 url=api.API_ENDPOINT.format(
                     self.sample_password_prefix
                 ),
+                headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
             self.assertEqual(None, result)
@@ -66,6 +68,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                 url=api.API_ENDPOINT.format(
                     self.sample_password_prefix
                 ),
+                headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
             self.assertEqual(0, result)
@@ -84,6 +87,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                 url=api.API_ENDPOINT.format(
                     self.sample_password_prefix
                 ),
+                headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
             self.assertEqual(None, result)

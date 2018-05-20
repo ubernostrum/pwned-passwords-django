@@ -2,10 +2,12 @@ import os
 
 from setuptools import setup
 
+from pwned_passwords_django.api import __version__
+
 
 setup(name='pwned-passwords-django',
       zip_safe=False,  # eggs are the devil.
-      version='1.1',
+      version=__version__,
       description='A Pwned Passwords implementation for Django sites',
       long_description=open(
           os.path.join(
