@@ -23,8 +23,8 @@ sys.path.insert(0, APP_DIR)
 #
 # However, Django itself requires DATABASES and ROOT_URLCONF to be
 # set, Django's system-check framework will raise warnings if no value
-# is provided for MIDDLEWARE_CLASSES, and the Django test runner needs
-# your app to be in INSTALLED_APPS in order to work.
+# is provided for MIDDLEWARE, and the Django test runner needs your
+# app to be in INSTALLED_APPS in order to work.
 SETTINGS_DICT = {
     'INSTALLED_APPS': ('pwned_passwords_django',),
     'ROOT_URLCONF': 'pwned_passwords_django.tests.urls',
