@@ -2,7 +2,7 @@ import os
 
 from setuptools import setup
 
-from pwned_passwords_django.api import __version__
+from pwned_passwords_django import __version__
 
 
 setup(name='pwned-passwords-django',
