@@ -12,7 +12,7 @@ API_ENDPOINT = 'https://api.pwnedpasswords.com/range/{}'
 REQUEST_TIMEOUT = 0.6  # 600ms
 USER_AGENT = 'pwned-passwords-django/{} (Python/{} | Django/{})'.format(
     __version__,
-    '{}.{}'.format(*sys.version_info[:3]),
+    '{}.{}.{}'.format(*sys.version_info[:3]),
     django.get_version()
 )
 
