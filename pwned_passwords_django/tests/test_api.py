@@ -2,7 +2,6 @@ import mock
 import requests
 
 from .. import api
-
 from .base import PwnedPasswordsTests
 
 
