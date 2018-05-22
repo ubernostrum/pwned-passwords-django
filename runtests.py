@@ -27,7 +27,7 @@ sys.path.insert(0, APP_DIR)
 # app to be in INSTALLED_APPS in order to work.
 SETTINGS_DICT = {
     'INSTALLED_APPS': ('pwned_passwords_django',),
-    'ROOT_URLCONF': 'pwned_passwords_django.tests.urls',
+    'ROOT_URLCONF': 'tests.urls',
     'DATABASES': {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -77,7 +77,7 @@ def run_tests():
 
     # And then we run tests and return the results.
     test_runner = TestRunner(verbosity=2, interactive=True)
-    failures = test_runner.run_tests(['pwned_passwords_django.tests'])
+    failures = test_runner.run_tests(['tests'])
     sys.exit(failures)
 
 

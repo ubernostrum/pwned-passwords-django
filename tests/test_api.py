@@ -1,7 +1,8 @@
 import mock
 import requests
 
-from .. import api
+from pwned_passwords_django import api
+
 from .base import PwnedPasswordsTests
 
 

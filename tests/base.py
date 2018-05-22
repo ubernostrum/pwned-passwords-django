@@ -1,7 +1,7 @@
 import mock
 from django.test import TestCase
 
-from .. import api
+from pwned_passwords_django import api
 
 
 class PwnedPasswordsTests(TestCase):

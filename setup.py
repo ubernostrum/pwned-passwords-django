@@ -1,6 +1,6 @@
 import os
 
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 setup(name='pwned-passwords-django',
@@ -16,8 +16,8 @@ setup(name='pwned-passwords-django',
       author='James Bennett',
       author_email='james@b-list.org',
       url='http://github.com/ubernostrum/pwned-passwords-django/',
-      packages=['pwned_passwords_django', 'pwned_passwords_django.tests'],
-      test_suite='pwned_passwords_django.runtests.run_tests',
+      packages=find_packages('src'),
+      package_dir={'': 'src'},
       classifiers=['Development Status :: 5 - Production/Stable',
                    'Environment :: Web Environment',
                    'Framework :: Django',
