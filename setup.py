@@ -2,13 +2,11 @@ import os
 
 from setuptools import setup
 
-from pwned_passwords_django import __version__
-
 
 setup(name='pwned-passwords-django',
       zip_safe=False,  # eggs are the devil.
-      version=__version__,
-      description='A Pwned Passwords implementation for Django sites',
+      version='1.1',
+      description='A Pwned Passwords implementation for Django sites.',
       long_description=open(
           os.path.join(
               os.path.dirname(__file__),
@@ -17,7 +15,7 @@ setup(name='pwned-passwords-django',
       ).read(),
       author='James Bennett',
       author_email='james@b-list.org',
-      url='http://github.com/ubernostrum/django-pwned-passwords/',
+      url='http://github.com/ubernostrum/pwned-passwords-django/',
       packages=['pwned_passwords_django', 'pwned_passwords_django.tests'],
       test_suite='pwned_passwords_django.runtests.run_tests',
       classifiers=['Development Status :: 5 - Production/Stable',
@@ -37,7 +35,7 @@ setup(name='pwned-passwords-django',
                    'Programming Language :: Python :: 3.6',
                    'Topic :: Utilities'],
       install_requires=[
-          'Django>=1.11',
+          'Django>=1.11,<3.0',
           'requests',
       ],
 )
