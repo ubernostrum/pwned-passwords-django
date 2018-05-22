@@ -42,6 +42,21 @@ SETTINGS_DICT = {
             'NAME': 'pwned_passwords_django.validators.PwnedPasswordsValidator',
         },
     ],
+    'LOGGING': {
+        'version': 1,
+        'disable_existing_loggers': True,
+        'handlers': {
+            'null': {
+                'class': 'logging.NullHandler',
+            },
+        },
+        'loggers': {
+            'pwned_passwords_django.api': {
+                'handlers': ['null'],
+                'propagate': False,
+            },
+        },
+    },
 }
 
 
