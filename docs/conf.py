@@ -7,16 +7,16 @@ extensions = []
 templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
-project = u'django-pwned-passwords'
+project = u'pwned-passwords-django'
 copyright = u'2018, James Bennett'
 version = '1.0'
 release = '1.1'
 exclude_trees = ['_build']
 pygments_style = 'sphinx'
 html_static_path = ['_static']
-htmlhelp_basename = 'django-pwned-passwordsdoc'
+htmlhelp_basename = 'pwned-passwords-djangodoc'
 latex_documents = [
-  ('index', 'django-pwned-passwords.tex', u'django-pwned-passwords Documentation',
+  ('index', 'pwned-passwords-django.tex', u'pwned-passwords-django Documentation',
    u'James Bennett', 'manual'),
 ]
 if not on_rtd:
