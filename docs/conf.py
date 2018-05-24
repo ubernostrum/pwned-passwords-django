@@ -33,4 +33,4 @@ if 'spelling' in sys.argv:
 spelling_lang = 'en_US'
 
 # Location of word list.
-spelling_word_list_filename = 'spelling_wordlist'
+spelling_word_list_filename = 'spelling_wordlist.txt'
