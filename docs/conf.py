@@ -28,8 +28,6 @@ if not on_rtd:
 # Add it only if spelling check is requested so docs can be generated without it.
 if 'spelling' in sys.argv:
     extensions.append("sphinxcontrib.spelling")
-    # Workaround for https://bitbucket.org/dhellmann/sphinxcontrib-spelling/issues/13
-    html_use_smartypants = False
     
 # Spelling language.
 spelling_lang = 'en_US'
