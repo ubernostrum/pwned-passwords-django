@@ -2,21 +2,20 @@ import hashlib
 import logging
 import sys
 
-import django
 import requests
 
 from . import __version__
 
 
+log = logging.getLogger(__name__)
+
 API_ENDPOINT = 'https://api.pwnedpasswords.com/range/{}'
 REQUEST_TIMEOUT = 0.6  # 600ms
-USER_AGENT = 'pwned-passwords-django/{} (Python/{} | Django/{})'.format(
+USER_AGENT = 'pwned-passwords-django/{} (Python/{} | requests/{})'.format(
     __version__,
     '{}.{}.{}'.format(*sys.version_info[:3]),
-    django.get_version()
+    requests.__version__
 )
-
-log = logging.getLogger(__name__)
 
 
 def pwned_password(password):
@@ -39,7 +38,7 @@ def pwned_password(password):
     except (requests.RequestException, ValueError) as e:
         # Gracefully handle timeouts and HTTP error response codes.
         log.warning(
-            'Skipping pwnedpasswords check as an error occurred: %r', e
+            'Skipped Pwned Passwords check due to error: %r', e
         )
         return None
 
