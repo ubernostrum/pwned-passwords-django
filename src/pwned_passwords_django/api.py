@@ -19,7 +19,7 @@ USER_AGENT = 'pwned-passwords-django/{} (Python/{} | Django/{})'.format(
 log = logging.getLogger(__name__)
 
 
-def pwned_password(password):
+def pwned_password(password, timeout=REQUEST_TIMEOUT):
     """
     Checks a password against the Pwned Passwords database.
 
@@ -32,7 +32,7 @@ def pwned_password(password):
             for line in requests.get(
                     url=API_ENDPOINT.format(prefix),
                     headers={'User-Agent': USER_AGENT},
-                    timeout=REQUEST_TIMEOUT,
+                    timeout=timeout,
             ).text.splitlines()
             if line.startswith(suffix)
         ]

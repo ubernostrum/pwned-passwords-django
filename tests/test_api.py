@@ -151,3 +151,19 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         with mock.patch('requests.get', request_mock):
             result = api.pwned_password(self.sample_password)
             self.assertEqual(None, result)
+
+    def test_timeout_option(self):
+        """
+        timeout parameter is passed to requests
+
+        """
+        request_mock = self._get_mock()
+        with mock.patch('requests.get', request_mock):
+            api.pwned_password(self.sample_password, timeout=5)
+            request_mock.assert_called_with(
+                url=api.API_ENDPOINT.format(
+                    self.sample_password_prefix
+                ),
+                headers=self.user_agent,
+                timeout=5,
+            )

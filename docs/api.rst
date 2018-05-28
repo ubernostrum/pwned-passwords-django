@@ -16,4 +16,6 @@ directly check a password against Pwned Passwords.
 
    :param password: The password to check.
    :type password: ``str``
+   :param timeout: Optional timeout in seconds. Defaults to 0.6 seconds.
+   :type timeout: ``float``
    :rtype: ``int`` or ``None``

@@ -46,3 +46,24 @@ Using the password validator
    changes a user's password in other ways. If you manipulate user
    passwords through means other than the high-level APIs listed
    above, you'll need to manually check passwords.
+
+
+Configuration options
+=====================
+
+You can change several options on the validator via the ``OPTIONS`` key on the validation entry in the
+``AUTH_PASSWORD_VALIDATORS`` setting.
+
+
+   .. code-block:: python
+
+      AUTH_PASSWORD_VALIDATORS = [
+          {
+              'NAME': 'pwned_passwords_django.validators.PwnedPasswordsValidator',
+              'OPTIONS': {
+                  'timeout': 0.6,
+              },
+          },
+      ]
+
+* ``timeout`` changes the request timeout to the API, in seconds. Defaults to 0.6 seconds.
