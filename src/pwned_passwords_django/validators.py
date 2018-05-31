@@ -40,4 +40,4 @@ class PwnedPasswordsValidator(object):
             )
 
     def get_help_text(self):
-        return self.help_message  # pragma: no cover
+        return self.help_message

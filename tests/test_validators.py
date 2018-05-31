@@ -60,6 +60,13 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 timeout=api.REQUEST_TIMEOUT,
             )
 
+    def test_default_help_message(self):
+        validator = PwnedPasswordsValidator()
+        self.assertEqual(
+            validator.get_help_text(),
+            validator.DEFAULT_HELP_MESSAGE
+        )
+
     @override_settings(AUTH_PASSWORD_VALIDATORS=[{
         'NAME': 'pwned_passwords_django.validators.PwnedPasswordsValidator',
         'OPTIONS': {'error_message': 'Pwned'}
