@@ -48,11 +48,11 @@ Using the password validator
    above, you'll need to manually check passwords.
 
 
-Changing the error message
-==========================
+Customizing the error messages
+==============================
 
-To change the error or help message shown to the user, you can set it
-in the ``OPTIONS`` dictionary like so:
+To change the error or help messages shown to the user, you can set
+them in the ``OPTIONS`` dictionary like so:
 
 .. code-block:: python
 
@@ -66,8 +66,8 @@ in the ``OPTIONS`` dictionary like so:
        },
    ]
 
-The amount of times the password has appeared in a breach can also be included
-in the error message, including a plural form:
+The number of times the password has appeared in a breach can also be
+included in the error message, including a plural form:
 
 .. code-block:: python
 
