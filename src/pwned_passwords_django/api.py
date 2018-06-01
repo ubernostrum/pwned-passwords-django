@@ -3,6 +3,7 @@ import logging
 import sys
 
 import requests
+from django.conf import settings
 
 from . import __version__
 
@@ -10,7 +11,7 @@ from . import __version__
 log = logging.getLogger(__name__)
 
 API_ENDPOINT = 'https://api.pwnedpasswords.com/range/{}'
-REQUEST_TIMEOUT = 0.6  # 600ms
+REQUEST_TIMEOUT = 1.0  # 600ms
 USER_AGENT = 'pwned-passwords-django/{} (Python/{} | requests/{})'.format(
     __version__,
     '{}.{}.{}'.format(*sys.version_info[:3]),
@@ -31,7 +32,11 @@ def pwned_password(password):
             for line in requests.get(
                     url=API_ENDPOINT.format(prefix),
                     headers={'User-Agent': USER_AGENT},
-                    timeout=REQUEST_TIMEOUT,
+                    timeout=getattr(
+                        settings,
+                        'PWNED_PASSWORDS_API_TIMEOUT',
+                        REQUEST_TIMEOUT
+                    ),
             ).text.splitlines()
             if line.startswith(suffix)
         ]

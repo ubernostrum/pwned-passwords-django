@@ -1,5 +1,6 @@
 import mock
 import requests
+from django.test import override_settings
 
 from pwned_passwords_django import api
 
@@ -131,6 +132,23 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         with mock.patch('requests.get', request_mock):
             result = api.pwned_password(self.sample_password)
             self.assertEqual(None, result)
+
+    @override_settings(PWNED_PASSWORDS_API_TIMEOUT=0.5)
+    def test_timeout_override(self):
+        """
+        The custom request timeout setting is honored.
+
+        """
+        request_mock = self._get_mock()
+        with mock.patch('requests.get', request_mock):
+            api.pwned_password(self.sample_password)
+            request_mock.assert_called_with(
+                url=api.API_ENDPOINT.format(
+                    self.sample_password_prefix
+                ),
+                headers=self.user_agent,
+                timeout=0.5,
+            )
 
     def test_timeout(self):
         """
