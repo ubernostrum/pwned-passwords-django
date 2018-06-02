@@ -34,7 +34,7 @@ Other changes:
 ~~~~~~~~~~~~~~
 
 * :func:`~pwned_passwords_django.api.pwned_password` will now raise
-  ``TypeError` if its argument is not a Unicode string (the type
+  ``TypeError`` if its argument is not a Unicode string (the type
   ``unicode`` on Python 2, ``str`` on Python 3). This is debatably
   backwards-incompatible; ``pwned_password()`` encodes its argument to
   UTF-8 bytes, which will raise ``AttributeError`` if attempted on a
@@ -64,6 +64,11 @@ Bugs fixed:
   uppercase hexadecimal digits for password hashes;
   pwned-passwords-django was using lowercase. Fixed by switching
   pwned-passwords-django to use uppercase.
+
+Other changes
+~~~~~~~~~~~~~
+
+N/A
 
 
 1.0 -- released 2018-03-06
