@@ -2,6 +2,8 @@
 
 .. _api:
 
+
+
 Using the Pwned Passwords API directly
 ======================================
 

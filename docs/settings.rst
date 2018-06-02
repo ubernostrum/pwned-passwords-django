@@ -1,5 +1,6 @@
-.. _settings:
 .. module:: django.conf.settings
+
+.. _settings:
 
 
 Custom settings
