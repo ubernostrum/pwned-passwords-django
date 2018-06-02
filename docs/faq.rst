@@ -42,7 +42,7 @@ specifying the Django setting
 it to a float indicating your preferred timeout; for example, to have
 a timeout of one and a half seconds, you'd set:
 
-..code-block:: python
+.. code-block:: python
 
   PWNED_PASSWORDS_API_TIMEOUT = 1.5
 
