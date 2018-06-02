@@ -48,8 +48,10 @@ Using the password validator
    above, you'll need to manually check passwords.
 
 
-Customizing the error messages
-==============================
+.. _validator-messages:
+
+Customizing the validator's messages
+====================================
 
 To change the error or help messages shown to the user, you can set
 them in the ``OPTIONS`` dictionary like so:

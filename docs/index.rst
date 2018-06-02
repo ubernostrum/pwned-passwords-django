@@ -36,6 +36,7 @@ Documentation contents
    middleware
    api
    settings
+   changelog
    faq
 
 

@@ -1,5 +1,9 @@
 anonymized
 auth
+Changelog
+changelog
+debatably
+dev
 django
 middleware
 middlewares
