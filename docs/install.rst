@@ -23,3 +23,18 @@ missing, instructions are available for `how to obtain and install it
 If you don't already have a supported version of Django installed,
 using ``pip`` to install pwned-passwords-django will also install the
 latest supported version of Django.
+
+
+Configuration and use
+=====================
+
+You may need to modify certain Django settings, depending on how you'd
+like to use ``pwned-passwords-django``. See the following
+documentation for notes on additional configuration:
+
+* Using :ref:`the password validator <validator>`
+
+* Using :ref:`the automatic password-checking middleware <middleware>`
+
+* Using :ref:`the Pwned Passwords API directly <api>`
+

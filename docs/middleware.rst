@@ -74,6 +74,7 @@ Using the middleware
    ``'passphrase'``, and so on. If you use something significantly
    different than this for a password input name, specify it -- as a
    raw string, *not* as a compiled regex object! -- in the setting
-   ``PWNED_PASSWORDS_REGEX`` to tell the middleware what to look for.
+   :data:`~django.conf.settings.PWNED_PASSWORDS_REGEX` to tell the
+   middleware what to look for.
 
 

@@ -35,6 +35,7 @@ Documentation contents
    validator
    middleware
    api
+   settings
    faq
 
 

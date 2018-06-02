@@ -36,9 +36,10 @@ I'm getting timeouts from the Pwned Passwords API. What can I do?
 
 By default, pwned-passwords-django makes requests to the Pwned
 Passwords API with a timeout of one second. You can change this by
-specifying the Django setting ``PWNED_PASSWORDS_API_TIMEOUT`` and
-setting it to a float indicating your preferred timeout; for example,
-to have a timeout of one and a half seconds, you'd set:
+specifying the Django setting
+:data:`~django.conf.settings.PWNED_PASSWORDS_API_TIMEOUT` and setting
+it to a float indicating your preferred timeout; for example, to have
+a timeout of one and a half seconds, you'd set:
 
 ..code-block:: python
 
