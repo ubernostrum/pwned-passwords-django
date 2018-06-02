@@ -162,7 +162,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
     def test_http_error(self):
         """
-        non-200 HTTP responses from the API are handled gracefully.
+        Non-200 HTTP responses from the API are handled gracefully.
 
         """
         request_mock = self._get_exception_mock(requests.HTTPError())

@@ -10,7 +10,7 @@ from .base import PwnedPasswordsTests
 @override_settings(PWNED_PASSWORDS_REGEX=r'PASS')
 class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
     """
-    Test PwnedPasswordsMiddleware.
+    Test the PwnedPasswordsMiddleware.
 
     """
     test_pwned_url = 'test-pwned-passwords-count'

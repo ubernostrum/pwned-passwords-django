@@ -73,7 +73,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
     }])
     def test_message_override(self):
         """
-        Custom message is shown.
+        Custom messages are honored.
 
         """
         request_mock = self._get_mock()
@@ -95,7 +95,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
     }])
     def test_message_number(self):
         """
-        Custom message can show the amount of times pwned.
+        Custom messages can include the count of breaches.
 
         """
         request_mock_plural = self._get_mock()
