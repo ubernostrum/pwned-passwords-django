@@ -12,6 +12,10 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
     Test interaction with the Pwned Passwords API.
 
     """
+    def test_unicode_requirement(self):
+        with self.assertRaises(TypeError):
+            api.pwned_password(self.sample_password.encode('utf-8'))
+
     def test_compromised(self):
         """
         Compromised passwords are detected correctly.

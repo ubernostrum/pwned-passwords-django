@@ -4,6 +4,7 @@ import sys
 
 import requests
 from django.conf import settings
+from django.utils.six import text_type
 
 from . import __version__
 
@@ -24,6 +25,8 @@ def pwned_password(password):
     Checks a password against the Pwned Passwords database.
 
     """
+    if not isinstance(password, text_type):
+        raise TypeError('Password values to check must be Unicode strings.')
     password_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
     prefix, suffix = password_hash[:5], password_hash[5:]
     try:
