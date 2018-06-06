@@ -1,4 +1,5 @@
 import mock
+import requests
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.test import override_settings
@@ -115,3 +116,21 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                     'Pwned 1 time'
             ):
                 validate_password(self.sample_password)
+
+    def test_http_error_fallback_common_password_validator(self):
+        """
+        In the event of a non-200 HTTP response, fallback to checking the
+        password against Django's list of common passwords.
+
+        """
+        request_mock = self._get_exception_mock(requests.HTTPError())
+        with mock.patch.object(
+                requests.Response,
+                'raise_for_status',
+                request_mock
+        ):
+            with self.assertRaisesMessage(
+                    ValidationError,
+                    'This password is too common.'
+            ):
+                validate_password(u'password')

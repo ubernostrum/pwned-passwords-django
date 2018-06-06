@@ -64,4 +64,4 @@ def pwned_password(password):
     if results is None:
         # Gracefully handle timeouts and HTTP error response codes.
         return None
-    return results.get(suffix)
+    return results.get(suffix, 0)
