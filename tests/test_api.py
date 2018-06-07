@@ -173,3 +173,27 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         with mock.patch('requests.get', request_mock):
             result = api.pwned_password(self.sample_password)
             self.assertEqual(None, result)
+
+    @override_settings(PWNED_PASSWORDS_CACHE=True)
+    def test_cache_duplicate_prefix(self):
+        """
+        Duplicate requests are cached
+
+        """
+        request_mock = self._get_mock()
+        with mock.patch('requests.get', request_mock):
+            api.pwned_password(self.sample_password)
+            api.pwned_password(self.sample_password)
+        request_mock.assert_called_once()
+
+    @override_settings(PWNED_PASSWORDS_CACHE=True)
+    def test_no_cache_when_different(self):
+        """
+        Don't cache when the password hash prefix is different
+
+        """
+        request_mock = self._get_mock()
+        with mock.patch('requests.get', request_mock):
+            api.pwned_password(self.sample_password)
+            api.pwned_password('anotherpassword')
+        self.assertEqual(2, len(request_mock.mock_calls))
