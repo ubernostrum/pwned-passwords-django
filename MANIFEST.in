@@ -1,6 +1,8 @@
 include LICENSE
 include MANIFEST.in
 include README.rst
+include tox.ini
+include runtests.py
 recursive-include docs *
 graft src
 graft tests
