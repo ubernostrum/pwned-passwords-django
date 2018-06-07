@@ -42,6 +42,8 @@ SETTINGS_DICT = {
             'NAME': 'pwned_passwords_django.validators.PwnedPasswordsValidator',
         },
     ],
+    # Dont cache in tests
+    'PWNED_PASSWORDS_CACHE': False,
     'LOGGING': {
         'version': 1,
         'disable_existing_loggers': True,
