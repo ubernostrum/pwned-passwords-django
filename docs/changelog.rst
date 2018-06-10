@@ -25,6 +25,8 @@ New features:
   an error or a response in an unexpected format, it now logs a
   warning and skips the Pwned Passwords check.
 
+* Added support for Django 2.1. No code changes were required.
+
 Bugs fixed:
 ~~~~~~~~~~~
 
@@ -75,5 +77,3 @@ N/A
 --------------------------
 
 Initial public release.
-
-
