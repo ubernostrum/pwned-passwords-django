@@ -24,6 +24,8 @@ New features:
 * When a request to the Pwned Passwords API times out, or encounters
   an error, it now logs a warning and skips the Pwned Passwords check.
 
+* Added support for Django 2.1. No code changes were required.
+
 Bugs fixed:
 ~~~~~~~~~~~
 
@@ -74,5 +76,3 @@ N/A
 --------------------------
 
 Initial public release.
-
-
