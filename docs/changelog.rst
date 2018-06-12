@@ -22,8 +22,7 @@ New features:
   :data:`~django.conf.settings.PWNED_PASSWORDS_API_TIMEOUT`.
 
 * When a request to the Pwned Passwords API times out, or encounters
-  an error or a response in an unexpected format, it now logs a
-  warning and skips the Pwned Passwords check.
+  an error, it now logs a warning and skips the Pwned Passwords check.
 
 Bugs fixed:
 ~~~~~~~~~~~

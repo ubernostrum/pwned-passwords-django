@@ -97,46 +97,6 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
             )
             self.assertEqual(None, result)
 
-    def test_bad_text(self):
-        """
-        Non-numeric counts in API response are handled gracefully.
-
-        """
-        request_mock = self._get_mock(
-            response_text='{}:xxx'.format(
-                self.sample_password_suffix
-            )
-        )
-        with mock.patch('requests.get', request_mock):
-            result = api.pwned_password(self.sample_password)
-            self.assertEqual(None, result)
-
-    def test_bad_response_no_colon(self):
-        """
-        Malformed API responses with no colon are handled gracefully.
-
-        """
-        request_mock = self._get_mock(
-            response_text=self.sample_password_suffix
-        )
-        with mock.patch('requests.get', request_mock):
-            result = api.pwned_password(self.sample_password)
-            self.assertEqual(None, result)
-
-    def test_bad_response_many_colons(self):
-        """
-        Malformed API responses with too many colons are gracefully.
-
-        """
-        request_mock = self._get_mock(
-            response_text='{}:123:xxx'.format(
-                self.sample_password_suffix
-            )
-        )
-        with mock.patch('requests.get', request_mock):
-            result = api.pwned_password(self.sample_password)
-            self.assertEqual(None, result)
-
     @override_settings(PWNED_PASSWORDS_API_TIMEOUT=0.5)
     def test_timeout_override(self):
         """
@@ -170,6 +130,10 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
         """
         request_mock = self._get_exception_mock(requests.HTTPError())
-        with mock.patch('requests.get', request_mock):
+        with mock.patch.object(
+                requests.Response,
+                'raise_for_status',
+                request_mock
+        ):
             result = api.pwned_password(self.sample_password)
             self.assertEqual(None, result)
