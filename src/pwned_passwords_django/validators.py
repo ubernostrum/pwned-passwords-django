@@ -1,3 +1,4 @@
+from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError
 from django.utils.six import string_types
 from django.utils.translation import ugettext as _
@@ -32,9 +33,17 @@ class PwnedPasswordsValidator(object):
             'plural': plural
         }
 
+        # For use as a fallback.
+        self.common_password_validator = CommonPasswordValidator()
+
     def validate(self, password, user=None):
         amount = api.pwned_password(password)
-        if amount:
+        if amount is None:
+            # HIBP API failure. Instead of allowing a potentially compromised
+            # password, check Django's list of common passwords generated from
+            # the same database.
+            self.common_password_validator.validate(password, user)
+        elif amount:
             raise ValidationError(
                 ungettext(
                     self.error_message['singular'],

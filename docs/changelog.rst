@@ -24,6 +24,9 @@ New features:
 * When a request to the Pwned Passwords API times out, or encounters
   an error, it now logs a warning and skips the Pwned Passwords check.
 
+* In the event of a HIBP API failure, the Pwned Passwords validator now falls
+  back to Django's ``CommonPasswordValidator``.
+
 Bugs fixed:
 ~~~~~~~~~~~
 

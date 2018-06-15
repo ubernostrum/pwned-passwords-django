@@ -58,7 +58,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
-            self.assertEqual(None, result)
+            self.assertEqual(0, result)
 
         # The real API doesn't return a result with a zero count, but
         # test it just in case.
@@ -95,7 +95,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
-            self.assertEqual(None, result)
+            self.assertEqual(0, result)
 
     @override_settings(PWNED_PASSWORDS_API_TIMEOUT=0.5)
     def test_timeout_override(self):
