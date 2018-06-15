@@ -15,13 +15,13 @@ class PwnedPasswordsValidator(object):
     DEFAULT_HELP_MESSAGE = _(
         "Your password can't be a commonly used password."
     )
-    DEFAULT_PWNED_MESSAGE = (
-        "This password is known to have appeared in a public data breach."
+    DEFAULT_PWNED_MESSAGE = _(
+        "This password is too common."
     )
 
     def __init__(self, error_message=None, help_message=None):
         self.help_message = help_message or self.DEFAULT_HELP_MESSAGE
-        error_message = error_message or self.DEFAULT_PWNED_MESSAGE
+        self.error_message = error_message or self.DEFAULT_PWNED_MESSAGE
 
         # If there is no plural, use the same message for both forms.
         if isinstance(error_message, string_types):
