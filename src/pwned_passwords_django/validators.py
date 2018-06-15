@@ -21,7 +21,7 @@ class PwnedPasswordsValidator(object):
 
     def __init__(self, error_message=None, help_message=None):
         self.help_message = help_message or self.DEFAULT_HELP_MESSAGE
-        self.error_message = error_message or self.DEFAULT_PWNED_MESSAGE
+        error_message = error_message or self.DEFAULT_PWNED_MESSAGE
 
         # If there is no plural, use the same message for both forms.
         if isinstance(error_message, string_types):
