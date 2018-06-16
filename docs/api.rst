@@ -25,7 +25,7 @@ directly check a password against Pwned Passwords.
 
       pwned-passwords-django needs to communicate with the Pwned
       Passwords API in order to check passwords. If Pwned Passwords is
-      down, or timing out (the default connection timeout is 1
+      down or timing out (the default connection timeout is 1
       second), this function will not re-try the check or fall back to
       an alternate mechanism; it will return ``None``. Whenever this
       happens, a message of level ``logging.WARNING`` will appear in

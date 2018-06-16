@@ -36,8 +36,8 @@ Documentation contents
    middleware
    api
    settings
-   changelog
    faq
+   changelog
 
 
 .. seealso::

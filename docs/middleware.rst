@@ -34,14 +34,14 @@ Using the middleware
    The ``request.pwned_passwords`` dictionary will be *empty* if any
    of the following is true:
 
-   * The request method is not ``POST``
+   * The request method is not ``POST``.
 
    * The request method is ``POST``, but the payload does not appear
-     to contain a password
+     to contain a password.
 
    * The request method is ``POST``, and the payload appears to
      contain a password, but the password is not listed as compromised
-     in Pwned Passwords
+     in Pwned Passwords.
 
    If the request method is ``POST``, and the payload appears to
    contain a password, and the password is listed in Pwned Passwords,
@@ -49,6 +49,11 @@ Using the middleware
    to the key in ``request.POST`` which appeared to contain a
    password, and the value associated with that key will be the number
    of times that password appears in the Pwned Passwords database.
+
+   For example, if ``request.POST`` contains a key named ``password``,
+   and the value associated with it appears 42 times in the Pwned
+   Passwords database, ``request.pwned_passwords`` will be
+   ``{'password': 42}``.
 
    .. warning:: **API failures**
 

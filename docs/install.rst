@@ -17,8 +17,13 @@ To install pwned-passwords-django, run::
 
 This will use ``pip``, the standard Python package-installation
 tool. If you are using a supported version of Python, your
-installation of Python came with ``pip`` bundled, but if it is
-missing, instructions are available for `how to obtain and install it
+installation of Python should have come with ``pip`` bundled. To make
+sure you have the latest version of ``pip``, run::
+
+    python -m ensurepip --upgrade
+
+If this fails, instructions are available for `how to obtain and
+manually install pip
 <https://pip.pypa.io/en/latest/installing.html>`_.
 
 If you don't already have a supported version of Django installed,

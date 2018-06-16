@@ -58,9 +58,10 @@ Other changes:
   :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator`
   now match the messages of Django's
   ``CommonPasswordValidator``. Since ``PwnedPasswordsValidator`` falls
-  back to ``CommonPasswordValidator``, this provides consistency of
-  messages, and also ensures the messages are translated (Django
-  provides translations for its built-in messages).
+  back to ``CommonPasswordValidator`` when the Pwned Passwords API is
+  unresponsive, this provides consistency of messages, and also
+  ensures the messages are translated (Django provides translations
+  for its built-in messages).
 
 
 1.1 -- released 2018-03-06

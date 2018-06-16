@@ -25,6 +25,6 @@ behavior of pwned-passwords-django.
    is scanning HTTP ``POST`` payloads for possible passwords. Will be
    checked case-insensitively.
 
-   Defaults to ``r'PASS'`` (thus matching "password", "passphrase",
-   etc.) if not set.
+   Defaults to ``r'PASS'`` (thus matching ``'password'``,
+   ``'passphrase'``, etc.) if not set.
 
