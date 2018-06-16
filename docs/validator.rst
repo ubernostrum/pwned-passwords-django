@@ -47,6 +47,20 @@ Using the password validator
    passwords through means other than the high-level APIs listed
    above, you'll need to manually check passwords.
 
+   .. warning:: **API failures**
+
+      pwned-passwords-django needs to communicate with the Pwned
+      Passwords API in order to check passwords. If Pwned Passwords is
+      down or timing out (the default connection timeout is 1 second),
+      this validator will fall back to using `Django's
+      CommonPasswordValidator
+      <https://docs.djangoproject.com/en/2.0/topics/auth/passwords/#django.contrib.auth.password_validation.CommonPasswordValidator>`_,
+      which uses a smaller, locally-stored list of common
+      passwords. Whenever this happens, a message of level
+      ``logging.WARNING`` will appear in your logs, indicating what
+      type of failure was encountered in talking to the Pwned
+      Passwords API.
+
 
 .. _validator-messages:
 

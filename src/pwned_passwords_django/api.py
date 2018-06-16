@@ -22,7 +22,8 @@ USER_AGENT = 'pwned-passwords-django/{} (Python/{} | requests/{})'.format(
 
 def get_pwned(prefix):
     """
-    Fetch a dict of all pwned password hashes for a given SHA-1 prefix.
+    Fetch a dict of all hash suffixes from Pwned Passwords for a given
+    SHA-1 prefix.
 
     """
     try:

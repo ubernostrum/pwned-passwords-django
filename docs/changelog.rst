@@ -8,7 +8,7 @@ This document lists changes between released versions of
 pwned-passwords-django.
 
 
-1.2 -- released 2018-03-??
+1.2 -- released 2018-06-??
 --------------------------
 
 New features:
@@ -22,10 +22,14 @@ New features:
   :data:`~django.conf.settings.PWNED_PASSWORDS_API_TIMEOUT`.
 
 * When a request to the Pwned Passwords API times out, or encounters
-  an error, it now logs a warning and skips the Pwned Passwords check.
-
-* In the event of a HIBP API failure, the Pwned Passwords validator now falls
-  back to Django's ``CommonPasswordValidator``.
+  an error, it logs the problem with a message of level
+  ``logging.WARNING``. The
+  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator`
+  will fall back to `Django's CommonPasswordValidator
+  <https://docs.djangoproject.com/en/2.0/topics/auth/passwords/#django.contrib.auth.password_validation.CommonPasswordValidator>`_,
+  which has a smaller list of common passwords. The
+  :class:`~pwned_passwords_django.middleware.PwnedPasswordsMiddleware`
+  does not have a fallback behavior.
 
 Bugs fixed:
 ~~~~~~~~~~~
@@ -49,6 +53,14 @@ Other changes:
   one and only one environment, and supplies a more accurate and
   comprehensible exception than the ``AttributeError`` which would
   have been raised in previous versions.
+
+* The default error and help messages of
+  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator`
+  now match the messages of Django's
+  ``CommonPasswordValidator``. Since ``PwnedPasswordsValidator`` falls
+  back to ``CommonPasswordValidator``, this provides consistency of
+  messages, and also ensures the messages are translated (Django
+  provides translations for its built-in messages).
 
 
 1.1 -- released 2018-03-06

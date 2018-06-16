@@ -50,6 +50,18 @@ Using the middleware
    password, and the value associated with that key will be the number
    of times that password appears in the Pwned Passwords database.
 
+   .. warning:: **API failures**
+
+      pwned-passwords-django needs to communicate with the Pwned
+      Passwords API in order to check passwords. If Pwned Passwords is
+      down or timing out (the default connection timeout is 1 second),
+      this middleware will not re-try the check or fall back to an
+      alternate mechanism; it will leave ``request.pwned_passwords``
+      empty. Whenever this happens, a message of level
+      ``logging.WARNING`` will appear in your logs, indicating what
+      type of failure was encountered in talking to the Pwned
+      Passwords API.
+      
    Here's an example of how you might use `Django's message framework
    <https://docs.djangoproject.com/en/2.0/ref/contrib/messages/>`_ to
    indicate to a user that they've just submitted a password that
