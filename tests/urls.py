@@ -31,7 +31,7 @@ def assert_not_compromised_view(request):
 
 urlpatterns = [
     url(r'^pwned-passwords-middleware$',
-        view,
+        assert_not_compromised_view,
         name='test-pwned-passwords-clean'),
     url(r'^pwned-passwords-clean$',
         view,
