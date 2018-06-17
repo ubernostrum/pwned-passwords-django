@@ -23,6 +23,11 @@ def assert_compromised_view(request, field, count):
 
 
 def assert_not_compromised_view(request):
+    """
+    A view which asserts that it did not receive a compromised
+    password.
+
+    """
     assert hasattr(request, 'pwned_passwords')
     assert not request.pwned_passwords
     assert request.pwned_passwords == {}
