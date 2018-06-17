@@ -26,10 +26,10 @@ USER_AGENT = 'pwned-passwords-django/{} (Python/{} | requests/{})'.format(
 )
 
 
-def get_pwned(prefix):
+def _get_pwned(prefix):
     """
-    Fetch a dict of all hash suffixes from Pwned Passwords for a given
-    SHA-1 prefix.
+    Fetches a dict of all hash suffixes from Pwned Passwords for a
+    given SHA-1 prefix.
 
     """
     try:
@@ -67,7 +67,7 @@ def pwned_password(password):
         raise TypeError('Password values to check must be Unicode strings.')
     password_hash = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
     prefix, suffix = password_hash[:5], password_hash[5:]
-    results = get_pwned(prefix)
+    results = _get_pwned(prefix)
     if results is None:
         # Gracefully handle timeouts and HTTP error response codes.
         return None
