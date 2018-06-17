@@ -1,3 +1,9 @@
+"""
+A Django password validator using the Pwned Passwords API to check for
+compromised passwords.
+
+"""
+
 from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError
 from django.utils.six import string_types

@@ -1,3 +1,8 @@
+"""
+Base test-case class for pwned-passwords-django.
+
+"""
+
 import mock
 from django.test import TestCase
 
