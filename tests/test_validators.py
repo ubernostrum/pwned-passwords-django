@@ -117,10 +117,16 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
             ):
                 validate_password(self.sample_password)
 
+    # Override the default messages so we can distinguish between the
+    # validators.
+    @override_settings(AUTH_PASSWORD_VALIDATORS=[{
+        'NAME': 'pwned_passwords_django.validators.PwnedPasswordsValidator',
+        'OPTIONS': {'error_message': 'Pwned'}
+    }])
     def test_http_error_fallback_common_password_validator(self):
         """
-        In the event of a non-200 HTTP response, fallback to checking the
-        password against Django's list of common passwords.
+        In the event of a Pwned Passwords API failure,
+        PwnedPasswordsValidator falls back to CommonPasswordValidator.
 
         """
         request_mock = self._get_exception_mock(requests.HTTPError())
@@ -129,8 +135,22 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 'raise_for_status',
                 request_mock
         ):
-            with self.assertRaisesMessage(
-                    ValidationError,
-                    'This password is too common.'
-            ):
+            try:
                 validate_password(u'password')
+            except ValidationError as v:
+                error = v.error_list[0]
+                # The raised error should have the message and code of
+                # the CommonPasswordValidator, not the message
+                # (overridden) and code of the
+                # PwnedPasswordsValidator.
+                self.assertEqual(
+                    error.message,
+                    PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE
+                )
+                self.assertEqual(
+                    error.code,
+                    'password_too_common'
+                )
+            else:
+                # If no validation error was raised, that's a failure.
+                assert False
