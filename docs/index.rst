@@ -12,13 +12,13 @@ rejecting common or weak passwords.
 There are three main components to this:
 
 * :ref:`A password validator <validator>` which checks the Pwned
-  Passwords database
+  Passwords database.
 
 * :ref:`A middleware <middleware>` which automatically checks certain
-  request payloads against the Pwned Passwords database
+  request payloads against the Pwned Passwords database.
 
 * :ref:`Code providing direct access <api>` to the Pwned Passwords
-  database
+  database.
 
 All three use a secure, anonymized API which never transmits the
 password or its hash to any third party. To learn more, see :ref:`the

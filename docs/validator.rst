@@ -67,8 +67,8 @@ Using the password validator
 Customizing the validator's messages
 ====================================
 
-To change the error or help messages shown to the user, you can set
-them in the ``OPTIONS`` dictionary like so:
+To change the error or help messages shown to the user, you can pass
+``OPTIONS`` when adding the validator to your settings:
 
 .. code-block:: python
 
