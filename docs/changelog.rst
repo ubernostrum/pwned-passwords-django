@@ -8,7 +8,14 @@ This document lists changes between released versions of
 pwned-passwords-django.
 
 
-1.2 -- released 2018-06-??
+1.2.1 -- released 2018-06-18
+----------------------------
+
+Released to correct the date of the 1.2 release listed in this
+changelog document. No other changes.
+
+
+1.2 -- released 2018-06-18
 --------------------------
 
 New features:
