@@ -29,7 +29,9 @@ New features:
   <https://docs.djangoproject.com/en/2.0/topics/auth/passwords/#django.contrib.auth.password_validation.CommonPasswordValidator>`_,
   which has a smaller list of common passwords. The
   :class:`~pwned_passwords_django.middleware.PwnedPasswordsMiddleware`
-  does not have a fallback behavior.
+  does not have a fallback behavior;
+  :func:`~pwned_passwords_django.api.pwned_password` will return
+  ``None`` to indicate the error case.
 
 Bugs fixed:
 ~~~~~~~~~~~
