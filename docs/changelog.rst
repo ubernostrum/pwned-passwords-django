@@ -8,6 +8,20 @@ This document lists changes between released versions of
 pwned-passwords-django.
 
 
+1.3.1 -- released 2018-09-18
+----------------------------
+
+Released to include documentation updates which were inadvertently
+left out of the 1.3 package.
+
+
+1.3 -- released 2018-09-18
+--------------------------
+
+No new features. No bug fixes. Released only to add explicit markers of
+Python 3.7 and Django 2.1 compatibility.
+
+
 1.2.1 -- released 2018-06-18
 ----------------------------
 
