@@ -8,14 +8,15 @@ Using the password validator
 
 .. class:: PwnedPasswordsValidator
 
-   Django's auth system (located in ``django.contrib.auth``) includes
-   `a configurable password-validation framework
+   Django's auth system (located in `django.contrib.auth`) includes `a
+   configurable password-validation framework
    <https://docs.djangoproject.com/en/1.11/topics/auth/passwords/#module-django.contrib.auth.password_validation>`_
    with several built-in validators; pwned-passwords-django provides
    an additional validator which checks the Pwned Passwords
-   database. To enable it, set your ``AUTH_PASSWORD_VALIDATORS``
-   setting to include
-   ``pwned_passwords_django.validators.PwnedPasswordsValidator``, like
+   database. To enable it, set your
+   :data:`~django.conf.settings.AUTH_PASSWORD_VALIDATORS` setting to
+   include
+   `'pwned_passwords_django.validators.PwnedPasswordsValidator'`, like
    so:
 
    .. code-block:: python
@@ -34,13 +35,16 @@ Using the password validator
      built-in auth views.
 
    * Whenever a new user is created via Django's built-in
-     ``UserCreationForm``.
+     :class:`~django.contrib.auth.forms.UserCreationForm`.
 
-   * Whenever the ``createsuperuser`` or ``changepassword`` management
+   * Whenever the `createsuperuser` or `changepassword` management
      commands are used.
 
-   * Whenever an instance of the built-in ``User`` model is saved after
-     the instance's ``set_password()`` method has been called.
+   * Whenever an instance of the built-in
+     :class:`~django.contrib.auth.models.User` model is saved after
+     the instance's
+     :meth:`~django.contrib.auth.models.User.set_password()` method
+     has been called.
 
    Keep in mind that validation is **not** run when code sets or
    changes a user's password in other ways. If you manipulate user
@@ -52,13 +56,12 @@ Using the password validator
       pwned-passwords-django needs to communicate with the Pwned
       Passwords API in order to check passwords. If Pwned Passwords is
       down or timing out (the default connection timeout is 1 second),
-      this validator will fall back to using `Django's
-      CommonPasswordValidator
-      <https://docs.djangoproject.com/en/2.0/topics/auth/passwords/#django.contrib.auth.password_validation.CommonPasswordValidator>`_,
+      this validator will fall back to using Django's
+      :class:`~django.contrib.auth.password_validation.CommonPasswordValidator`,
       which uses a smaller, locally-stored list of common
       passwords. Whenever this happens, a message of level
-      ``logging.WARNING`` will appear in your logs, indicating what
-      type of failure was encountered in talking to the Pwned
+      :data:`logging.WARNING` will appear in your logs, indicating
+      what type of failure was encountered in talking to the Pwned
       Passwords API.
 
 
@@ -68,7 +71,7 @@ Customizing the validator's messages
 ====================================
 
 To change the error or help messages shown to the user, you can pass
-``OPTIONS`` when adding the validator to your settings:
+`OPTIONS` when adding the validator to your settings:
 
 .. code-block:: python
 

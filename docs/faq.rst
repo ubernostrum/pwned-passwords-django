@@ -24,7 +24,7 @@ middleware. :ref:`The validator <validator>` by itself can catch many
 attempts to set a user's password to a known-compromised value, but
 cannot catch cases where a user already has a compromised password and
 is continuing to use it. :ref:`The middleware <middleware>` can catch
-that case, provided you're checking the ``request.pwned_passwords``
+that case, provided you're checking the `request.pwned_passwords`
 attribute in your view code.
 
 Using :ref:`the direct API <api>` should only be necessary in rare
@@ -95,22 +95,22 @@ How do I run the tests?
 
 pwned-passwords-django's tests are run using `tox
 <https://tox.readthedocs.io/>`_, but typical installation of
-pwned-passwords-django (via ``pip install pwned-passwords-django``)
+pwned-passwords-django (via `pip install pwned-passwords-django`)
 will not install the tests.
 
-To run the tests, download the source (``.tar.gz``) distribution of
+To run the tests, download the source (`.tar.gz`) distribution of
 pwned-passwords-django |release| from `its page on the Python Package
 Index <https://pypi.org/project/pwned-passwords-django/>`_, unpack it
-(``tar zxvf pwned-passwords-django-|version|.tar.gz`` on most
+(`tar zxvf pwned-passwords-django-|version|.tar.gz` on most
 Unix-like operating systems), and in the unpacked directory run
-``tox``.
+`tox`.
 
-Note that you will need to have ``tox`` installed already (``pip
-install tox``), and to run the full test matrix you will need to have
+Note that you will need to have `tox` installed already (`pip
+install tox`), and to run the full test matrix you will need to have
 each supported version of Python available. To run only the tests for
-a specific Python version and Django version, you can invoke ``tox``
-with the ``-e`` flag. For example, to run tests for Python 3.6 and
-Django 2.0: ``tox -e py36-django20``.
+a specific Python version and Django version, you can invoke `tox`
+with the `-e` flag. For example, to run tests for Python 3.6 and
+Django 2.0: `tox -e py36-django20`.
 
 
 How am I allowed to use this code?
@@ -120,7 +120,7 @@ The pwned-passwords-django module is distributed under a `three-clause
 BSD license <http://opensource.org/licenses/BSD-3-Clause>`_. This is
 an open-source license which grants you broad freedom to use,
 redistribute, modify and distribute modified versions of
-pwned-passwords-django. For details, see the file ``LICENSE`` in the
+pwned-passwords-django. For details, see the file `LICENSE` in the
 source distribution of pwned-passwords-django.
 
 .. _three-clause BSD license: http://opensource.org/licenses/BSD-3-Clause
