@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(name='pwned-passwords-django',
       zip_safe=False,  # eggs are the devil.
-      version='1.3.1',
+      version='1.3.2',
       description='A Pwned Passwords implementation for Django sites.',
       long_description=open(
           os.path.join(
@@ -24,6 +24,7 @@ setup(name='pwned-passwords-django',
                    'Framework :: Django :: 1.11',
                    'Framework :: Django :: 2.0',
                    'Framework :: Django :: 2.1',
+                   'Framework :: Django :: 2.2',
                    'Intended Audience :: Developers',
                    'License :: OSI Approved :: BSD License',
                    'Operating System :: OS Independent',
