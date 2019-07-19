@@ -6,14 +6,13 @@ compromised passwords.
 
 from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError
-from django.utils.six import string_types
-from django.utils.translation import ugettext as _
-from django.utils.translation import ungettext
+from django.utils.translation import gettext as _
+from django.utils.translation import ngettext
 
 from . import api
 
 
-class PwnedPasswordsValidator(object):
+class PwnedPasswordsValidator:
     """
     Password validator which checks the Pwned Passwords database.
 
@@ -30,7 +29,7 @@ class PwnedPasswordsValidator(object):
         error_message = error_message or self.DEFAULT_PWNED_MESSAGE
 
         # If there is no plural, use the same message for both forms.
-        if isinstance(error_message, string_types):
+        if isinstance(error_message, str):
             singular, plural = error_message, error_message
         else:
             singular, plural = error_message
@@ -48,7 +47,7 @@ class PwnedPasswordsValidator(object):
             CommonPasswordValidator().validate(password, user)
         elif amount:
             raise ValidationError(
-                ungettext(
+                ngettext(
                     self.error_message['singular'],
                     self.error_message['plural'],
                     amount,

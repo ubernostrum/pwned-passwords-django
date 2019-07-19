@@ -3,7 +3,8 @@ Tests for pwned-passwords-django's middleware.
 
 """
 
-import mock
+from unittest import mock
+
 from django.test import override_settings
 from django.urls import reverse
 

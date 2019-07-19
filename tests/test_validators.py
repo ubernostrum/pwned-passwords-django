@@ -1,4 +1,5 @@
-import mock
+from unittest import mock
+
 import requests
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -136,7 +137,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 request_mock
         ):
             try:
-                validate_password(u'password')
+                validate_password('password')
             except ValidationError as v:
                 error = v.error_list[0]
                 # The raised error should have the message and code of

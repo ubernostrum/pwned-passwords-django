@@ -7,8 +7,8 @@ extensions = ['sphinx.ext.intersphinx']
 templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
-project = u'pwned-passwords-django'
-copyright = u'2018-2019, James Bennett'
+project = 'pwned-passwords-django'
+copyright = '2018-2019, James Bennett'
 version = '1.3'
 release = '1.3.2'
 exclude_trees = ['_build']
@@ -16,8 +16,8 @@ pygments_style = 'sphinx'
 html_static_path = ['_static']
 htmlhelp_basename = 'pwned-passwords-djangodoc'
 latex_documents = [
-  ('index', 'pwned-passwords-django.tex', u'pwned-passwords-django Documentation',
-   u'James Bennett', 'manual'),
+  ('index', 'pwned-passwords-django.tex', 'pwned-passwords-django Documentation',
+   'James Bennett', 'manual'),
 ]
 
 intersphinx_mapping = {

@@ -18,7 +18,7 @@ class PwnedPasswordsMiddleware(MiddlewareMixin):
 
     """
     def __init__(self, get_response):
-        super(PwnedPasswordsMiddleware, self).__init__(get_response)
+        super().__init__(get_response)
         self.password_re = re.compile(
             getattr(settings, 'PWNED_PASSWORDS_REGEX', r'PASS'),
             re.IGNORECASE
