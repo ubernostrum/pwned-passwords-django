@@ -13,14 +13,15 @@ from django.utils.translation import ungettext
 from . import api
 
 
+common_password_validator = CommonPasswordValidator()
+
+
 class PwnedPasswordsValidator(object):
     """
     Password validator which checks the Pwned Passwords database.
 
     """
-    DEFAULT_HELP_MESSAGE = _(
-        "Your password can't be a commonly used password."
-    )
+    DEFAULT_HELP_MESSAGE = common_password_validator.get_help_text()
     DEFAULT_PWNED_MESSAGE = _(
         "This password is too common."
     )
@@ -45,7 +46,7 @@ class PwnedPasswordsValidator(object):
             # HIBP API failure. Instead of allowing a potentially compromised
             # password, check Django's list of common passwords generated from
             # the same database.
-            CommonPasswordValidator().validate(password, user)
+            common_password_validator.validate(password, user)
         elif amount:
             raise ValidationError(
                 ungettext(
