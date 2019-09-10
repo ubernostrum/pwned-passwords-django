@@ -39,7 +39,8 @@ setup(name='pwned-passwords-django',
                    'Topic :: Utilities'],
       python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
       install_requires=[
-          'Django>=1.11,<3.0',
+          'Django>=1.11,<4.0',
           'requests',
+          'six'
       ],
 )

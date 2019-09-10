@@ -10,7 +10,7 @@ import sys
 
 import requests
 from django.conf import settings
-from django.utils.six import text_type
+from six import text_type
 
 from . import __version__
 
