@@ -6,8 +6,8 @@ compromised passwords.
 
 from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError
-from django.utils.six import string_types
 from django.utils.functional import Promise
+from django.utils.six import string_types
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext
 
