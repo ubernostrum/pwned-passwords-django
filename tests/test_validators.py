@@ -31,7 +31,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
             with mock.patch('requests.get', request_mock):
                 with self.assertRaisesMessage(
                         ValidationError,
-                        PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE
+                        str(PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE)
                 ):
                     validate_password(self.sample_password)
                 request_mock.assert_called_with(
@@ -66,7 +66,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         validator = PwnedPasswordsValidator()
         self.assertEqual(
             validator.get_help_text(),
-            validator.DEFAULT_HELP_MESSAGE
+            str(validator.DEFAULT_HELP_MESSAGE)
         )
 
     @override_settings(AUTH_PASSWORD_VALIDATORS=[{
@@ -146,7 +146,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 # PwnedPasswordsValidator.
                 self.assertEqual(
                     error.message,
-                    PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE
+                    str(PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE)
                 )
                 self.assertEqual(
                     error.code,
