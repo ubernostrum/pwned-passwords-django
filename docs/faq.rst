@@ -11,9 +11,8 @@ you when using pwned-passwords-django.
 What versions of Django and Python are supported?
 -------------------------------------------------
 
-As of pwned-passwords-django |release|, Django 1.11, 2.0, 2.1, and 2.2
-are supported, on Python 2.7, (Django 1.11 only), 3.4 (Django 1.11 and
-2.0 only), 3.5, 3.6 and 3.7 (Django 2.0, 2.1, and 2.2 only).
+As of pwned-passwords-django |release|, Django 2.2 and 3.0 are
+supported, on Python 3.5, (Django 2.2 only), 3.6, 3.7, and 3.8.
 
 
 Should I use the validator, the middleware, or the API directly?
