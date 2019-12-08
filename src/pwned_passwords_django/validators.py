@@ -29,7 +29,7 @@ class PwnedPasswordsValidator(object):
         error_message = error_message or self.DEFAULT_PWNED_MESSAGE
 
         # If there is no plural, use the same message for both forms.
-        if isinstance(error_message, string_types):
+        if isinstance(error_message, str):
             singular, plural = error_message, error_message
         else:
             singular, plural = error_message
