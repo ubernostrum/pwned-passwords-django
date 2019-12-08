@@ -3,6 +3,7 @@ A Django middleware which checks all incoming POST requests for
 potentially-compromised passwords using the Pwned Passwords API.
 
 """
+
 import re
 
 from django.conf import settings
@@ -17,16 +18,16 @@ class PwnedPasswordsMiddleware(MiddlewareMixin):
     passwords against the Pwned Passwords database.
 
     """
+
     def __init__(self, get_response):
         super(PwnedPasswordsMiddleware, self).__init__(get_response)
         self.password_re = re.compile(
-            getattr(settings, 'PWNED_PASSWORDS_REGEX', r'PASS'),
-            re.IGNORECASE
+            getattr(settings, "PWNED_PASSWORDS_REGEX", r"PASS"), re.IGNORECASE
         )
 
     def process_request(self, request):
         request.pwned_passwords = {}
-        if request.method != 'POST':
+        if request.method != "POST":
             return
         for key in request.POST.keys():
             if self.password_re.search(key):

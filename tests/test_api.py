@@ -17,9 +17,10 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
     Test interaction with the Pwned Passwords API.
 
     """
+
     def test_unicode_requirement(self):
         with self.assertRaises(TypeError):
-            api.pwned_password(self.sample_password.encode('utf-8'))
+            api.pwned_password(self.sample_password.encode("utf-8"))
 
     def test_compromised(self):
         """
@@ -28,17 +29,12 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         """
         for count in range(1, 10):
             request_mock = self._get_mock(
-                response_text='{}:{}'.format(
-                    self.sample_password_suffix,
-                    count
-                )
+                response_text="{}:{}".format(self.sample_password_suffix, count)
             )
-            with mock.patch('requests.get', request_mock):
+            with mock.patch("requests.get", request_mock):
                 result = api.pwned_password(self.sample_password)
                 request_mock.assert_called_with(
-                    url=api.API_ENDPOINT.format(
-                        self.sample_password_prefix
-                    ),
+                    url=api.API_ENDPOINT.format(self.sample_password_prefix),
                     headers=self.user_agent,
                     timeout=api.REQUEST_TIMEOUT,
                 )
@@ -50,16 +46,12 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
         """
         request_mock = self._get_mock(
-            response_text='{}:5'.format(
-                self.sample_password_suffix.replace('A', '3')
-            )
+            response_text="{}:5".format(self.sample_password_suffix.replace("A", "3"))
         )
-        with mock.patch('requests.get', request_mock):
+        with mock.patch("requests.get", request_mock):
             result = api.pwned_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(
-                    self.sample_password_prefix
-                ),
+                url=api.API_ENDPOINT.format(self.sample_password_prefix),
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
@@ -68,16 +60,12 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         # The real API doesn't return a result with a zero count, but
         # test it just in case.
         request_mock = self._get_mock(
-            response_text='{}:0'.format(
-                self.sample_password_suffix
-            )
+            response_text="{}:0".format(self.sample_password_suffix)
         )
-        with mock.patch('requests.get', request_mock):
+        with mock.patch("requests.get", request_mock):
             result = api.pwned_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(
-                    self.sample_password_prefix
-                ),
+                url=api.API_ENDPOINT.format(self.sample_password_prefix),
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
@@ -88,15 +76,11 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         An empty API response is handled correctly.
 
         """
-        request_mock = self._get_mock(
-            response_text=''
-        )
-        with mock.patch('requests.get', request_mock):
+        request_mock = self._get_mock(response_text="")
+        with mock.patch("requests.get", request_mock):
             result = api.pwned_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(
-                    self.sample_password_prefix
-                ),
+                url=api.API_ENDPOINT.format(self.sample_password_prefix),
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
@@ -109,12 +93,10 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
         """
         request_mock = self._get_mock()
-        with mock.patch('requests.get', request_mock):
+        with mock.patch("requests.get", request_mock):
             api.pwned_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(
-                    self.sample_password_prefix
-                ),
+                url=api.API_ENDPOINT.format(self.sample_password_prefix),
                 headers=self.user_agent,
                 timeout=0.5,
             )
@@ -125,7 +107,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
         """
         request_mock = self._get_exception_mock(requests.ConnectTimeout())
-        with mock.patch('requests.get', request_mock):
+        with mock.patch("requests.get", request_mock):
             result = api.pwned_password(self.sample_password)
             self.assertEqual(None, result)
 
@@ -135,10 +117,6 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
         """
         request_mock = self._get_exception_mock(requests.HTTPError())
-        with mock.patch.object(
-                requests.Response,
-                'raise_for_status',
-                request_mock
-        ):
+        with mock.patch.object(requests.Response, "raise_for_status", request_mock):
             result = api.pwned_password(self.sample_password)
             self.assertEqual(None, result)
