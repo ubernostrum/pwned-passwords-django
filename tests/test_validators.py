@@ -1,7 +1,9 @@
 import mock
 import requests
-from django.contrib.auth.password_validation import (CommonPasswordValidator,
-                                                     validate_password)
+from django.contrib.auth.password_validation import (
+    CommonPasswordValidator,
+    validate_password,
+)
 from django.core.exceptions import ValidationError
 from django.test import override_settings
 
@@ -139,5 +141,5 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
     def test_get_help_text_matches_django(self):
         self.assertEqual(
             PwnedPasswordsValidator().get_help_text(),
-            CommonPasswordValidator().get_help_text()
+            CommonPasswordValidator().get_help_text(),
         )
