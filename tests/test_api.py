@@ -3,7 +3,8 @@ Tests for direct interaction with the Pwned Passwords API.
 
 """
 
-import mock
+from unittest import mock
+
 import requests
 from django.test import override_settings
 

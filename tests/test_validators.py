@@ -1,4 +1,5 @@
-import mock
+from unittest import mock
+
 import requests
 from django.contrib.auth.password_validation import (
     CommonPasswordValidator,
@@ -30,7 +31,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
             )
             with mock.patch("requests.get", request_mock):
                 with self.assertRaisesMessage(
-                    ValidationError, PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE
+                    ValidationError, str(PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE)
                 ):
                     validate_password(self.sample_password)
                 request_mock.assert_called_with(

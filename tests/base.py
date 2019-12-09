@@ -3,7 +3,9 @@ Base test-case class for pwned-passwords-django.
 
 """
 
-import mock
+from typing import Optional
+from unittest import mock
+
 from django.test import TestCase
 
 from pwned_passwords_django import api
@@ -15,17 +17,17 @@ class PwnedPasswordsTests(TestCase):
 
     """
 
-    sample_password = u"swordfish"
-    sample_password_prefix = u"4F571"
-    sample_password_suffix = u"81DCAADE980555F2CE6755CA425F00658BE"
+    sample_password = "swordfish"
+    sample_password_prefix = "4F571"
+    sample_password_suffix = "81DCAADE980555F2CE6755CA425F00658BE"
     user_agent = {"User-Agent": api.USER_AGENT}
 
-    def _get_mock(self, response_text=None):
+    def _get_mock(self, response_text: Optional[str] = None) -> mock.MagicMock:
         if response_text is None:
             response_text = "{}:3".format(self.sample_password_suffix)
         requests_get_mock = mock.MagicMock()
         requests_get_mock.return_value.text = response_text
         return requests_get_mock
 
-    def _get_exception_mock(self, exception):
+    def _get_exception_mock(self, exception: Exception) -> mock.MagicMock:
         return mock.MagicMock(side_effect=exception)
