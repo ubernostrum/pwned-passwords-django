@@ -9,6 +9,7 @@ from typing import Optional, Union
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError
+from django.utils.deconstruct import deconstructible
 from django.utils.functional import Promise
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext
@@ -22,6 +23,7 @@ StrOrTranslation = Union[str, Promise]
 common_password_validator = CommonPasswordValidator()
 
 
+@deconstructible
 class PwnedPasswordsValidator:
     """
     Password validator which checks the Pwned Passwords database.
@@ -64,3 +66,11 @@ class PwnedPasswordsValidator:
 
     def get_help_text(self) -> str:
         return self.help_message
+
+    def __eq__(self, other: object):
+        if not isinstance(other, PwnedPasswordsValidator):
+            return NotImplemented
+        return (
+            self.error_message == other.error_message
+            and self.help_message == other.help_message
+        )

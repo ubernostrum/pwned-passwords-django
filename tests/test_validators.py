@@ -144,3 +144,39 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
             PwnedPasswordsValidator().get_help_text(),
             CommonPasswordValidator().get_help_text(),
         )
+
+    def test_serializable(self):
+        """
+        The equality checking implemented for serializing the validator is
+        correct.
+
+        """
+        p1 = PwnedPasswordsValidator()
+        p2 = PwnedPasswordsValidator(error_message="Oops!")
+        p3 = PwnedPasswordsValidator(help_message="Help")
+        p4 = PwnedPasswordsValidator(error_message="Oops!", help_message="Help")
+        p5 = PwnedPasswordsValidator(error_message="Oops!", help_message="Help")
+
+        for first, second in (
+            (p1, p1),
+            (p2, p2),
+            (p3, p3),
+            (p4, p4),
+            (p5, p5),
+            (p4, p5),
+        ):
+            self.assertEqual(first, second)
+
+        for first, second in (
+            (p1, p2),
+            (p1, p3),
+            (p1, p4),
+            (p1, p5),
+            (p1, object()),
+            (p2, p3),
+            (p2, p4),
+            (p2, p5),
+            (p3, p4),
+            (p3, p5),
+        ):
+            self.assertNotEqual(first, second)
