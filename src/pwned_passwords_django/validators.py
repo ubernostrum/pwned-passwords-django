@@ -11,8 +11,8 @@ from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
 from django.utils.functional import Promise
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ungettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import ngettext
 
 from . import api
 
@@ -57,7 +57,7 @@ class PwnedPasswordsValidator:
             common_password_validator.validate(password, user)
         elif amount:
             raise ValidationError(
-                ungettext(
+                ngettext(
                     self.error_message["singular"], self.error_message["plural"], amount
                 ),
                 params={"amount": amount},
