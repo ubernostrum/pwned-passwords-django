@@ -9,7 +9,7 @@ following Python versions:
 
 * Django 2.2 supports Python 3.5, 3.6, 3.7, and 3.8.
 
-* Django 2.2 supports Python 3.6, 3.7, and 3.8.
+* Django 3.0 supports Python 3.6, 3.7, and 3.8.
 
 To install pwned-passwords-django, run::
 
