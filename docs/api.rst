@@ -14,11 +14,6 @@ directly check a password against Pwned Passwords.
    and returns a count of the number of times that password occurs in
    the database.
 
-   The password to check **must** be a Unicode string (the type
-   :class:`str` on Python 3, :class:`unicode` on Python 2). Passing a
-   bytes object (:class:`bytes` on Python 3, :class:`str` on Python 2)
-   will raise :exc:`TypeError`.
-
    .. warning:: **API failures**
 
       pwned-passwords-django needs to communicate with the Pwned
@@ -31,5 +26,5 @@ directly check a password against Pwned Passwords.
       talking to the Pwned Passwords API.
 
    :param password: The password to check.
-   :type password: Unicode string
+   :type password: :class:`str`
    :rtype: :class:`int` or :data:`None`

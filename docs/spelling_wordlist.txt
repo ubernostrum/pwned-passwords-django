@@ -15,5 +15,6 @@ passphrase
 Pwned
 pwned
 regex
+serializable
 validator
 validators

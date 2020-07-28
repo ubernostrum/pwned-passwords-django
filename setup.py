@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 setup(
     name="pwned-passwords-django",
     zip_safe=False,  # eggs are the devil.
-    version="1.3.3a",
+    version="1.4",
     description="A Pwned Passwords implementation for Django sites.",
     long_description=open(os.path.join(os.path.dirname(__file__), "README.rst")).read(),
     author="James Bennett",
@@ -29,6 +29,7 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Utilities",
     ],
     python_requires=">=3.5",

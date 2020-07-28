@@ -7,6 +7,25 @@ Changelog
 This document lists changes between released versions of
 pwned-passwords-django.
 
+1.4 -- released 2020-01-28
+--------------------------
+
+New features:
+~~~~~~~~~~~~~
+
+* The
+  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator`
+  is now serializable. This is unlikely to be useful, however, as the
+  validator is not intended to be attached to a model.
+
+Other changes:
+~~~~~~~~~~~~~~
+
+* The supported versions of Django are now 2.2 and 3.0. This means
+  Python 2 support is dropped; if you still need to use
+  pwned-passwords-django on Python 2 with Django 1.11, stay with the
+  1.3 release series of pwned-passwords-django.
+
 1.3.2 -- released 2019-05-07
 ----------------------------
 
