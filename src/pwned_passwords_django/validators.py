@@ -16,7 +16,6 @@ from django.utils.translation import ngettext
 
 from . import api
 
-
 StrOrTranslation = Union[str, Promise]
 
 

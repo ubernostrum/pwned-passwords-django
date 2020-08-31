@@ -14,7 +14,6 @@ from django.conf import settings
 
 from . import __version__
 
-
 log = logging.getLogger(__name__)
 
 API_ENDPOINT = "https://api.pwnedpasswords.com/range/{}"
