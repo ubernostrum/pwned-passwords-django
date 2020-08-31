@@ -14,6 +14,7 @@ setup(
     url="https://github.com/ubernostrum/pwned-passwords-django/",
     packages=find_packages("src"),
     package_dir={"": "src"},
+    package_data={"pwned_passwords_django": ["py.typed"]},
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
