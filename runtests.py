@@ -1,8 +1,8 @@
 """
 A standalone test runner script, configuring the minimum settings
-required for pwned-passwords-django' tests to execute.
+required for pwned-passwords-django's tests to execute.
 
-Re-use at your own risk: many Django applications will require full
+Re-use at your own risk: many Django applications will require more
 settings and/or templates in order to execute their tests, while
 pwned-passwords-django does not.
 
