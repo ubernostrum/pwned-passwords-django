@@ -7,6 +7,7 @@ from unittest import mock
 
 from django.test import override_settings
 from django.urls import reverse
+
 from pwned_passwords_django.api import API_ENDPOINT, REQUEST_TIMEOUT
 
 from .base import PwnedPasswordsTests

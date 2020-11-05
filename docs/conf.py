@@ -1,11 +1,9 @@
 import os
 import sys
 
-
 on_rtd = os.environ.get("READTHEDOCS", None) == "True"
 
 extensions = ["sphinx.ext.intersphinx"]
-templates_path = ["_templates"]
 source_suffix = ".rst"
 master_doc = "index"
 project = "pwned-passwords-django"
@@ -14,7 +12,6 @@ version = "1.4"
 release = "1.4.1"
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
-html_static_path = ["_static"]
 htmlhelp_basename = "pwned-passwords-djangodoc"
 latex_documents = [
     (
