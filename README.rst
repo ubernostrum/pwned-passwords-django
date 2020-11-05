@@ -1,7 +1,7 @@
 .. -*-restructuredtext-*-
 
-.. image:: https://travis-ci.org/ubernostrum/pwned-passwords-django.svg?branch=master
-    :target: https://travis-ci.org/ubernostrum/pwned-passwords-django
+.. image:: https://github.com/ubernostrum/pwned-passwords-django/workflows/CI/badge.svg
+   :alt: CI status image
 
 pwned-passwords-django provides helpers for working with the `Pwned
 Passwords database of Have I Been Pwned
