@@ -5,9 +5,7 @@ potentially-compromised passwords using the Pwned Passwords API.
 """
 
 import re
-from typing import Callable
 
-from django import http
 from django.conf import settings
 from django.utils.deprecation import MiddlewareMixin
 
@@ -21,13 +19,13 @@ class PwnedPasswordsMiddleware(MiddlewareMixin):
 
     """
 
-    def __init__(self, get_response: Callable[[http.HttpRequest], http.HttpResponse]):
+    def __init__(self, get_response):
         super().__init__(get_response)
         self.password_re = re.compile(
             getattr(settings, "PWNED_PASSWORDS_REGEX", r"PASS"), re.IGNORECASE
         )
 
-    def process_request(self, request: http.HttpRequest) -> None:
+    def process_request(self, request):
         request.pwned_passwords = {}
         if request.method != "POST":
             return

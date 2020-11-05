@@ -7,7 +7,6 @@ password is compromised.
 import hashlib
 import logging
 import sys
-from typing import Dict, Optional
 
 import requests
 from django.conf import settings
@@ -24,7 +23,7 @@ USER_AGENT = "pwned-passwords-django/{} (Python/{} | requests/{})".format(
 )
 
 
-def _get_pwned(prefix: str) -> Optional[Dict[str, int]]:
+def _get_pwned(prefix):
     """
     Fetches a dict of all hash suffixes from Pwned Passwords for a
     given SHA-1 prefix.
@@ -50,7 +49,7 @@ def _get_pwned(prefix: str) -> Optional[Dict[str, int]]:
     return results
 
 
-def pwned_password(password: str) -> Optional[int]:
+def pwned_password(password):
     """
     Checks a password against the Pwned Passwords database.
 
