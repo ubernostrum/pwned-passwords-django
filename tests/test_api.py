@@ -7,7 +7,6 @@ from unittest import mock
 
 import requests
 from django.test import override_settings
-
 from pwned_passwords_django import api
 
 from .base import PwnedPasswordsTests

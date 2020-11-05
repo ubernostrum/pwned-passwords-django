@@ -6,7 +6,6 @@ Base test-case class for pwned-passwords-django.
 from unittest import mock
 
 from django.test import TestCase
-
 from pwned_passwords_django import api
 
 

@@ -13,7 +13,6 @@ from django.utils.translation import ngettext
 
 from . import api
 
-
 common_password_validator = CommonPasswordValidator()
 
 
