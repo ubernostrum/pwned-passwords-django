@@ -1,7 +1,7 @@
 pwned-passwords-django |release|
 ==================================
 
-pwned-passwords-django provides helpers for working with teh `Pwned
+pwned-passwords-django provides helpers for working with the `Pwned
 Passwords database of Have I Been Pwned
 <https://haveibeenpwned.com/Passwords>`_ in `Django
 <https://www.djangoproject.com/>`_ powered sites. Pwned Passwords is
