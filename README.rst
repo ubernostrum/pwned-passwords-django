@@ -2,6 +2,7 @@
 
 .. image:: https://github.com/ubernostrum/pwned-passwords-django/workflows/CI/badge.svg
    :alt: CI status image
+   :target: https://github.com/ubernostrum/pwned-passwords-django/actions?query=workflow%3ACI
 
 pwned-passwords-django provides helpers for working with the `Pwned
 Passwords database of Have I Been Pwned
