@@ -11,6 +11,8 @@ pwned-passwords-django does not.
 import os
 import sys
 
+from django.utils.crypto import get_random_string
+
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -41,6 +43,7 @@ SETTINGS_DICT = {
             "pwned_passwords_django.api": {"handlers": ["null"], "propagate": False}
         },
     },
+    "SECRET_KEY": get_random_string(12),
 }
 
 

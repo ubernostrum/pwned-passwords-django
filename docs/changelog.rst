@@ -7,6 +7,13 @@ Changelog
 This document lists changes between released versions of
 pwned-passwords-django.
 
+1.5 -- released 2021-06-21
+--------------------------
+
+No new features. No bug fixes. Django 3.2 is now supported; Django 3.0
+and Python 3.5 are no longer supported, as they have both reached the
+end of their upstream support cycles.
+
 1.4 -- released 2020-01-28
 --------------------------
 
