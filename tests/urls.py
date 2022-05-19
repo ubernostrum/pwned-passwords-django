@@ -1,5 +1,5 @@
-from django.conf.urls import url
 from django.http import HttpResponse
+from django.urls import re_path
 
 
 def view(request):
@@ -35,13 +35,13 @@ def assert_not_compromised_view(request):
 
 
 urlpatterns = [
-    url(
+    re_path(
         r"^pwned-passwords-middleware$",
         assert_not_compromised_view,
         name="test-pwned-passwords-clean",
     ),
-    url(r"^pwned-passwords-clean$", view, name="test-pwned-passwords-middleware"),
-    url(
+    re_path(r"^pwned-passwords-clean$", view, name="test-pwned-passwords-middleware"),
+    re_path(
         r"^pwned-passwords-count/(?P<field>\w+)/(?P<count>\d+)$",
         assert_compromised_view,
         name="test-pwned-passwords-count",

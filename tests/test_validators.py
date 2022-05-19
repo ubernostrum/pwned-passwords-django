@@ -124,7 +124,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         request_mock = self._get_exception_mock(requests.HTTPError())
         with mock.patch.object(requests.Response, "raise_for_status", request_mock):
             try:
-                validate_password(u"password")
+                validate_password("password")
             except ValidationError as v:
                 error = v.error_list[0]
                 # The raised error should have the message and code of
