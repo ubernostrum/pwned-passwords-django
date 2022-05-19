@@ -7,19 +7,19 @@ jobs:
     name: tox on ${{ matrix.python-version }}
     runs-on: ubuntu-latest
 
-  strategy:
-    fail-fast: false
-    matrix:
-      python-version: ["3.7", "3.8", "3.9", "3.10"]
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
 
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: "Install dependencies"
-      run: |
-        python -VV
-        python -m pip install --upgrade pip setuptools wheel
-        python -m pip install --upgrade virtualenv tox tox-gh-actions
-    - run: "python -m tox"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: "Install dependencies"
+        run: |
+          python -VV
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install --upgrade virtualenv tox tox-gh-actions
+      - run: "python -m tox"
