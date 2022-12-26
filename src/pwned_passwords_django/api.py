@@ -43,7 +43,7 @@ def _get_pwned(prefix):
     results = {}
     for line in response.text.splitlines():
         line_suffix, _, times = line.partition(":")
-        results[line_suffix] = int(times)
+        results[line_suffix] = int(times.replace(",",""))
 
     return results
 
