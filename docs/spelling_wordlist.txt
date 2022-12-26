@@ -1,5 +1,6 @@
 anonymized
 auth
+Bugfix
 Changelog
 changelog
 CommonPasswordValidator
