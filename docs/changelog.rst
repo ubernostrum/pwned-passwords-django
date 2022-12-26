@@ -7,6 +7,14 @@ Changelog
 This document lists changes between released versions of
 pwned-passwords-django.
 
+1.6.1 -- released 2022-12-26
+----------------------------
+
+"Bugfix" release: the Pwned Passwords API now sometimes returnes the
+count as a value with a comma in it, which requires additional
+handling. No other changes; a release for official compatibility with
+Python 3.11 and Django 4.1 will occur later.
+
 1.6 -- released 2022-05-19
 --------------------------
 

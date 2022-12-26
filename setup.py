@@ -2,11 +2,10 @@ import os
 
 from setuptools import find_packages, setup
 
-
 setup(
     name="pwned-passwords-django",
     zip_safe=False,  # eggs are the devil.
-    version="1.6",
+    version="1.6.1",
     description="A Pwned Passwords implementation for Django sites.",
     long_description=open(os.path.join(os.path.dirname(__file__), "README.rst")).read(),
     author="James Bennett",
