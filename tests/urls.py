@@ -1,3 +1,7 @@
+"""
+URL mapping used during testing.
+
+"""
 from django.http import HttpResponse
 from django.urls import re_path
 

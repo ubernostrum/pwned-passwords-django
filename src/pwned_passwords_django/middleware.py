@@ -26,6 +26,12 @@ class PwnedPasswordsMiddleware(MiddlewareMixin):
         )
 
     def process_request(self, request):
+        """
+        Scan the request payload for potential password values, check them against
+        the Pwned Passwords API, and set the request.pwned_passwords attribute
+        appropriately.
+
+        """
         request.pwned_passwords = {}
         if request.method != "POST":
             return

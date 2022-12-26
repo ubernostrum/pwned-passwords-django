@@ -1,0 +1,5 @@
+# Python packages needed to build the documentation on Read the Docs.
+
+furo
+sphinx-notfound-page
+sphinxext-opengraph

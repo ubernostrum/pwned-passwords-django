@@ -1,3 +1,7 @@
+"""
+Test the Pwned Passwwords validator.
+
+"""
 from unittest import mock
 
 import requests
@@ -137,7 +141,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 self.assertEqual(error.code, "password_too_common")
             else:
                 # If no validation error was raised, that's a failure.
-                assert False
+                assert False  # noqa: B011
 
     def test_get_help_text_matches_django(self):
         self.assertEqual(

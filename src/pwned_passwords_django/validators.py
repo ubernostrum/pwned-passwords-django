@@ -42,6 +42,11 @@ class PwnedPasswordsValidator:
         self.error_message = {"singular": singular, "plural": plural}
 
     def validate(self, password, user=None):
+        """
+        Check a password against the Pwned Passwords database, raising
+        ValidationError if the password appears in the database.
+
+        """
         amount = api.pwned_password(password)
         if amount is None:
             # HIBP API failure. Instead of allowing a potentially compromised
@@ -58,9 +63,18 @@ class PwnedPasswordsValidator:
             )
 
     def get_help_text(self):
+        """
+        Return help text for this validator.
+
+        """
         return self.help_message
 
     def __eq__(self, other):
+        """
+        Equality check for this validator; this method is required to allow this
+        validator to be serializable by the Django ORM migration framework.
+
+        """
         if not isinstance(other, PwnedPasswordsValidator):
             return NotImplemented
         return (

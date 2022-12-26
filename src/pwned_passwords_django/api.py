@@ -55,7 +55,11 @@ def pwned_password(password):
     """
     if not isinstance(password, str):
         raise TypeError("Password values to check must be Unicode strings.")
-    password_hash = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
+    password_hash = (
+        hashlib.new("sha1", password.encode("utf-8"), usedforsecurity=False)
+        .hexdigest()
+        .upper()
+    )
     prefix, suffix = password_hash[:5], password_hash[5:]
     results = _get_pwned(prefix)
     if results is None:
