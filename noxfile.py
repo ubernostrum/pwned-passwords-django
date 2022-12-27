@@ -65,7 +65,11 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
         "runtests.py",
     )
     session.run(
-        f"{session.bin}/python{session.python}", "-Im", "coverage", "report", "-m"
+        f"{session.bin}/python{session.python}",
+        "-Im",
+        "coverage",
+        "report",
+        "--show-missing",
     )
 
 
