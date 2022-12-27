@@ -35,6 +35,8 @@ jobs:
           egress-policy: block
           allowed-endpoints: >
             api.pwnedpasswords.com:443
+            docs.djangoproject.com:443
+            docs.python.org:443
             files.pythonhosted.org:443
             github.com:443
             pypi.org:443
