@@ -18,15 +18,6 @@ nox.options.default_venv_backend = "venv"
 nox.options.reuse_existing_virtualenvs = True
 
 
-def get_python_path(session: nox.Session) -> str:
-    """
-    Return the full path, including version, to the Python interpreter in a nox
-    session.
-
-    """
-    return f"{session.bin}/python{session.python}"
-
-
 # Tasks which run the package's test suites.
 # -----------------------------------------------------------------------------------
 
@@ -52,19 +43,19 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
     """
     session.install("coverage[toml]", f"Django~={django}.0", ".")
     python_version = session.run(
-        get_python_path(session), "--version", silent=True
+        f"{session.bin}/python{session.python}", "--version", silent=True
     ).strip()
     django_version = session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "django",
         "--version",
         silent=True,
     ).strip()
     session.log(f"Running tests with {python_version}/Django {django_version}")
-    session.run(get_python_path(session), "-Im", "coverage", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "coverage", "--version")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Wonce::DeprecationWarning",
         "-Im",
         "coverage",
@@ -73,7 +64,9 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
         "pwned_passwords_django",
         "runtests.py",
     )
-    session.run(get_python_path(session), "-Im", "coverage", "report", "-m")
+    session.run(
+        f"{session.bin}/python{session.python}", "-Im", "coverage", "report", "-m"
+    )
 
 
 # Tasks which test the package's documentation.
@@ -92,7 +85,7 @@ def docs_build(session: nox.Session) -> None:
     tempdir = session.create_tmp()
     session.chdir("docs")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "sphinx",
         "-b",
@@ -112,9 +105,11 @@ def docs_docstrings(session: nox.Session) -> None:
 
     """
     session.install("interrogate")
-    session.run(get_python_path(session), "-Im", "interrogate", "--version")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}", "-Im", "interrogate", "--version"
+    )
+    session.run(
+        f"{session.bin}/python{session.python}",
         "-Im",
         "interrogate",
         "-v",
@@ -142,7 +137,7 @@ def docs_spellcheck(session: nox.Session) -> None:
     tempdir = session.create_tmp()
     session.chdir("docs")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "sphinx",
         "-W",  # Promote warnings to errors, so that misspelled words fail the build.
@@ -173,9 +168,9 @@ def format_black(session: nox.Session) -> None:
 
     """
     session.install("black")
-    session.run(get_python_path(session), "-Im", "black", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "black", "--version")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "black",
         "--check",
@@ -194,9 +189,9 @@ def format_isort(session: nox.Session) -> None:
 
     """
     session.install("isort")
-    session.run(get_python_path(session), "-Im", "isort", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "isort", "--version")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "isort",
         "--check-only",
@@ -219,9 +214,9 @@ def lint_bandit(session: nox.Session) -> None:
 
     """
     session.install("bandit[toml]")
-    session.run(get_python_path(session), "-Im", "bandit", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "bandit", "--version")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "bandit",
         "-c",
@@ -239,9 +234,9 @@ def lint_flake8(session: nox.Session) -> None:
 
     """
     session.install("flake8", "flake8-bugbear")
-    session.run(get_python_path(session), "-Im", "flake8", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "flake8", "--version")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "flake8",
         "src/",
@@ -262,8 +257,8 @@ def package_build(session: nox.Session) -> None:
 
     """
     session.install("build")
-    session.run(get_python_path(session), "-Im", "build", "--version")
-    session.run(get_python_path(session), "-Im", "build")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "build", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "build")
 
 
 @nox.session(python=["3.11"], tags=["packaging"])
@@ -274,10 +269,10 @@ def package_description(session: nox.Session) -> None:
     """
     package_dir = session.create_tmp()
     session.install("build", "twine")
-    session.run(get_python_path(session), "-Im", "build", "--version")
-    session.run(get_python_path(session), "-Im", "twine", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "build", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "twine", "--version")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "build",
         "--wheel",
@@ -285,7 +280,7 @@ def package_description(session: nox.Session) -> None:
         f"{package_dir}/build",
     )
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "twine",
         "check",
@@ -300,8 +295,12 @@ def package_manifest(session: nox.Session) -> None:
 
     """
     session.install("check-manifest")
-    session.run(get_python_path(session), "-Im", "check_manifest", "--version")
-    session.run(get_python_path(session), "-Im", "check_manifest", "--verbose")
+    session.run(
+        f"{session.bin}/python{session.python}", "-Im", "check_manifest", "--version"
+    )
+    session.run(
+        f"{session.bin}/python{session.python}", "-Im", "check_manifest", "--verbose"
+    )
 
 
 @nox.session(python=["3.11"], tags=["packaging"])
@@ -312,11 +311,11 @@ def package_pyroma(session: nox.Session) -> None:
     """
     session.install("pyroma")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-c",
         'from importlib.metadata import version; print(version("pyroma"))',
     )
-    session.run(get_python_path(session), "-Im", "pyroma", ".")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "pyroma", ".")
 
 
 @nox.session(python=["3.11"], tags=["packaging"])
@@ -327,15 +326,15 @@ def package_wheel(session: nox.Session) -> None:
     """
     package_dir = session.create_tmp()
     session.install("build", "check-wheel-contents")
-    session.run(get_python_path(session), "-Im", "build", "--version")
+    session.run(f"{session.bin}/python{session.python}", "-Im", "build", "--version")
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "check_wheel_contents",
         "--version",
     )
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "build",
         "--wheel",
@@ -343,7 +342,7 @@ def package_wheel(session: nox.Session) -> None:
         f"{package_dir}/build",
     )
     session.run(
-        get_python_path(session),
+        f"{session.bin}/python{session.python}",
         "-Im",
         "check_wheel_contents",
         f"{package_dir}/build",
