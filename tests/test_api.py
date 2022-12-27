@@ -87,6 +87,20 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
             )
             self.assertEqual(0, result)
 
+    def test_comma_response(self):
+        """
+        An API response where the count includes commas is handled correctly.
+
+        Bug reports indicate the Pwned Passwords API has occasionally done this.
+
+        """
+        request_mock = self._get_mock(
+            response_text="{}:{}".format(self.sample_password_suffix, "1,234,567")
+        )
+        with mock.patch("requests.get", request_mock):
+            result = api.pwned_password(self.sample_password)
+            self.assertEqual(1234567, result)
+
     @override_settings(PWNED_PASSWORDS_API_TIMEOUT=0.5)
     def test_timeout_override(self):
         """
