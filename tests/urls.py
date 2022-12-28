@@ -11,6 +11,7 @@ def view(request):
     A minimal view for use in testing.
 
     """
+    # pylint: disable=unused-argument
     return HttpResponse("Content.")
 
 

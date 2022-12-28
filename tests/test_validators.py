@@ -31,7 +31,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         """
         for count in range(1, 10):
             request_mock = self._get_mock(
-                response_text="{}:{}".format(self.sample_password_suffix, count)
+                response_text=f"{self.sample_password_suffix}:{count}"
             )
             with mock.patch("requests.get", request_mock):
                 with self.assertRaisesMessage(
@@ -39,7 +39,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 ):
                     validate_password(self.sample_password)
                 request_mock.assert_called_with(
-                    url=api.API_ENDPOINT.format(self.sample_password_prefix),
+                    url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
                     headers=self.user_agent,
                     timeout=api.REQUEST_TIMEOUT,
                 )
@@ -49,18 +49,21 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         Non-compromised passwords don't raise ValidationError.
 
         """
-        request_mock = self._get_mock(
-            response_text="{}:5".format(self.sample_password_suffix.replace("A", "3"))
-        )
+        suffix = self.sample_password_suffix.replace("A", "3")
+        request_mock = self._get_mock(response_text=f"{suffix}:5")
         with mock.patch("requests.get", request_mock):
             validate_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(self.sample_password_prefix),
+                url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
 
     def test_default_help_message(self):
+        """
+        The validator returns the correct default help text.
+
+        """
         validator = PwnedPasswordsValidator()
         self.assertEqual(validator.get_help_text(), validator.DEFAULT_HELP_MESSAGE)
 
@@ -99,7 +102,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         """
         request_mock_plural = self._get_mock()
         request_mock_singular = self._get_mock(
-            response_text="{}:1".format(self.sample_password_suffix)
+            response_text=f"{self.sample_password_suffix}:1"
         )
 
         with mock.patch("requests.get", request_mock_plural):
@@ -129,8 +132,8 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         with mock.patch.object(requests.Response, "raise_for_status", request_mock):
             try:
                 validate_password("password")
-            except ValidationError as v:
-                error = v.error_list[0]
+            except ValidationError as exc:
+                error = exc.error_list[0]
                 # The raised error should have the message and code of
                 # the CommonPasswordValidator, not the message
                 # (overridden) and code of the
@@ -144,6 +147,11 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
                 assert False  # noqa: B011
 
     def test_get_help_text_matches_django(self):
+        """
+        The validator's help text is identical to the help text of Django's
+        CommonPasswordValidator.
+
+        """
         self.assertEqual(
             PwnedPasswordsValidator().get_help_text(),
             CommonPasswordValidator().get_help_text(),
@@ -155,32 +163,36 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         correct.
 
         """
-        p1 = PwnedPasswordsValidator()
-        p2 = PwnedPasswordsValidator(error_message="Oops!")
-        p3 = PwnedPasswordsValidator(help_message="Help")
-        p4 = PwnedPasswordsValidator(error_message="Oops!", help_message="Help")
-        p5 = PwnedPasswordsValidator(error_message="Oops!", help_message="Help")
+        validator_1 = PwnedPasswordsValidator()
+        validator_2 = PwnedPasswordsValidator(error_message="Oops!")
+        validator_3 = PwnedPasswordsValidator(help_message="Help")
+        validator_4 = PwnedPasswordsValidator(
+            error_message="Oops!", help_message="Help"
+        )
+        validator_5 = PwnedPasswordsValidator(
+            error_message="Oops!", help_message="Help"
+        )
 
         for first, second in (
-            (p1, p1),
-            (p2, p2),
-            (p3, p3),
-            (p4, p4),
-            (p5, p5),
-            (p4, p5),
+            (validator_1, validator_1),
+            (validator_2, validator_2),
+            (validator_3, validator_3),
+            (validator_4, validator_4),
+            (validator_5, validator_5),
+            (validator_4, validator_5),
         ):
             self.assertEqual(first, second)
 
         for first, second in (
-            (p1, p2),
-            (p1, p3),
-            (p1, p4),
-            (p1, p5),
-            (p1, object()),
-            (p2, p3),
-            (p2, p4),
-            (p2, p5),
-            (p3, p4),
-            (p3, p5),
+            (validator_1, validator_2),
+            (validator_1, validator_3),
+            (validator_1, validator_4),
+            (validator_1, validator_5),
+            (validator_1, object()),
+            (validator_2, validator_3),
+            (validator_2, validator_4),
+            (validator_2, validator_5),
+            (validator_3, validator_4),
+            (validator_3, validator_5),
         ):
             self.assertNotEqual(first, second)

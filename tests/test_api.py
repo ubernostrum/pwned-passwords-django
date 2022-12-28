@@ -20,6 +20,10 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
     """
 
     def test_unicode_requirement(self):
+        """
+        Calling the API requires a str object, not bytes.
+
+        """
         with self.assertRaises(TypeError):
             api.pwned_password(self.sample_password.encode("utf-8"))
 
@@ -30,12 +34,12 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         """
         for count in range(1, 10):
             request_mock = self._get_mock(
-                response_text="{}:{}".format(self.sample_password_suffix, count)
+                response_text=f"{self.sample_password_suffix}:{count}"
             )
             with mock.patch("requests.get", request_mock):
                 result = api.pwned_password(self.sample_password)
                 request_mock.assert_called_with(
-                    url=api.API_ENDPOINT.format(self.sample_password_prefix),
+                    url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
                     headers=self.user_agent,
                     timeout=api.REQUEST_TIMEOUT,
                 )
@@ -46,13 +50,12 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         Non-compromised passwords are detected correctly.
 
         """
-        request_mock = self._get_mock(
-            response_text="{}:5".format(self.sample_password_suffix.replace("A", "3"))
-        )
+        suffix = self.sample_password_suffix.replace("A", "3")
+        request_mock = self._get_mock(response_text=f"{suffix}:5")
         with mock.patch("requests.get", request_mock):
             result = api.pwned_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(self.sample_password_prefix),
+                url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
@@ -60,13 +63,11 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
         # The real API doesn't return a result with a zero count, but
         # test it just in case.
-        request_mock = self._get_mock(
-            response_text="{}:0".format(self.sample_password_suffix)
-        )
+        request_mock = self._get_mock(response_text=f"{self.sample_password_suffix}:0")
         with mock.patch("requests.get", request_mock):
             result = api.pwned_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(self.sample_password_prefix),
+                url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
@@ -81,7 +82,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         with mock.patch("requests.get", request_mock):
             result = api.pwned_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(self.sample_password_prefix),
+                url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
                 headers=self.user_agent,
                 timeout=api.REQUEST_TIMEOUT,
             )
@@ -95,7 +96,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
 
         """
         request_mock = self._get_mock(
-            response_text="{}:{}".format(self.sample_password_suffix, "1,234,567")
+            response_text=f"{self.sample_password_suffix}:1,234,567"
         )
         with mock.patch("requests.get", request_mock):
             result = api.pwned_password(self.sample_password)
@@ -111,7 +112,7 @@ class PwnedPasswordsAPITests(PwnedPasswordsTests):
         with mock.patch("requests.get", request_mock):
             api.pwned_password(self.sample_password)
             request_mock.assert_called_with(
-                url=api.API_ENDPOINT.format(self.sample_password_prefix),
+                url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
                 headers=self.user_agent,
                 timeout=0.5,
             )

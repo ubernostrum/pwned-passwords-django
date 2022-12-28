@@ -27,7 +27,7 @@ class PwnedPasswordsTests(TestCase):
 
         """
         if response_text is None:
-            response_text = "{}:3".format(self.sample_password_suffix)
+            response_text = f"{self.sample_password_suffix}:3"
         requests_get_mock = mock.MagicMock()
         requests_get_mock.return_value.text = response_text
         return requests_get_mock

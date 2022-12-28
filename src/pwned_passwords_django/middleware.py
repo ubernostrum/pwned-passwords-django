@@ -19,6 +19,8 @@ class PwnedPasswordsMiddleware(MiddlewareMixin):
 
     """
 
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, get_response):
         super().__init__(get_response)
         self.password_re = re.compile(

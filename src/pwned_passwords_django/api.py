@@ -15,10 +15,12 @@ from . import __version__
 
 log = logging.getLogger(__name__)
 
-API_ENDPOINT = "https://api.pwnedpasswords.com/range/{}"
+API_ENDPOINT = "https://api.pwnedpasswords.com/range/"
 REQUEST_TIMEOUT = 1.0  # 1 second
-USER_AGENT = "pwned-passwords-django/{} (Python/{} | requests/{})".format(
-    __version__, "{}.{}.{}".format(*sys.version_info[:3]), requests.__version__
+USER_AGENT = (
+    f"pwned-passwords-django/{__version__} "
+    f"(Python/{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} "
+    f"| requests/{requests.__version__})"
 )
 
 
@@ -30,14 +32,14 @@ def _get_pwned(prefix):
     """
     try:
         response = requests.get(
-            url=API_ENDPOINT.format(prefix),
+            url=f"{API_ENDPOINT}{prefix}",
             headers={"User-Agent": USER_AGENT},
             timeout=getattr(settings, "PWNED_PASSWORDS_API_TIMEOUT", REQUEST_TIMEOUT),
         )
         response.raise_for_status()
-    except requests.RequestException as e:
+    except requests.RequestException as exc:
         # Gracefully handle timeouts and HTTP error response codes.
-        log.warning("Skipped Pwned Passwords check due to error: %r", e)
+        log.warning("Skipped Pwned Passwords check due to error: %r", exc)
         return None
 
     results = {}

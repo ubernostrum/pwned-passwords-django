@@ -42,7 +42,7 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
             with mock.patch("requests.get", request_mock):
                 self.client.post(self.test_url, data=payload)
                 request_mock.assert_called_with(
-                    url=API_ENDPOINT.format(self.sample_password_prefix),
+                    url=f"{API_ENDPOINT}{self.sample_password_prefix}",
                     headers=self.user_agent,
                     timeout=REQUEST_TIMEOUT,
                 )
@@ -77,7 +77,7 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         for field, count in (("password", 3), ("passphrase", 5), ("password2", 4)):
             request_mock = self._get_mock(
-                response_text="{}:{}".format(self.sample_password_suffix, count)
+                response_text=f"{self.sample_password_suffix}:{count}"
             )
             with mock.patch("requests.get", request_mock):
                 self.client.post(
@@ -92,9 +92,8 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         Non-compromised passwords do not set a count.
 
         """
-        request_mock = self._get_mock(
-            response_text="{}:5".format(self.sample_password_suffix.replace("A", "3"))
-        )
+        suffix = self.sample_password_suffix.replace("A", "3")
+        request_mock = self._get_mock(response_text=f"{suffix}:5")
         with mock.patch("requests.get", request_mock):
             self.client.post(
                 self.test_non_pwned_url, data={"password": self.sample_password}
@@ -115,7 +114,7 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
             with mock.patch("requests.get", request_mock):
                 self.client.post(self.test_url, data=payload)
                 request_mock.assert_called_with(
-                    url=API_ENDPOINT.format(self.sample_password_prefix),
+                    url=f"{API_ENDPOINT}{self.sample_password_prefix}",
                     headers=self.user_agent,
                     timeout=REQUEST_TIMEOUT,
                 )

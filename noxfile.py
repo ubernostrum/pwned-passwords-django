@@ -11,11 +11,39 @@ task, use ``nox -s`` with the name of that task.
 
 """
 import os
+import pathlib
+import shutil
+import typing
 
 import nox
 
 nox.options.default_venv_backend = "venv"
 nox.options.reuse_existing_virtualenvs = True
+
+PACKAGE_NAME = "pwned_passwords_django"
+
+NOXFILE_PATH = pathlib.Path(__file__).parents[0]
+ARTIFACT_PATHS = (
+    NOXFILE_PATH / "src" / f"{PACKAGE_NAME}.egg-info",
+    NOXFILE_PATH / "build",
+    NOXFILE_PATH / "dist",
+    NOXFILE_PATH / "__pycache__",
+    NOXFILE_PATH / "src" / "__pycache__",
+    NOXFILE_PATH / "src" / PACKAGE_NAME / "__pycache__",
+    NOXFILE_PATH / "tests" / "__pycache__",
+)
+
+
+def clean(paths: typing.Iterable[os.PathLike] = ARTIFACT_PATHS) -> None:
+    """
+    Clean up after a test run.
+
+    """
+    [
+        shutil.rmtree(path) if path.is_dir() else path.unlink()
+        for path in paths
+        if path.exists()
+    ]
 
 
 # Tasks which run the package's test suites.
@@ -61,7 +89,7 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
         "coverage",
         "run",
         "--source",
-        "pwned_passwords_django",
+        PACKAGE_NAME,
         "runtests.py",
     )
     session.run(
@@ -71,6 +99,7 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
         "report",
         "--show-missing",
     )
+    clean()
 
 
 # Tasks which test the package's documentation.
@@ -99,6 +128,7 @@ def docs_build(session: nox.Session) -> None:
         ".",
         f"{tempdir}/html",
     )
+    clean()
 
 
 @nox.session(python=["3.11"], tags=["docs"])
@@ -121,6 +151,7 @@ def docs_docstrings(session: nox.Session) -> None:
         "tests/",
         "noxfile.py",
     )
+    clean()
 
 
 @nox.session(python=["3.11"], tags=["docs"])
@@ -156,6 +187,7 @@ def docs_spellcheck(session: nox.Session) -> None:
         # https://github.com/pyenchant/pyenchant/issues/265#issuecomment-1126415843
         env={"PYENCHANT_LIBRARY_PATH": os.getenv("PYENCHANT_LIBRARY_PATH", "")},
     )
+    clean()
 
 
 # Code formatting checks.
@@ -184,6 +216,7 @@ def format_black(session: nox.Session) -> None:
         "docs/",
         "noxfile.py",
     )
+    clean()
 
 
 @nox.session(python=["3.11"], tags=["formatters"])
@@ -205,6 +238,7 @@ def format_isort(session: nox.Session) -> None:
         "docs/",
         "noxfile.py",
     )
+    clean()
 
 
 # Linters.
@@ -229,6 +263,7 @@ def lint_bandit(session: nox.Session) -> None:
         "src/",
         "tests/",
     )
+    clean()
 
 
 @nox.session(python=["3.11"], tags=["linters"])
@@ -248,6 +283,22 @@ def lint_flake8(session: nox.Session) -> None:
         "docs/",
         "noxfile.py",
     )
+    clean()
+
+
+@nox.session(python=["3.11"], tags=["linters"])
+def lint_pylint(session: nox.Session) -> None:
+    """
+    Lint code with Pyling.
+
+    """
+    # Pylint requires that all dependencies be importable during the run. This package
+    # does not have any direct dependencies, nor does the normal test suite, but the
+    # full conformance suite does require a few extra libraries, so they're installed
+    # here.
+    session.install("pylint", "pylint-django", "django", "requests")
+    session.run(f"python{session.python}", "-Im", "pylint", "--version")
+    session.run(f"python{session.python}", "-Im", "pylint", "src/", "tests/")
 
 
 # Packaging checks.
@@ -260,6 +311,7 @@ def package_build(session: nox.Session) -> None:
     Check that the package builds.
 
     """
+    clean()
     session.install("build")
     session.run(f"{session.bin}/python{session.python}", "-Im", "build", "--version")
     session.run(f"{session.bin}/python{session.python}", "-Im", "build")
@@ -290,6 +342,7 @@ def package_description(session: nox.Session) -> None:
         "check",
         f"{package_dir}/build/*",
     )
+    clean()
 
 
 @nox.session(python=["3.11"], tags=["packaging"])
@@ -305,6 +358,7 @@ def package_manifest(session: nox.Session) -> None:
     session.run(
         f"{session.bin}/python{session.python}", "-Im", "check_manifest", "--verbose"
     )
+    clean()
 
 
 @nox.session(python=["3.11"], tags=["packaging"])
@@ -320,6 +374,7 @@ def package_pyroma(session: nox.Session) -> None:
         'from importlib.metadata import version; print(version("pyroma"))',
     )
     session.run(f"{session.bin}/python{session.python}", "-Im", "pyroma", ".")
+    clean()
 
 
 @nox.session(python=["3.11"], tags=["packaging"])
@@ -351,3 +406,4 @@ def package_wheel(session: nox.Session) -> None:
         "check_wheel_contents",
         f"{package_dir}/build",
     )
+    clean()
