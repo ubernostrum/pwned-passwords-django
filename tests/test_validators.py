@@ -2,13 +2,8 @@
 Test the Pwned Passwwords validator.
 
 """
-from unittest import mock
-
-import requests
-from django.contrib.auth.password_validation import (
-    CommonPasswordValidator,
-    validate_password,
-)
+import httpx
+from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError
 from django.test import override_settings
 
@@ -29,20 +24,13 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         Compromised passwords raise ValidationError.
 
         """
-        for count in range(1, 10):
-            request_mock = self._get_mock(
-                response_text=f"{self.sample_password_suffix}:{count}"
-            )
-            with mock.patch("requests.get", request_mock):
-                with self.assertRaisesMessage(
-                    ValidationError, str(PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE)
-                ):
-                    validate_password(self.sample_password)
-                request_mock.assert_called_with(
-                    url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
-                    headers=self.user_agent,
-                    timeout=api.REQUEST_TIMEOUT,
-                )
+        validator = PwnedPasswordsValidator(
+            api_client=api.PwnedPasswords(client=self.http_client())
+        )
+        with self.assertRaisesMessage(
+            ValidationError, str(validator.error_message["singular"])
+        ):
+            validator.validate(self.sample_password)
 
     def test_not_compromised(self):
         """
@@ -50,22 +38,10 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
 
         """
         suffix = self.sample_password_suffix.replace("A", "3")
-        request_mock = self._get_mock(response_text=f"{suffix}:5")
-        with mock.patch("requests.get", request_mock):
-            validate_password(self.sample_password)
-            request_mock.assert_called_with(
-                url=f"{api.API_ENDPOINT}{self.sample_password_prefix}",
-                headers=self.user_agent,
-                timeout=api.REQUEST_TIMEOUT,
-            )
-
-    def test_default_help_message(self):
-        """
-        The validator returns the correct default help text.
-
-        """
-        validator = PwnedPasswordsValidator()
-        self.assertEqual(validator.get_help_text(), validator.DEFAULT_HELP_MESSAGE)
+        validator = PwnedPasswordsValidator(
+            api_client=api.PwnedPasswords(client=self.http_client(suffix=suffix))
+        )
+        validator.validate(self.sample_password)
 
     @override_settings(
         AUTH_PASSWORD_VALIDATORS=[
@@ -80,10 +56,13 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         Custom messages are honored.
 
         """
-        request_mock = self._get_mock()
-        with mock.patch("requests.get", request_mock):
-            with self.assertRaisesMessage(ValidationError, "Pwned"):
-                validate_password(self.sample_password)
+        error_message = "Pwned"
+        validator = PwnedPasswordsValidator(
+            error_message=error_message,
+            api_client=api.PwnedPasswords(client=self.http_client()),
+        )
+        with self.assertRaisesMessage(ValidationError, "Pwned"):
+            validator.validate(self.sample_password)
 
     @override_settings(
         AUTH_PASSWORD_VALIDATORS=[
@@ -100,51 +79,44 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         Custom messages can include the count of breaches.
 
         """
-        request_mock_plural = self._get_mock()
-        request_mock_singular = self._get_mock(
-            response_text=f"{self.sample_password_suffix}:1"
-        )
+        for count in range(1, 10):
+            error_message = ("Pwned %(amount)d time", "Pwned %(amount)d times")
+            expected_message = (
+                f"Pwned {count} times" if count > 1 else f"Pwned {count} time"
+            )
+            validator = PwnedPasswordsValidator(
+                error_message=error_message,
+                api_client=api.PwnedPasswords(client=self.http_client(count=count)),
+            )
+            with self.assertRaisesMessage(ValidationError, expected_message):
+                validator.validate(self.sample_password)
 
-        with mock.patch("requests.get", request_mock_plural):
-            with self.assertRaisesMessage(ValidationError, "Pwned 3 times"):
-                validate_password(self.sample_password)
-        with mock.patch("requests.get", request_mock_singular):
-            with self.assertRaisesMessage(ValidationError, "Pwned 1 time"):
-                validate_password(self.sample_password)
-
-    # Override the default messages so we can distinguish between the
-    # validators.
-    @override_settings(
-        AUTH_PASSWORD_VALIDATORS=[
-            {
-                "NAME": "pwned_passwords_django.validators.PwnedPasswordsValidator",
-                "OPTIONS": {"error_message": "Pwned"},
-            }
-        ]
-    )
     def test_http_error_fallback_common_password_validator(self):
         """
         In the event of a Pwned Passwords API failure,
         PwnedPasswordsValidator falls back to CommonPasswordValidator.
 
         """
-        request_mock = self._get_exception_mock(requests.HTTPError())
-        with mock.patch.object(requests.Response, "raise_for_status", request_mock):
-            try:
-                validate_password("password")
-            except ValidationError as exc:
-                error = exc.error_list[0]
-                # The raised error should have the message and code of
-                # the CommonPasswordValidator, not the message
-                # (overridden) and code of the
-                # PwnedPasswordsValidator.
-                self.assertEqual(
-                    error.message, PwnedPasswordsValidator.DEFAULT_PWNED_MESSAGE
+        validator = PwnedPasswordsValidator(
+            error_message="Pwned",
+            api_client=api.PwnedPasswords(
+                client=self.exception_client(
+                    exception_class=httpx.ConnectTimeout, message="Timed out"
                 )
-                self.assertEqual(error.code, "password_too_common")
-            else:
-                # If no validation error was raised, that's a failure.
-                assert False  # noqa: B011
+            ),
+        )
+        try:
+            validator.validate("password")
+        except ValidationError as exc:
+            error = exc.error_list[0]
+            # The raised error should have the message and code of the
+            # CommonPasswordValidator, not the message (overridden) and code of the
+            # PwnedPasswordsValidator.
+            self.assertEqual(error.message, "This password is too common.")
+            assert error.code == "password_too_common"
+        else:
+            # If no validation error was raised, that's a failure.
+            assert False  # noqa: B011
 
     def test_get_help_text_matches_django(self):
         """
@@ -152,15 +124,34 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         CommonPasswordValidator.
 
         """
-        self.assertEqual(
-            PwnedPasswordsValidator().get_help_text(),
-            CommonPasswordValidator().get_help_text(),
+        assert (
+            PwnedPasswordsValidator().get_help_text()
+            == CommonPasswordValidator().get_help_text()
+        )
+
+    def test_deconstruct(self):
+        """
+        The validator correctly deconstructs itself for serialization in migrations.
+
+        """
+        error_message = "Pwned"
+        help_message = "Help text"
+        validator = PwnedPasswordsValidator(
+            error_message=error_message, help_message=help_message
+        )
+        assert validator.deconstruct() == (
+            "pwned_passwords_django.validators.PwnedPasswordsValidator",
+            (),
+            {
+                "help_message": help_message,
+                "error_message": {"singular": error_message, "plural": error_message},
+            },
         )
 
     def test_serializable(self):
         """
-        The equality checking implemented for serializing the validator is
-        correct.
+        The equality checking implemented for serializing the validator in
+        migrations is correct.
 
         """
         validator_1 = PwnedPasswordsValidator()
@@ -181,7 +172,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
             (validator_5, validator_5),
             (validator_4, validator_5),
         ):
-            self.assertEqual(first, second)
+            assert first == second
 
         for first, second in (
             (validator_1, validator_2),
@@ -195,4 +186,4 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
             (validator_3, validator_4),
             (validator_3, validator_5),
         ):
-            self.assertNotEqual(first, second)
+            assert first != second

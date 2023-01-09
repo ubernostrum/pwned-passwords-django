@@ -9,7 +9,7 @@ an extremely large database of passwords known to have been
 compromised through data breaches, and is useful as a tool for
 rejecting common or weak passwords.
 
-There are three main components to this:
+There are three main components to this application:
 
 * :ref:`A password validator <validator>` which checks the Pwned
   Passwords database.
@@ -35,6 +35,7 @@ Documentation contents
    validator
    middleware
    api
+   exceptions
    settings
    faq
    changelog
@@ -44,4 +45,4 @@ Documentation contents
 
   * `About Have I Been Pwned <https://haveibeenpwned.com/About>`_
   * `The Pwned Passwords range-search API
-    <https://haveibeenpwned.com/API/v2#SearchingPwnedPasswordsByRange>`_
+    <https://haveibeenpwned.com/API/v3#SearchingPwnedPasswordsByRange>`_

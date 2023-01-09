@@ -6,20 +6,28 @@ https://www.sphinx-doc.org/
 """
 import sys
 
+import django
+from django.conf import settings
+
+settings.configure()
+django.setup()
+
 extensions = [
     "notfound.extension",
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
     "sphinxext.opengraph",
+    "sphinx_copybutton",
+    "sphinx_inline_tabs",
 ]
 templates_path = ["_templates"]
 source_suffix = ".rst"
 master_doc = "index"
 project = "pwned-passwords-django"
 copyright = "2018, James Bennett"
-version = "1.7"
-release = "1.7a1"
+version = "2.0"
+release = "2.0a1"
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
 htmlhelp_basename = "pwned-passwords-djangodoc"

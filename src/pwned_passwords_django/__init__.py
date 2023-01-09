@@ -3,4 +3,4 @@ A Pwned Passwords implementation for Django sites.
 
 """
 
-__version__ = "1.7a1"
+__version__ = "2.0a1"

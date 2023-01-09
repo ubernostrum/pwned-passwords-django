@@ -6,8 +6,8 @@ matrix of tests, linters, and other quality checks which can be run individually
 suite.
 
 To see available tasks, run ``nox --list``. To run all available tasks -- which requires
-functioning installs of all supported Python versions -- run ``nox``. To run a single
-task, use ``nox -s`` with the name of that task.
+a functioning installation of at least one supported Python version -- run ``nox``. To
+run a single task, use ``nox -s`` with the name of that task.
 
 """
 import os
@@ -69,7 +69,7 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
     Run the package's unit tests, with coverage report.
 
     """
-    session.install("coverage[toml]", f"Django~={django}.0", ".")
+    session.install(f"Django~={django}.0", ".[tests]")
     python_version = session.run(
         f"{session.bin}/python{session.python}", "--version", silent=True
     ).strip()
@@ -112,10 +112,7 @@ def docs_build(session: nox.Session) -> None:
     Build the package's documentation as HTML.
 
     """
-    session.install(
-        "furo", "sphinx", "sphinx-notfound-page", "sphinxext-opengraph", "."
-    )
-    tempdir = session.create_tmp()
+    session.install(".[docs]")
     session.chdir("docs")
     session.run(
         f"{session.bin}/python{session.python}",
@@ -124,9 +121,9 @@ def docs_build(session: nox.Session) -> None:
         "-b",
         "html",
         "-d",
-        f"{tempdir}/doctrees",
+        f"{session.bin}/../tmp/doctrees",
         ".",
-        f"{tempdir}/html",
+        f"{session.bin}/../tmp/html",
     )
     clean()
 
@@ -160,16 +157,8 @@ def docs_spellcheck(session: nox.Session) -> None:
     Spell-check the package's documentation.
 
     """
-    session.install(
-        "furo",
-        "pyenchant",
-        "sphinx",
-        "sphinxcontrib-spelling",
-        "sphinx-notfound-page",
-        "sphinxext-opengraph",
-        ".",
-    )
-    tempdir = session.create_tmp()
+    session.install("pyenchant", "sphinxcontrib-spelling", ".[docs]")
+    build_dir = session.create_tmp()
     session.chdir("docs")
     session.run(
         f"{session.bin}/python{session.python}",
@@ -179,9 +168,9 @@ def docs_spellcheck(session: nox.Session) -> None:
         "-b",
         "spelling",
         "-d",
-        f"{tempdir}/doctrees",
+        f"{build_dir}/doctrees",
         ".",
-        f"{tempdir}/html",
+        f"{build_dir}/html",
         # On Apple Silicon Macs, this environment variable needs to be set so
         # pyenchant can find the "enchant" C library. See
         # https://github.com/pyenchant/pyenchant/issues/265#issuecomment-1126415843
@@ -296,7 +285,7 @@ def lint_pylint(session: nox.Session) -> None:
     # does not have any direct dependencies, nor does the normal test suite, but the
     # full conformance suite does require a few extra libraries, so they're installed
     # here.
-    session.install("pylint", "pylint-django", "django", "requests")
+    session.install("pylint", "pylint-django", "django", "httpx")
     session.run(f"python{session.python}", "-Im", "pylint", "--version")
     session.run(f"python{session.python}", "-Im", "pylint", "src/", "tests/")
 

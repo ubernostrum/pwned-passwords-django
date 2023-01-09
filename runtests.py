@@ -13,7 +13,6 @@ import sys
 
 from django.utils.crypto import get_random_string
 
-
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -31,7 +30,7 @@ SETTINGS_DICT = {
     "DATABASES": {
         "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}
     },
-    "MIDDLEWARE": ("pwned_passwords_django.middleware.PwnedPasswordsMiddleware",),
+    "MIDDLEWARE": ("pwned_passwords_django.middleware.pwned_passwords_middleware",),
     "AUTH_PASSWORD_VALIDATORS": [
         {"NAME": "pwned_passwords_django.validators.PwnedPasswordsValidator"}
     ],
@@ -66,7 +65,7 @@ def run_tests():
     TestRunner = get_runner(settings)
 
     # And then we run tests and return the results.
-    test_runner = TestRunner(verbosity=2, interactive=True)
+    test_runner = TestRunner(verbosity=2, interactive=True, exclude_tags=["end-to-end"])
     failures = test_runner.run_tests(["tests"])
     sys.exit(failures)
 

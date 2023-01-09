@@ -3,7 +3,7 @@ URL mapping used during testing.
 
 """
 from django.http import HttpResponse
-from django.urls import re_path
+from django.urls import path
 
 
 def view(request):
@@ -15,40 +15,90 @@ def view(request):
     return HttpResponse("Content.")
 
 
-def assert_compromised_view(request, field, count):
+async def async_view(request):
     """
-    A view which asserts that it received a compromised password.
+    A minimal async view for use in testing.
+
+    """
+    # pylint: disable=unused-argument
+    return HttpResponse("Content.")
+
+
+def breach_count(request, field):
+    """
+    A view which asserts that it received a compromised password, in the given
+    ``field``.
 
     """
     assert hasattr(request, "pwned_passwords")
     assert request.pwned_passwords
     assert field in request.pwned_passwords
-    assert request.pwned_passwords[field] == int(count)
     return HttpResponse("Content.")
 
 
-def assert_not_compromised_view(request):
+async def async_breach_count(request, field):
+    """
+    An async view which asserts that it received a compromised password, in the
+    given ``field``.
+
+    """
+    assert hasattr(request, "pwned_passwords")
+    assert request.pwned_passwords
+    assert field in request.pwned_passwords
+    return HttpResponse("Content.")
+
+
+def clean(request):
     """
     A view which asserts that it did not receive a compromised
     password.
 
     """
     assert hasattr(request, "pwned_passwords")
-    assert not request.pwned_passwords
-    assert request.pwned_passwords == {}
+    assert request.pwned_passwords == []
+    return HttpResponse("Content.")
+
+
+async def async_clean(request):
+    """
+    An async view which asserts that it did not receive a compromised
+    password.
+
+    """
+    assert hasattr(request, "pwned_passwords")
+    assert request.pwned_passwords == []
     return HttpResponse("Content.")
 
 
 urlpatterns = [
-    re_path(
-        r"^pwned-passwords-middleware$",
-        assert_not_compromised_view,
-        name="test-pwned-passwords-clean",
+    path(
+        "pwned-passwords-django/tests/middleware",
+        view,
+        name="pwned-middleware",
     ),
-    re_path(r"^pwned-passwords-clean$", view, name="test-pwned-passwords-middleware"),
-    re_path(
-        r"^pwned-passwords-count/(?P<field>\w+)/(?P<count>\d+)$",
-        assert_compromised_view,
-        name="test-pwned-passwords-count",
+    path(
+        "pwned-passwords-django/tests/async/middleware",
+        async_view,
+        name="pwned-middleware-async",
+    ),
+    path(
+        "pwned-passwords-django/tests/<str:field>/",
+        breach_count,
+        name="pwned-breach",
+    ),
+    path(
+        "pwned-passwords-django/tests/async/<str:field>/",
+        async_breach_count,
+        name="pwned-breach-async",
+    ),
+    path(
+        "pwned-passwords-django/tests/clean",
+        view,
+        name="pwned-clean",
+    ),
+    path(
+        "pwned-passwords-django/tests/async/clean",
+        async_view,
+        name="pwned-clean",
     ),
 ]

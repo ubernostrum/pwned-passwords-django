@@ -29,7 +29,7 @@ name = "pwned-passwords-django"
 description = "A Pwned Passwords implementation for Django sites."
 dependencies = [
   "Django>=3.2",
-  "requests"
+  "httpx"
 ]
 dynamic = ["version"]
 keywords = ["django", "security", "passwords", "auth", "authentication"]
@@ -40,6 +40,21 @@ requires-python = ">=3.7"
 [project.urls]
 documentation = "https://pwned-passwords-django.readthedocs.io/"
 homepage = "https://github.com/ubernostrum/pwned-passwords-django"
+
+[project.optional-dependencies]
+docs = [
+  "furo",
+  "sphinx",
+  "sphinx-copybutton",
+  "sphinx-inline-tabs",
+  "sphinx-notfound-page",
+  "sphinxext-opengraph",
+]
+tests = [
+  "coverage",
+  "mock; python_full_version < '3.8.0'",
+  "tomli; python_full_version < '3.11.0a7'",
+]
 
 [tool.bandit]
 skips = ["B101"]
@@ -56,6 +71,9 @@ ignore-init-module = true
 
 [tool.isort]
 profile = "black"
+
+[tool.pylint]
+disable = ["W1203"]
 
 [tool.setuptools.dynamic]
 version = {attr = "pwned_passwords_django.__version__"}

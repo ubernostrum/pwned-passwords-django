@@ -7,6 +7,175 @@ Changelog
 This document lists changes between released versions of
 pwned-passwords-django.
 
+2.0 -- released 2023-??-??
+--------------------------
+
+Major version bump. Much of the codebase has been rewritten and improved.
+
+The following changes in 2.0 are backwards-incompatible with 1.x releases:
+
+
+Configuration changes
+~~~~~~~~~~~~~~~~~~~~~
+
+In 1.x, pwned-passwords-django was configured by two top-level Django settings:
+``PWNED_PASSWORDS_API_TIMEOUT`` and ``PWNED_PASSWORDS_REGEX``. As of 2.0,
+configuration uses one top-level Django setting, ``PWNED_PASSWORDS``, which is
+a :class:`dict` containing any of :ref:`several optional keys <settings>` to
+configure behavior.
+
+Here is an example of old 1.x configuration:
+
+.. code-block:: python
+
+   PWNED_PASSWORDS_API_TIMEOUT = 1.5 # one and a half seconds
+
+   PWNED_PASSWORDS_REGEX = r"TOKEN"
+
+And here is the corresponding configuration for 2.0:
+
+.. code-block:: python
+
+   PWNED_PASSWORDS = {
+       "API_TIMEOUT": 1.5, # one and a half seconds
+       "PASSWORD_REGEX": r"TOKEN",
+   }
+
+
+Validator changes
+~~~~~~~~~~~~~~~~~
+
+In 1.x, when the password validator encountered an error communicating with
+Pwned Passwords, it would fall back to Django's
+:class:`~django.contrib.auth.password_validation.CommonPasswordValidator` after
+logging a message of log level :data:`logging.WARNING`. In 2.0, it continues to
+fall back to ``CommonPasswordValidator``, but the log message is now of log
+level :data:`logging.ERROR`.
+
+
+Middleware changes
+~~~~~~~~~~~~~~~~~~
+
+In 1.x, the middleware was a class --
+``pwned_passwords_django.middleware.PwnedPasswordsMiddleware`` -- while in 2.0
+it is a factory function,
+:func:`pwned_passwords_django.middleware.pwned_passwords_middleware`. If you
+were using the middleware, you will need to update your
+:data:`~django.conf.settings.MIDDLEWARE` setting.
+
+The middleware in 2.0 supports both synchronous and asynchronous usage, and
+will automatically select the correct sync or async code path on a per-request
+basis, including use of a sync or async HTTP client to make requests to Pwned
+Passwords.
+
+In 1.x, the middleware set the ``request.pwned_passwords`` attribute to a
+:class:`dict`, where the keys were keys from
+:attr:`~django.http.HttpRequest.POST` that contained compromised passwords, and
+the values were the corresponding breach counts for those passwords. In 2.0,
+``request.pwned_passwords`` is a :class:`list` of :class:`str`, whose elements
+are the keys from :attr:`~django.http.HttpRequest.POST` that contained
+compromised passwords. This means that it is no longer possible to get the
+breach count for a password from the middleware.
+
+However, the format of ``request.pwned_passwords`` in 1.x meant that the
+middleware could not have a consistent fallback in case of errors communicating
+with Pwned Passwords; as a result of the change to a :class:`list` in 2.0, the
+middleware is now able to fall back to Django's
+:class:`~django.contrib.auth.password_validation.CommonPasswordValidator` when
+an error occurs in a request to Pwned Passwords, which is a safer failure mode
+than was previously possible. This also brings makes the behavior of the
+middleware consistent with the validator; see :ref:`the new error-handling
+documentation <exceptions>` for details.
+
+Also, as with the validator, the log message recorded when an error occurs
+communicating with Pwned Passwords has been changed from log level
+:data:`logging.WARNING` to :data:`logging.ERROR`.
+
+
+Direct API changes
+~~~~~~~~~~~~~~~~~~
+
+In 1.x, direct access to the Pwned Passwords API was available through the
+function ``pwned_passwords_django.api.pwned_password``, which took a password
+and returned either the count of times it had been breached, or :data:`None` in
+the event of an error.
+
+In 2.0, this has been replaced by two functions: the synchronous
+:func:`~pwned_passwords_django.api.check_password`, and the asynchronous
+:func:`~pwned_passwords_django.api.check_password_async`. Both of these
+functions take a password and return a count of times it has been breached;
+rather than returning :data:`None` or some other sentinel value, they raise
+exceptions in the event of errors communicating with Pwned Passwords. Your code
+which calls these functions is responsible for catching and handling exceptions
+raised from them; see :ref:`the new error-handling documentation <exceptions>`
+for details.
+
+A new :class:`~pwned_passwords_django.api.PwnedPasswords` API client class is
+also provided; the above-mentioned functions are aliases to methods of a
+default instance of this client class. See :ref:`the direct API access
+documentation <api>` for details of how it may be used and customized.
+
+
+Error handling changes
+~~~~~~~~~~~~~~~~~~~~~~
+
+In 1.x, errors were caught and handled in a variety of different ways by
+different parts of pwned-passwords-django. In 2.0, error handling is much more
+unified:
+
+* All external exceptions raised when communicating with Pwned Passwords are
+  caught and wrapped in
+  :exc:`~pwned_passwords_django.exceptions.PwnedPasswordsError`, meaning that
+  code which works with pwned-passwords-django should only need to catch and be
+  able to understand that one exception class.
+
+* All exception paths also consistently log messages of log level
+  :data:`logging.ERROR`.
+
+* As noted above, the validator and middleware error handling has been made
+  consistent: both will fall back to Django's ``CommonPasswordValidator`` in
+  the event of errors communicating with Pwned Passwords.
+
+Additionally, as a side effect of better/more unified error handling, code
+paths in pwned-passwords-django that handle passwords or likely passwords now
+have had Django's :func:`~django.views.decorators.debug.sensitive_variables`
+decorator applied to help prevent accidental appearance of raw password values
+in error reports, and the explicit error-handling code in
+pwned-passwords-django deliberately minimizes the amount of information
+reported for unknown/unanticipated exceptions, to further reduce the risk of
+this issue.
+
+See :ref:`the error-handling documentation <error-handling>` for details.
+
+
+Dependency changes
+~~~~~~~~~~~~~~~~~~
+
+In 1.x, the underlying HTTP client library for communicating with Pwned
+Passwords was `requests <https://requests.readthedocs.io/en/latest/>`_. In 2.0,
+it is `HTTPX <https://www.python-httpx.org>`_, which is broadly API-compatible
+but provides several additional features (such as async support). The new
+:class:`~pwned_passwords_django.api.PwnedPasswords` API client class can use an
+instance of any object API-compatible with ``httpx.Client`` as its synchronous
+client, and any object API-compatible with ``httpx.AsyncClient`` as its
+asynchronous client. This means that, for example, a ``requests.Session`` could
+still be passed in to a custom
+:class:`~pwned_passwords_django.api.PwnedPasswords` instance and used as the
+synchronous HTTP client, if desired (though see the note in the documentation
+of :class:`~pwned_passwords_django.api.PwnedPasswords` regarding error handling
+with alternate HTTP clients).
+
+In 1.x, the test suite and continuous integration of pwned-passwords-django
+were orchestrated using the ``tox`` automation tool. In 2.0, they are
+orchestrated using `nox <https://nox.thea.codes/en/stable/>`_ instead.
+
+
+Other changes
+~~~~~~~~~~~~~
+
+
+
+
 1.6.1 -- released 2022-12-26
 ----------------------------
 
@@ -164,5 +333,3 @@ N/A
 --------------------------
 
 Initial public release.
-
-
