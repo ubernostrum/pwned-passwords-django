@@ -69,7 +69,6 @@ class PwnedPasswords:
         f"| httpx/{httpx.__version__})"
     )
 
-    # pylint: disable=redefined-outer-name
     def __init__(
         self,
         client: typing.Optional[httpx.Client] = None,
@@ -277,6 +276,6 @@ class PwnedPasswords:
             ) from exc
 
 
-client = PwnedPasswords()
-check_password = client.check_password
-check_password_async = client.check_password_async
+default_client = PwnedPasswords()
+check_password = default_client.check_password
+check_password_async = default_client.check_password_async
