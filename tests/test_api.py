@@ -26,7 +26,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
 
         """
         with self.assertRaises(TypeError):
-            api.client.check_password(self.sample_password.encode("utf-8"))
+            api.check_password(self.sample_password.encode("utf-8"))
 
     async def test_unicode_requirement_async(self):
         """
@@ -34,7 +34,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
 
         """
         with self.assertRaises(TypeError):
-            await api.client.check_password_async(self.sample_password.encode("utf-8"))
+            await api.check_password_async(self.sample_password.encode("utf-8"))
 
     def test_compromised(self):
         """
