@@ -105,7 +105,7 @@ class PwnedPasswords:
         password_hash = (
             hashlib.new("sha1", password.encode("utf-8"), usedforsecurity=False)
             .hexdigest()
-            .upper()
+            .upper()  # Pwned Passwords wants all hashes to be uppercase.
         )
         return password_hash[:5], password_hash[5:]
 
