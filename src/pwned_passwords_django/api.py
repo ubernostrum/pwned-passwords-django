@@ -88,6 +88,20 @@ class PwnedPasswords:
         used by the Pwned Passwords API.
 
         """
+        # Python's documentation states that the named constructors for particular
+        # hashes are to be preferred due to better peformance, which here would mean
+        # calling hashlib.sha1() instead of hashlib.new("sha1").
+        #
+        # However, security linters and some restricted runtime environments do not
+        # allow access to SHA-1 unless a flag is passed to indicate it is not being used
+        # for cryptographic purposes. This is done by passing usedforsecurity=False to
+        # the constructor, but that argument was not added in the named constructors
+        # until Python 3.9, while we currently support all the way back to 3.7. Luckily
+        # hashlib.new() in Python 3.7 and 3.8 accepts arbitrary arguments without
+        # complaint. So as a slightly hacky workaround we use new(), passing the
+        # usedforsecurity=False argument, and rely on it being ignored for Python
+        # 3.7/3.8, and interpreted as intended on Python 3.9+. Once support for Python
+        # 3.7 and 3.8 ends, this can be updated to call hashlib.sha1() directly.
         password_hash = (
             hashlib.new("sha1", password.encode("utf-8"), usedforsecurity=False)
             .hexdigest()
