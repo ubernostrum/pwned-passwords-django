@@ -216,7 +216,7 @@ class PwnedPasswords:
                 f"Error attempting to check password: {exc.__class__.__name__}"
             )
             raise exceptions.PwnedPasswordsError(
-                message="Error attepting to check password.",
+                message="Error attempting to check password.",
                 code=exceptions.ErrorCode.UNKNOWN_ERROR,
                 params={
                     "exception_class": exc.__class__.__name__,
@@ -282,7 +282,7 @@ class PwnedPasswords:
                 f"Error attempting to check password: {exc.__class__.__name__}"
             )
             raise exceptions.PwnedPasswordsError(
-                message="Error attepting to check password.",
+                message="Error attempting to check password.",
                 code=exceptions.ErrorCode.UNKNOWN_ERROR,
                 params={
                     "exception_class": exc.__class__.__name__,
