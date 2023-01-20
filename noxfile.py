@@ -91,6 +91,7 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
         "--source",
         PACKAGE_NAME,
         "runtests.py",
+        env={"DJANGO_SETTINGS_MODULE": "tests.settings"},
     )
     session.run(
         f"{session.bin}/python{session.python}",

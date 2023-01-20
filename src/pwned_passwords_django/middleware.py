@@ -93,20 +93,20 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
 
     To enable the middleware, add
     ``"pwned_passwords_django.middleware.pwned_passwords_middleware"`` to your
-    :data:`~django.conf.settings.MIDDLEWARE` setting. This will add a new attribute --
-    ``pwned_passwords`` -- to each :class:`~django.http.HttpRequest` object. The
-    ``request.pwned_passwords`` attribute will be a :class:`list` of :class:`str`.
+    :setting:`MIDDLEWARE` setting. This will add a new attribute -- ``pwned_passwords``
+    -- to each :class:`~django.http.HttpRequest` object. The ``request.pwned_passwords``
+    attribute will be a :class:`list` of :class:`str`.
 
     .. warning:: **Middleware order**
 
-       The order of middleware classes in the Django
-       :data:`~django.conf.settings.MIDDLEWARE` setting can be sensitive. In particular,
-       any middlewares which affect file upload handlers *must* be listed above
-       middlewares which inspect :attr:`~django.http.HttpRequest.POST`. Since this
-       middleware has to inspect :attr:`~django.http.HttpRequest.POST` for likely
-       passwords, it must be listed after any middlewares which might change upload
-       handlers. If you're unsure what this means, just put this middleware at the
-       bottom of your :data:`~django.conf.settings.MIDDLEWARE` list.
+       The order of middleware classes in the Django :setting:`MIDDLEWARE` setting can
+       be sensitive. In particular, any middlewares which affect file upload handlers
+       *must* be listed above middlewares which inspect
+       :attr:`~django.http.HttpRequest.POST`. Since this middleware has to inspect
+       :attr:`~django.http.HttpRequest.POST` for likely passwords, it must be listed
+       after any middlewares which might change upload handlers. If you're unsure what
+       this means, just put this middleware at the bottom of your :setting:`MIDDLEWARE`
+       list.
 
     The ``request.pwned_passwords`` list will be *empty* if any of the following is
     true:

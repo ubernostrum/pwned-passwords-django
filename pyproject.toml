@@ -48,6 +48,7 @@ docs = [
   "sphinx-copybutton",
   "sphinx-inline-tabs",
   "sphinx-notfound-page",
+  "sphinxcontrib-django",
   "sphinxext-opengraph",
 ]
 tests = [

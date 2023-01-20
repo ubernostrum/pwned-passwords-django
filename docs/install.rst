@@ -72,7 +72,7 @@ validator <validator>` and :ref:`the automatic password-checking middleware
 <middleware>`. To do this, make the following changes to your Django settings.
 
 First, add :ref:`the validator <validator>` to your
-:data:`~django.conf.settings.AUTH_PASSWORD_VALIDATORS` list:
+:setting:`AUTH_PASSWORD_VALIDATORS` list:
 
 .. code-block:: python
 
@@ -83,8 +83,8 @@ First, add :ref:`the validator <validator>` to your
        },
    ]
 
-Then, add :ref:`the middleware <middleware>` to your
-:data:`~django.conf.settings.MIDDLEWARE` list:
+Then, add :ref:`the middleware <middleware>` to your :setting:`MIDDLEWARE`
+list:
 
 .. code-block:: python
 

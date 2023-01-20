@@ -4,19 +4,15 @@ Configuration file for the Sphinx documentation builder:
 https://www.sphinx-doc.org/
 
 """
+import os
 import sys
-
-import django
-from django.conf import settings
-
-settings.configure()
-django.setup()
 
 extensions = [
     "notfound.extension",
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
+    "sphinxcontrib_django",
     "sphinxext.opengraph",
     "sphinx_copybutton",
     "sphinx_inline_tabs",
@@ -64,3 +60,7 @@ spelling_word_list_filename = "spelling_wordlist.txt"
 # OGP metadata configuration.
 ogp_enable_meta_description = True
 ogp_site_url = "https://pwned-passwords-django.readthedocs.io/"
+
+# Django settings for sphinxcontrib-django.
+sys.path.insert(0, os.path.abspath("."))
+django_settings = "docs_settings"

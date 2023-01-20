@@ -13,8 +13,8 @@ Using the password validator
    <https://docs.djangoproject.com/en/stable/topics/auth/passwords/#module-django.contrib.auth.password_validation>`_
    with several built-in validators, and pwned-passwords-django provides an
    additional validator which checks the Pwned Passwords database. To enable
-   it, set your :data:`~django.conf.settings.AUTH_PASSWORD_VALIDATORS` setting
-   to include the new validator, like so:
+   it, set your :setting:`AUTH_PASSWORD_VALIDATORS` setting to include the new
+   validator, like so:
 
    .. code-block:: python
 
