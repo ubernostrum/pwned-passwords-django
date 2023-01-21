@@ -79,7 +79,7 @@ work manually with passwords, it is recommended that you do the following:
 1. Prior to manually setting or changing a password, call
    :func:`django.contrib.auth.password_validation.validate_password` on the
    proposed new password. This will manually run all password validators
-   configured in your ``AUTH_PASSWORD_VALIDATORS`` setting. You must be
+   configured in your :setting:`AUTH_PASSWORD_VALIDATORS` setting. You must be
    prepared to catch :exc:`~django.core.exceptions.ValidationError` when doing
    so.
 
