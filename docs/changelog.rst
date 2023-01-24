@@ -60,8 +60,8 @@ In 1.x, the middleware was a class --
 ``pwned_passwords_django.middleware.PwnedPasswordsMiddleware`` -- while in 2.0
 it is a factory function,
 :func:`pwned_passwords_django.middleware.pwned_passwords_middleware`. If you
-were using the middleware, you will need to update your
-:data:`~django.conf.settings.MIDDLEWARE` setting.
+were using the middleware, you will need to update your :setting:`MIDDLEWARE`
+setting.
 
 The middleware in 2.0 supports both synchronous and asynchronous usage, and
 will automatically select the correct sync or async code path on a per-request
