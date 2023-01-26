@@ -21,4 +21,4 @@ LOGGING = {
         "pwned_passwords_django.api": {"handlers": ["null"], "propagate": False}
     },
 }
-SECRET_KEY = (get_random_string(12),)
+SECRET_KEY = get_random_string(12)
