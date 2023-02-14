@@ -85,7 +85,6 @@ def _scan_payload_sync(request: http.HttpRequest) -> typing.List[str]:
 
 @sync_and_async_middleware
 def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable:
-
     """
     Factory function returning a middleware -- sync or async as necessary -- which
     checks ``POST`` submissions that potentially contain passwords against the Pwned
