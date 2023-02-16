@@ -166,15 +166,9 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
     to look for. See :ref:`the settings documentation <settings>` for details.
 
     """
-    # The get_response() callable is deliberately opaque to us. We don't know if it's
-    # the next middleware in the chain, or the actual view the request resolved to
-    # (which can happen if we're the last middleware in the chain). We just know that we
-    # can call it to get a response that we can then forward back through the middleware
-    # chain.
-    #
-    # But we do need to know whether or not the request we're handling is async: if it
-    # is, we should return an async middleware that uses an async HTTP client to talk to
-    # Pwned Passwords. We determine that by checking whether get_response() is a
+    # We need to know whether or not the request we're handling is async: if it is, we
+    # should return an async middleware that uses an async HTTP client to talk to Pwned
+    # Passwords. We determine that by checking whether the get_response() callable is a
     # coroutine -- if so, we're on the async path.
     if asyncio.iscoroutinefunction(get_response):
 

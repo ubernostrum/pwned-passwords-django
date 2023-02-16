@@ -24,7 +24,7 @@ class PwnedPasswords:
     A client for interacting with the Pwned Passwords API.
 
     There are two useful public methods here: ``check_password()`` and
-    ``check_password_async()``, which are identical to and called by
+    ``check_password_async()``, which are identical to and called by the
     :func:`~pwned_passwords_django.api.check_password` and
     :func:`~pwned_passwords_django.api.check_password_async` functions exposed at the
     module level.
