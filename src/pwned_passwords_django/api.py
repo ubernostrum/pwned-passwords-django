@@ -73,7 +73,7 @@ class PwnedPasswords:
         self,
         client: typing.Optional[httpx.Client] = None,
         async_client: typing.Optional[httpx.AsyncClient] = None,
-    ):
+    ) -> None:
         settings_dict = getattr(settings, "PWNED_PASSWORDS", {})
         self.request_timeout = httpx.Timeout(
             settings_dict.get("API_TIMEOUT", DEFAULT_REQUEST_TIMEOUT)
