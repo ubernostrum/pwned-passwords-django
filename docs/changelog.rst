@@ -7,7 +7,7 @@ Changelog
 This document lists changes between released versions of
 pwned-passwords-django.
 
-2.0 -- released 2023-??-??
+2.0 -- released 2023-03-26
 --------------------------
 
 Major version bump. Much of the codebase has been rewritten and improved.
