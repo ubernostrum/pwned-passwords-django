@@ -40,7 +40,7 @@ class PwnedPasswordsValidator:
         error_message: typing.Optional[PluralMessage] = None,
         help_message: typing.Optional[Message] = None,
         api_client: api.PwnedPasswords = api.default_client,
-    ):
+    ) -> None:
         self.fallback_validator = CommonPasswordValidator()
         self.help_message = help_message or self.fallback_validator.get_help_text()
         error_message = error_message or self.default_error_message

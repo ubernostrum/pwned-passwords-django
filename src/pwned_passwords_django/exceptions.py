@@ -23,7 +23,7 @@ class PwnedPasswordsError(Exception):
 
     """
 
-    def __init__(self, message: str, code: ErrorCode, params: dict):
+    def __init__(self, message: str, code: ErrorCode, params: dict) -> None:
         super().__init__(message, code, params)
         self.message = message
         self.code = code
