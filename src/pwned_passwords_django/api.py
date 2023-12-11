@@ -81,6 +81,7 @@ class PwnedPasswords:
         self.add_padding = settings_dict.get("ADD_PADDING", True)
         self.client = client or httpx.Client()
         self.async_client = async_client or httpx.AsyncClient()
+        self.api_endpoint = settings_dict.get("API_ENDPOINT", self.api_endpoint)
 
     def _prepare_password(self, password: str) -> typing.Tuple[str, str]:
         """
