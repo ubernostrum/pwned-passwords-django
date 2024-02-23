@@ -2,6 +2,7 @@
 Test the Pwned Passwwords validator.
 
 """
+
 import httpx
 from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError

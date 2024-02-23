@@ -1,15 +1,17 @@
 """
 Automated testing via nox (https://nox.thea.codes/).
 
-Combined with a working installation of nox (``pip install nox``), this file specifies a
-matrix of tests, linters, and other quality checks which can be run individually or as a
-suite.
+Combined with a working installation of nox (``python -m pip install nox``), this file
+specifies a matrix of tests, linters, and other quality checks which can be run
+individually or as a suite.
 
-To see available tasks, run ``nox --list``. To run all available tasks -- which requires
-a functioning installation of at least one supported Python version -- run ``nox``. To
-run a single task, use ``nox -s`` with the name of that task.
+To see available tasks, run ``python -m nox --list``. To run all available tasks --
+which requires a functioning installation of at least one supported Python version --
+run ``python -m nox``. To run a single task, use ``python -m nox -s`` with the name of
+that task.
 
 """
+
 import os
 import pathlib
 import shutil
@@ -54,14 +56,18 @@ def clean(paths: typing.Iterable[os.PathLike] = ARTIFACT_PATHS) -> None:
 @nox.parametrize(
     "python,django",
     [
-        # Python/Django testing matrix. Tests Django 3.2, 4.0, 4.1, on Python 3.7
-        # through 3.11, skipping unsupported combinations: Django 3.2 and 4.0 do not
-        # support Python 3.11, and Django 4.0 and 4.1 do not support Python 3.7.
+        # Python/Django testing matrix. Tests Django 3.2, 4.2, 5.0, on Python 3.8
+        # through 3.11, skipping unsupported combinations.
         (python, django)
-        for python in ["3.7", "3.8", "3.9", "3.10", "3.11"]
-        for django in ["3.2", "4.0", "4.1"]
+        for python in ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        for django in ["3.2", "4.2", "5.0"]
         if (python, django)
-        not in [("3.7", "4.0"), ("3.7", "4.1"), ("3.11", "3.2"), ("3.11", "4.0")]
+        not in [
+            ("3.11", "3.2"),
+            ("3.12", "3.2"),
+            ("3.8", "5.0"),
+            ("3.9", "5.0"),
+        ]
     ],
 )
 def tests_with_coverage(session: nox.Session, django: str) -> None:
@@ -193,7 +199,7 @@ def format_black(session: nox.Session) -> None:
     Check code formatting with Black.
 
     """
-    session.install("black")
+    session.install("black>=24.0,<25.0")
     session.run(f"{session.bin}/python{session.python}", "-Im", "black", "--version")
     session.run(
         f"{session.bin}/python{session.python}",

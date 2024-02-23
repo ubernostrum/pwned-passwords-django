@@ -3,6 +3,7 @@ A Django password validator using the Pwned Passwords API to check for
 compromised passwords.
 
 """
+
 import logging
 import typing
 

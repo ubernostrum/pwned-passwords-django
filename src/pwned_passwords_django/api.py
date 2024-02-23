@@ -3,6 +3,7 @@ Direct access to the Pwned Passwords API for checking whether a
 password is compromised.
 
 """
+
 import hashlib
 import logging
 import sys

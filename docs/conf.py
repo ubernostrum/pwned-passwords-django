@@ -4,6 +4,7 @@ Configuration file for the Sphinx documentation builder:
 https://www.sphinx-doc.org/
 
 """
+
 import os
 import sys
 
@@ -22,8 +23,8 @@ source_suffix = ".rst"
 master_doc = "index"
 project = "pwned-passwords-django"
 copyright = "2018, James Bennett"
-version = "2.0"
-release = "2.0"
+version = "2.1a1"
+release = "2.1a1"
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
 htmlhelp_basename = "pwned-passwords-djangodoc"

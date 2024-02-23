@@ -2,6 +2,7 @@
 Exception classes used in pwned-passwords-django.
 
 """
+
 import enum
 
 

@@ -3,6 +3,7 @@ A Django middleware which checks all incoming POST requests for
 potentially-compromised passwords using the Pwned Passwords API.
 
 """
+
 import asyncio
 import logging
 import re

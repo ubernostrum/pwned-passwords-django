@@ -11,31 +11,31 @@ classifiers = [
   "Environment :: Web Environment",
   "Framework :: Django",
   "Framework :: Django :: 3.2",
-  "Framework :: Django :: 4.0",
-  "Framework :: Django :: 4.1",
+  "Framework :: Django :: 4.2",
+  "Framework :: Django :: 5.0",
   "Intended Audience :: Developers",
   "License :: OSI Approved :: BSD License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Topic :: Utilities",
 ]
 name = "pwned-passwords-django"
 description = "A Pwned Passwords implementation for Django sites."
 dependencies = [
-  "Django>=3.2",
+  "Django>=3.2,!=4.0.*,!=4.1.*",
   "httpx"
 ]
 dynamic = ["version"]
 keywords = ["django", "security", "passwords", "auth", "authentication"]
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 
 [project.urls]
 documentation = "https://pwned-passwords-django.readthedocs.io/"
@@ -53,7 +53,6 @@ docs = [
 ]
 tests = [
   "coverage",
-  "mock; python_full_version < '3.8.0'",
   "tomli; python_full_version < '3.11.0a7'",
 ]
 
@@ -61,7 +60,7 @@ tests = [
 skips = ["B101"]
 
 [tool.black]
-target-version = ["py37"]
+target-version = ["py38", "py39", "py310", "py311", "py312"]
 
 [tool.coverage.report]
 fail_under = 100

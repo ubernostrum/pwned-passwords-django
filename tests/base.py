@@ -2,6 +2,7 @@
 Base test-case class for pwned-passwords-django.
 
 """
+
 import typing
 from unittest import mock
 

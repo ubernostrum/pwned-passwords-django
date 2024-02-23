@@ -4,10 +4,10 @@
 Installation and recommended configuration
 ==========================================
 
-pwned-passwords-django |release| supports Django 3.2, 4.0, and 4.1 on Python
-3.7 (Django 3.2 only), 3.8, 3.9, 3.10, and 3.11 (Django 4.1 only). Note that
-Django 3.2's support for Python 3.10 was added in Django 3.2.9, so you may
-experience issues with Python 3.10 and earlier Django 3.2 versions.
+pwned-passwords-django |release| supports Django 3.2, 4.1, and 4.2 on Python
+3.8, 3.9, 3.10, and 3.11 (Django 4.1 and 4.2 only). Note that Django 3.2's
+support for Python 3.10 was added in Django 3.2.9, so you may experience issues
+with Python 3.10 and earlier Django 3.2 versions.
 
 .. note:: **Django 3.2 and supported Python versions**
 
@@ -16,9 +16,9 @@ experience issues with Python 3.10 and earlier Django 3.2 versions.
    release. You may encounter problems if you try to use Django 3.2.8 or
    earlier with Python 3.10.
 
-   Also, although Django 3.2 continues to officially support Python 3.6,
+   Also, although Django 3.2 officially supported some older Python versions,
    pwned-passwords-django |release| does not, because the Python core team's
-   support window for Python 3.6 ended in December 2021.
+   support window for those versions has ended..
 
 
 Installing pwned-passwords-django
