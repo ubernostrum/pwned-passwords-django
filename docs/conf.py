@@ -5,6 +5,8 @@ https://www.sphinx-doc.org/
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 import os
 import sys
 

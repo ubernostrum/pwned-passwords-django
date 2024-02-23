@@ -3,6 +3,8 @@ Tests for direct interaction with the Pwned Passwords API.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 from unittest import mock
 
 import httpx

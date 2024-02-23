@@ -3,6 +3,8 @@ Tests for pwned-passwords-django's middleware.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 from unittest import mock
 
 from django.test import override_settings

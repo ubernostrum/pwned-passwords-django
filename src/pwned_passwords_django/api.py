@@ -4,6 +4,8 @@ password is compromised.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 import hashlib
 import logging
 import sys

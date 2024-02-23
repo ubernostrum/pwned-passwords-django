@@ -3,6 +3,8 @@ Test the Pwned Passwwords validator.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 import httpx
 from django.contrib.auth.password_validation import CommonPasswordValidator
 from django.core.exceptions import ValidationError

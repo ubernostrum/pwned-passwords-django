@@ -3,6 +3,8 @@ Exception classes used in pwned-passwords-django.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 import enum
 
 

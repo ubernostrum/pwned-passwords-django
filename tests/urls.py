@@ -3,6 +3,8 @@ URL mapping used during testing.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 from django.http import HttpResponse
 from django.urls import path
 

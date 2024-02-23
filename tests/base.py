@@ -3,6 +3,8 @@ Base test-case class for pwned-passwords-django.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 import typing
 from unittest import mock
 

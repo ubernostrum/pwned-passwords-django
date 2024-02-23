@@ -4,6 +4,8 @@ potentially-compromised passwords using the Pwned Passwords API.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 import asyncio
 import logging
 import re

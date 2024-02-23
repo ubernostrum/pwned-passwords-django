@@ -3,6 +3,8 @@ Minimal Django settings file for test runs.
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 from django.utils.crypto import get_random_string
 
 INSTALLED_APPS = ["pwned_passwords_django"]
