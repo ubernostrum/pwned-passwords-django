@@ -28,7 +28,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
 
         """
         validator = PwnedPasswordsValidator(
-            api_client=api.PwnedPasswords(client=self.http_client())
+            api_client=api.PwnedPasswords(client=self.count_sync_client(count=1))
         )
         with self.assertRaisesMessage(
             ValidationError, str(validator.error_message["singular"])
@@ -42,7 +42,9 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         """
         suffix = self.sample_password_suffix.replace("A", "3")
         validator = PwnedPasswordsValidator(
-            api_client=api.PwnedPasswords(client=self.http_client(suffix=suffix))
+            api_client=api.PwnedPasswords(
+                client=self.count_sync_client(count=1, suffix=suffix)
+            )
         )
         validator.validate(self.sample_password)
 
@@ -62,7 +64,7 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
         error_message = "Pwned"
         validator = PwnedPasswordsValidator(
             error_message=error_message,
-            api_client=api.PwnedPasswords(client=self.http_client()),
+            api_client=api.PwnedPasswords(client=self.count_sync_client(count=1)),
         )
         with self.assertRaisesMessage(ValidationError, "Pwned"):
             validator.validate(self.sample_password)
@@ -89,7 +91,9 @@ class PwnedPasswordsValidatorsTests(PwnedPasswordsTests):
             )
             validator = PwnedPasswordsValidator(
                 error_message=error_message,
-                api_client=api.PwnedPasswords(client=self.http_client(count=count)),
+                api_client=api.PwnedPasswords(
+                    client=self.count_sync_client(count=count)
+                ),
             )
             with self.assertRaisesMessage(ValidationError, expected_message):
                 validator.validate(self.sample_password)

@@ -44,7 +44,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
 
         """
         for count in range(1, 10):
-            api_client = api.PwnedPasswords(client=self.http_client(count=count))
+            api_client = api.PwnedPasswords(client=self.count_sync_client(count=count))
             result = api_client.check_password(self.sample_password)
             assert count == result
 
@@ -55,7 +55,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         """
         for count in range(1, 10):
             api_client = api.PwnedPasswords(
-                async_client=self.http_client(count=count, is_async=True)
+                async_client=self.count_async_client(count=count)
             )
             result = await api_client.check_password_async(self.sample_password)
             assert count == result
@@ -70,7 +70,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
             self.sample_password_suffix.replace("A", "3"),
         ):
             api_client = api.PwnedPasswords(
-                client=self.http_client(suffix=suffix, count=0)
+                client=self.count_sync_client(suffix=suffix, count=0)
             )
             result = api_client.check_password(self.sample_password)
             assert 0 == result
@@ -85,7 +85,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
             self.sample_password_suffix.replace("A", "3"),
         ):
             api_client = api.PwnedPasswords(
-                async_client=self.http_client(suffix=suffix, count=0, is_async=True)
+                async_client=self.count_async_client(suffix=suffix, count=0)
             )
             result = await api_client.check_password_async(self.sample_password)
             assert 0 == result
@@ -96,7 +96,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
 
         """
         api_client = api.PwnedPasswords(
-            client=self.custom_response_client(response_text="")
+            client=self.custom_response_sync_client(response_text="")
         )
         result = api_client.check_password(self.sample_password)
         assert 0 == result
@@ -107,7 +107,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
 
         """
         api_client = api.PwnedPasswords(
-            async_client=self.custom_response_client(response_text="", is_async=True)
+            async_client=self.custom_response_async_client(response_text="")
         )
         result = await api_client.check_password_async(self.sample_password)
         assert 0 == result
@@ -120,7 +120,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
 
         """
         api_client = api.PwnedPasswords(
-            client=self.custom_response_client(
+            client=self.custom_response_sync_client(
                 response_text=f"{self.sample_password_suffix}:1,234,567"
             )
         )
@@ -135,8 +135,8 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
 
         """
         api_client = api.PwnedPasswords(
-            async_client=self.custom_response_client(
-                response_text=f"{self.sample_password_suffix}:1,234,567", is_async=True
+            async_client=self.custom_response_async_client(
+                response_text=f"{self.sample_password_suffix}:1,234,567"
             )
         )
         result = await api_client.check_password_async(self.sample_password)
@@ -148,7 +148,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         The custom request timeout setting is honored.
 
         """
-        client = self.http_client()
+        client = self.mock_client()
         api_client = api.PwnedPasswords(client=client)
         api_client.check_password(self.sample_password)
         client.get.assert_called_with(
@@ -161,7 +161,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         The custom request timeout setting is honored in the async code path.
 
         """
-        client = self.http_client(is_async=True)
+        client = self.mock_client(is_async=True)
         api_client = api.PwnedPasswords(async_client=client)
         await api_client.check_password_async(self.sample_password)
         client.get.assert_called_with(
@@ -212,7 +212,9 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
             code for code in httpx.codes if httpx.codes.is_error(code)
         ]:
             api_client = api.PwnedPasswords(
-                client=self.http_client(status_code=error_status)
+                client=self.custom_response_sync_client(
+                    status_code=error_status, response_text=""
+                )
             )
             try:
                 api_client.check_password(self.sample_password)
@@ -232,7 +234,9 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
             code for code in httpx.codes if httpx.codes.is_error(code)
         ]:
             api_client = api.PwnedPasswords(
-                async_client=self.http_client(status_code=error_status, is_async=True)
+                async_client=self.custom_response_async_client(
+                    status_code=error_status, response_text=""
+                )
             )
             try:
                 await api_client.check_password_async(self.sample_password)
@@ -323,7 +327,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         Passwords.
 
         """
-        client = self.http_client()
+        client = self.mock_client()
         api_client = api.PwnedPasswords(client=client)
         api_client.check_password(self.sample_password)
         client.get.assert_called_with(
@@ -338,7 +342,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         Passwords.
 
         """
-        client = self.http_client(is_async=True)
+        client = self.mock_client(is_async=True)
         api_client = api.PwnedPasswords(async_client=client)
         await api_client.check_password_async(self.sample_password)
         client.get.assert_called_with(
@@ -354,7 +358,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         ``Add-Padding`` header is not enabled on requests to Pwned Passwords.
 
         """
-        client = self.http_client()
+        client = self.mock_client()
         api_client = api.PwnedPasswords(client=client)
         api_client.check_password(self.sample_password)
         client.get.assert_called_with(
@@ -368,7 +372,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         ``Add-Padding`` header is not enabled on async requests to Pwned Passwords.
 
         """
-        client = self.http_client(is_async=True)
+        client = self.mock_client(is_async=True)
         api_client = api.PwnedPasswords(async_client=client)
         await api_client.check_password_async(self.sample_password)
         client.get.assert_called_with(

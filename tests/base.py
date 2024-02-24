@@ -5,7 +5,8 @@ Base test-case class for pwned-passwords-django.
 
 # SPDX-License-Identifier: BSD-3-Clause
 
-import typing
+from http import HTTPStatus
+from typing import Awaitable, Callable, Optional, Tuple
 from unittest import mock
 
 try:
@@ -29,11 +30,90 @@ class PwnedPasswordsTests(TestCase):
     sample_password_prefix = "4F571"  # nosec: B105
     sample_password_suffix = "81DCAADE980555F2CE6755CA425F00658BE"  # nosec: B105
 
+    def custom_response_transport(
+        self, response_text: str, status_code: HTTPStatus = HTTPStatus.OK
+    ) -> httpx.MockTransport:
+        """
+        Return an ``http`` transport that produces a particular response, for use in
+        testing.
+
+        The transport will return a response consisting of:
+
+        * ``status_code`` (default 200)
+        * ``reponse_text`` as the response content
+
+        """
+
+        def _handler(request: httpx.Request) -> httpx.Response:
+            """
+            Mock transport handler which returns a controlled response.
+
+            """
+            return httpx.Response(status_code=status_code, content=response_text)
+
+        return httpx.MockTransport(_handler)
+
+    def custom_response_sync_client(
+        self, response_text: str, status_code: HTTPStatus = HTTPStatus.OK
+    ) -> httpx.Client:
+        """
+        Return a synchronous HTTP client that responds with the given text and status
+        code.
+
+        """
+        return httpx.Client(
+            transport=self.custom_response_transport(response_text, status_code)
+        )
+
+    def custom_response_async_client(
+        self, response_text: str, status_code: HTTPStatus = HTTPStatus.OK
+    ) -> httpx.AsyncClient:
+        """
+        Return an asynchronous HTTP client that responds with the given text and
+        status code.
+
+        """
+        return httpx.AsyncClient(
+            transport=self.custom_response_transport(response_text, status_code)
+        )
+
+    def count_sync_client(
+        self,
+        count: int,
+        suffix: Optional[str] = None,
+        status_code: HTTPStatus = HTTPStatus.OK,
+    ) -> httpx.Client:
+        """
+        Return a synchronous HTTP client that responds with a breach count of
+        ``count``.
+
+        """
+        if suffix is None:
+            suffix = self.sample_password_suffix
+        return httpx.Client(
+            transport=self.custom_response_transport(f"{suffix}:{count}", status_code)
+        )
+
+    def count_async_client(
+        self,
+        count: int,
+        suffix: Optional[str] = None,
+        status_code: HTTPStatus = HTTPStatus.OK,
+    ) -> httpx.AsyncClient:
+        """
+        Return an asynchronous HTTP client that responds with a breach count of
+        ``count``.
+
+        """
+        if suffix is None:
+            suffix = self.sample_password_suffix
+        return httpx.AsyncClient(
+            transport=self.custom_response_transport(f"{suffix}:{count}", status_code)
+        )
+
     def api_mocks(
         self, count: int = 10
-    ) -> typing.Tuple[
-        typing.Callable[[str], int], typing.Callable[[str], typing.Awaitable[int]]
-    ]:
+    ) -> Tuple[Callable[[str], int], Callable[[str], Awaitable[int]]]:
         """
         Return test mocks for ``pwned_passwords_django.api.check_password()`` and
         ``pwned_passwords_django.api.check_password_async()`` which will return
@@ -46,10 +126,8 @@ class PwnedPasswordsTests(TestCase):
         self,
         message: str = "Error",
         code: exceptions.ErrorCode = exceptions.ErrorCode.UNKNOWN_ERROR,
-        params: typing.Optional[dict] = None,
-    ) -> typing.Tuple[
-        typing.Callable[[str], int], typing.Callable[[str], typing.Awaitable[int]]
-    ]:
+        params: Optional[dict] = None,
+    ) -> Tuple[Callable[[str], int], Callable[[str], Awaitable[int]]]:
         """
         Return test mocks for ``pwned_passwords_django.api.check_password()`` and
         ``pwned_passwords_django.api.check_password_async()`` which will raise a
@@ -70,9 +148,9 @@ class PwnedPasswordsTests(TestCase):
         )
         return sync_mock, async_mock
 
-    def http_client(
+    def mock_client(
         self,
-        suffix: typing.Optional[str] = None,
+        suffix: Optional[str] = None,
         count: int = 10,
         status_code: int = 200,
         is_async: bool = False,
@@ -104,35 +182,10 @@ class PwnedPasswordsTests(TestCase):
         spec_class = httpx.Client if not is_async else httpx.AsyncClient
         return mock_class(spec_set=spec_class, get=mock_class(return_value=response))
 
-    def custom_response_client(
-        self, response_text: str, is_async: bool = False
-    ) -> mock.Mock:
-        """
-        Return an HTTP client that produces a fixed response, for use in testing.
-
-        The client's ``get()`` method will always return a response with a status of 200
-        and response body of ``response_text``.
-
-        Pass ``is_async=True`` to return an async client; otherwise, the client will be
-        synchronous.
-
-        """
-        response = httpx.Response(
-            request=httpx.Request(
-                "GET",
-                f"{api.PwnedPasswords.api_endpoint}/{self.sample_password_prefix}",
-            ),
-            status_code=200,
-            content=response_text,
-        )
-        mock_class = mock.Mock if not is_async else AsyncMock
-        spec_class = httpx.Client if not is_async else httpx.AsyncClient
-        return mock_class(spec_set=spec_class, get=mock_class(return_value=response))
-
     def exception_client(
         self,
         exception_class: Exception,
-        message: typing.Optional[str] = None,
+        message: Optional[str] = None,
         is_async: bool = False,
     ) -> mock.Mock:
         """
