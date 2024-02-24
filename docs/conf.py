@@ -9,6 +9,7 @@ https://www.sphinx-doc.org/
 
 import os
 import sys
+from importlib.metadata import version as get_version
 
 extensions = [
     "notfound.extension",
@@ -24,9 +25,9 @@ templates_path = ["_templates"]
 source_suffix = ".rst"
 master_doc = "index"
 project = "pwned-passwords-django"
-copyright = "2018, James Bennett"
-version = "2.1a1"
-release = "2.1a1"
+copyright = "James Bennett and contributors"
+version = get_version("pwned-passwords-django")
+release = version
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
 htmlhelp_basename = "pwned-passwords-djangodoc"
