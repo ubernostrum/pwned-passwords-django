@@ -44,7 +44,9 @@ class PwnedPasswordsTests(TestCase):
 
         """
 
-        def _handler(request: httpx.Request) -> httpx.Response:
+        def _handler(
+            request: httpx.Request,  # pylint: disable=unused-argument
+        ) -> httpx.Response:
             """
             Mock transport handler which returns a controlled response.
 
