@@ -7,6 +7,17 @@ Changelog
 This document lists changes between released versions of
 pwned-passwords-django.
 
+2.1 -- released 2024-02-??
+--------------------------
+
+No new features or bug fixes. Supported Django versions are now 3.2, 4.2, and
+5.0; supported Python versions are 3.8, 3.9, 3.10, 3.11, and 3.12.
+
+Source code formatting was updated to Black 2024 style.
+
+Some internal test code was rewritten to use HTTPX `MockTransport` objects.
+
+
 2.0 -- released 2023-03-26
 --------------------------
 
@@ -168,12 +179,6 @@ with alternate HTTP clients).
 In 1.x, the test suite and continuous integration of pwned-passwords-django
 were orchestrated using the ``tox`` automation tool. In 2.0, they are
 orchestrated using `nox <https://nox.thea.codes/en/stable/>`_ instead.
-
-
-Other changes
-~~~~~~~~~~~~~
-
-
 
 
 1.6.1 -- released 2022-12-26
