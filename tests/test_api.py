@@ -5,6 +5,7 @@ Tests for direct interaction with the Pwned Passwords API.
 
 # SPDX-License-Identifier: BSD-3-Clause
 
+from http import HTTPStatus
 from unittest import mock
 
 import httpx
@@ -208,9 +209,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         HTTP error responses from the API are translated into a PwnedPasswordsError.
 
         """
-        for error_status in [
-            code for code in httpx.codes if httpx.codes.is_error(code)
-        ]:
+        for error_status in [code for code in HTTPStatus if 400 <= code <= 599]:
             api_client = api.PwnedPasswords(
                 client=self.custom_response_sync_client(
                     status_code=error_status, response_text=""
@@ -230,9 +229,7 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
         in the async code path.
 
         """
-        for error_status in [
-            code for code in httpx.codes if httpx.codes.is_error(code)
-        ]:
+        for error_status in [code for code in HTTPStatus if 400 <= code <= 599]:
             api_client = api.PwnedPasswords(
                 async_client=self.custom_response_async_client(
                     status_code=error_status, response_text=""
