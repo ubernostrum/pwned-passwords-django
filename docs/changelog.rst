@@ -15,7 +15,7 @@ No new features or bug fixes. Supported Django versions are now 3.2, 4.2, and
 
 Source code formatting was updated to Black 2024 style.
 
-Some internal test code was rewritten to use HTTPX `MockTransport` objects.
+Some internal test code was rewritten to use HTTPX ``MockTransport`` objects.
 
 
 2.0 -- released 2023-03-26

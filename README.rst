@@ -33,9 +33,9 @@ password or its full hash to any third party.
 Usage
 -----
 
-The recommended default configuration is to enable both the validator
-and the automatic password-checking middleware. To do this, make the
-following changes to your Django settings.
+The recommended configuration is to enable both the validator and the
+automatic password-checking middleware. To do this, make the following
+changes to your Django settings.
 
 First, add the validator to your AUTH_PASSWORD_VALIDATORS list:
 
@@ -48,7 +48,7 @@ First, add the validator to your AUTH_PASSWORD_VALIDATORS list:
        },
    ]
 
-Then, the middleware <middleware> to your MIDDLEWARE list:
+Then, add the middleware to your MIDDLEWARE list:
 
 .. code-block:: python
 

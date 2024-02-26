@@ -38,26 +38,6 @@ class PwnedPasswords:
     <https://www.python-httpx.org>`_). Otherwise, default client objects from ``httpx``
     will be used.
 
-    .. warning:: **Error handling and custom HTTP clients**
-
-       This class will catch exceptions raised during the HTTP request/response cycle
-       with Pwned Passwords, and wrap them in
-       :exc:`~pwned_passwords_django.exceptions.PwnedPasswordsError`. When using the
-       default ``httpx`` client, this class is able to distinguish several different
-       types of errors -- timeouts, responses with error status codes, and so on -- and
-       include that information in both log messages and in the ``PwnedPasswordsError``
-       instance.
-
-       When using a client other than ``httpx``, this class is not able to provide the
-       same level of fine-grained error processing; the original exception from the HTTP
-       client library will still be wrapped, and will still be accessible to
-       programmatic inspection, but it will be your responsibility to perform that
-       inspection. If you want to use a non-default HTTP client library and also
-       preserve the finer-grained error processing in this class, you will need to
-       subclass and override its :meth:`check_password` and/or
-       :meth:`check_password_async` methods to add your own error-handling blocks which
-       catch/inspect the exceptions raised by your preferred client library.
-
     :param client: A synchronous HTTP client object. Defaults to an ``httpx.Client``.
     :param async_client: An asynchronous HTTP client object. Defaults to an
        ``httpx.AsyncClient``.

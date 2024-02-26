@@ -5,34 +5,21 @@
 Using the Pwned Passwords API directly
 ======================================
 
-If the validator and middleware do not cover your needs, you can also directly
-check a password against Pwned Passwords. The following two functions handle
-this use case, depending on whether you are writing synchronous or asynchronous
-Python:
+If :ref:`the validator <validator>` and :ref:`middleware <middleware>` do not
+meet your needs, you can also directly check a password against Pwned
+Passwords. The following two functions handle this use case, depending on
+whether you are writing synchronous or asynchronous Python:
 
 .. autofunction:: check_password
 
-.. function:: check_password_async(password: str) -> int
-   :async:
-
-   Check a password against the Pwned Passwords API and return the count of
-   times it appears in breaches in the Pwned Passwords database.
-
-   This is an asynchronous version of :meth:`check_password`, and will use an
-   asynchronous HTTP client to make the request to Pwned Passwords.
-
-   :raises TypeError: When the given password value is not a string.
-
-   :raises exceptions.PwnedPasswordsError: When the Pwned Passwords API times out,
-      returns an HTTP 4XX or 5XX status code, or when any other error occurs in
-      contacting the Pwned Passwords API or checking the password.
+.. autofunction:: check_password_async
 
 
-Using the client class
-----------------------
+Using the API client class
+--------------------------
 
 If you want even finer-grained control over interaction with Pwned Passwords,
-there is also a client class -- which is what :func:`check_password` and
+there is also an API client class -- which is what :func:`check_password` and
 :func:`check_password_async` and all other public API of pwned-passwords-django
 passes through to -- provided:
 

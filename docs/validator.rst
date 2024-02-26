@@ -68,7 +68,7 @@ high-level operations. These operations are:
 * Whenever the ``createsuperuser`` or ``changepassword`` management commands
   are used.
 
-Password validators are **not** run automatically when a user's password is set
+Password validators are *not* run automatically when a user's password is set
 or updated via other mechanisms, and in those cases the validator cannot
 provide automatic protection against a user choosing a breached password.
 

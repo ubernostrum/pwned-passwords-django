@@ -29,8 +29,8 @@ its full hash to any third party. To learn more, see :ref:`the FAQ <faq>`.
 Usage
 -----
 
-The recommended default configuration is to enable both :ref:`the password
-validator <validator>` and :ref:`the automatic password-checking middleware
+The recommended configuration is to enable both :ref:`the password validator
+<validator>` and :ref:`the automatic password-checking middleware
 <middleware>`. To do this, make the following changes to your Django settings.
 
 First, add :ref:`the validator <validator>` to your
