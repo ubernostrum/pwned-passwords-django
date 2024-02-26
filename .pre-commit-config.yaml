@@ -37,3 +37,13 @@ repos:
   hooks:
     - id: isort
       name: isort (Python formatter)
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.10.0
+  hooks:
+    - id: python-check-blanket-noqa
+    - id: rst-backticks
+    - id: rst-directive-colons
+- repo: https://github.com/sphinx-contrib/sphinx-lint
+  rev: v0.9.1
+  hooks:
+    - id: sphinx-lint
