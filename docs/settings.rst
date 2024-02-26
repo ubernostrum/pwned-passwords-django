@@ -20,6 +20,7 @@ module:
       PWNED_PASSWORDS = {
          "ADD_PADDING": True,
          "API_TIMEOUT": 1.0,
+         "API_ENDPOINT": "https://api.pwnedpasswords.com/range/",
          "PASSWORD_REGEX": r"PASS",
       }
 
@@ -48,6 +49,16 @@ module:
       contacting Pwned Passwords, in seconds.
 
       Default value, if not provided, is ``1.0`` (one second).
+
+   **API_ENDPOINT**
+      A :class:`str` indicating the base URL of the Pwned Passwords API.
+
+      Customizing this setting is useful, for example, when `self-hosting
+      <https://github.com/HaveIBeenPwned/PwnedPasswordsAzureFunction>`_ the
+      API.
+
+      Default value, if not provided, is the URL of the official service
+      hosted by Troy Hunt (``"https://api.pwnedpasswords.com/range/"``).
 
    **PASSWORD_REGEX**
       A :class:`str` -- *not* a compiled regex object -- to be used as a regex

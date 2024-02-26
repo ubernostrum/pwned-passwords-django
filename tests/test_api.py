@@ -169,6 +169,15 @@ class PwnedPasswordsAPITests(base.PwnedPasswordsTests):
             url=mock.ANY, headers=mock.ANY, timeout=httpx.Timeout(0.5)
         )
 
+    @override_settings(PWNED_PASSWORDS={"API_ENDPOINT": "http://custom.endpoi.nt/"})
+    async def test_endpoint_override(self):
+        """
+        The custom API endpoint setting is honored.
+
+        """
+        api_client = api.PwnedPasswords()
+        self.assertEqual(api_client.api_endpoint, "http://custom.endpoi.nt/")
+
     def test_timeout(self):
         """
         Connection timeouts to the API are translated into a PwnedPasswordsError.
