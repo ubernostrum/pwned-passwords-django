@@ -151,7 +151,7 @@ The pwned-passwords-django module is distributed under a `three-clause BSD
 license <http://opensource.org/licenses/BSD-3-Clause>`_. This is an open-source
 license which grants you broad freedom to use, redistribute, modify and
 distribute modified versions of pwned-passwords-django. For details, see the
-file `LICENSE` in the source distribution of pwned-passwords-django.
+file ``LICENSE`` in the source distribution of pwned-passwords-django.
 
 .. _three-clause BSD license: http://opensource.org/licenses/BSD-3-Clause
 
