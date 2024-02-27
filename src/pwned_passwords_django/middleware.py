@@ -132,8 +132,8 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
 
     .. warning:: **API failures**
 
-       pwned-passwords-django needs to communicate with the Pwned Passwords API in order
-       to check passwords. If Pwned Passwords is down or timing out (the default
+       ``pwned-passwords-django`` needs to communicate with the Pwned Passwords API in
+       order to check passwords. If Pwned Passwords is down or timing out (the default
        connection timeout is 1 second), or if any other error occurs when checking the
        password, this middleware will fall back to using Django's
        :class:`~django.contrib.auth.password_validation.CommonPasswordValidator`, which
@@ -159,7 +159,7 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
                    "You just entered a password which appears to be compromised!"
                )
 
-    pwned-passwords-django uses a regular expression to guess which items in
+    ``pwned-passwords-django`` uses a regular expression to guess which items in
     :attr:`~django.http.HttpRequest.POST` are likely to be passwords. By default, it
     matches on any key in :attr:`~django.http.HttpRequest.POST` containing ``"PASS"``
     (case-insensitive), which catches input names like ``"password"``, ``"passphrase"``,
