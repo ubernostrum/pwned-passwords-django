@@ -1,8 +1,8 @@
 .. _install:
 
 
-Installation and recommended configuration
-==========================================
+Installation guide
+==================
 
 ``pwned-passwords-django`` |release| supports Django 3.2, 4.2, and 5.0, and Python
 3.8 through 3.12. See `Django's Python support matrix
@@ -53,31 +53,31 @@ If you don't already have a supported version of Django installed, using
 supported version of Django.
 
 
-Recommended configuration
--------------------------
+Installing from a source checkout
+---------------------------------
 
-The recommended configuration is to enable both :ref:`the password validator
-<validator>` and :ref:`the automatic password-checking middleware
-<middleware>`. To do this, make the following changes to your Django settings.
+If you want to work on ``pwned-passwords-django``, you can obtain a source
+checkout.
 
-First, add :ref:`the validator <validator>` to your
-:setting:`AUTH_PASSWORD_VALIDATORS` list:
+The development repository for ``pwned-passwords-django`` is at
+<https://github.com/ubernostrum/pwned-passwords-django>. If you have `git
+<http://git-scm.com/>`_ installed, you can obtain a copy of the repository by
+typing::
 
-.. code-block:: python
+    git clone https://github.com/ubernostrum/pwned-passwords-django.git
 
-   AUTH_PASSWORD_VALIDATORS = [
-       # ... other password validators ...
-       {
-           "NAME": "pwned_passwords_django.validators.PwnedPasswordsValidator",
-       },
-   ]
+From there, you can use git commands to check out the specific revision you
+want, and perform an "editable" install (allowing you to change code as you
+work on it) by typing:
 
-Then, add :ref:`the middleware <middleware>` to your :setting:`MIDDLEWARE`
-list:
+.. tab:: macOS/Linux/other Unix
 
-.. code-block:: python
+   .. code-block:: shell
 
-   MIDDLEWARE = [
-       # .. other middlewares ...
-       "pwned_passwords_django.middleware.pwned_passwords_middleware",
-   ]
+      python -m pip install -e .
+
+.. tab:: Windows
+
+   .. code-block:: shell
+
+      py -m pip install -e .
