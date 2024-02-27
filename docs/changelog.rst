@@ -7,7 +7,7 @@ Changelog
 This document lists changes between released versions of
 ``pwned-passwords-django``.
 
-2.1 -- released 2024-02-??
+2.1 -- released 2024-02-26
 --------------------------
 
 No new features or bug fixes. Supported Django versions are now 3.2, 4.2, and
