@@ -38,8 +38,8 @@ readme = "README.rst"
 requires-python = ">=3.8"
 
 [project.urls]
-documentation = "https://pwned-passwords-django.readthedocs.io/"
-homepage = "https://github.com/ubernostrum/pwned-passwords-django"
+Documentation = "https://pwned-passwords-django.readthedocs.io/"
+Homepage = "https://github.com/ubernostrum/pwned-passwords-django"
 
 [project.optional-dependencies]
 docs = [
