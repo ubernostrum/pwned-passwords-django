@@ -5,9 +5,9 @@
 Exception classes and error handling
 ====================================
 
-Because pwned-passwords-django communicates with a remote API, it can encounter
-problems, such as connection failures, connection timeouts, failures of the
-Pwned Passwords API, and so on.
+Because ``pwned-passwords-django`` communicates with a remote API, it can
+encounter problems, such as connection failures, connection timeouts, failures
+of the Pwned Passwords API, and so on.
 
 Exceptions raised in communicating with Pwned Passwords will be caught and
 translated into instances of:
@@ -53,7 +53,7 @@ The :attr:`~PwnedPasswordsError.code` attribute uses the following enum:
    .. attribute:: UNKNOWN_ERROR
 
       An unanticipated or unknown type of error occurred, possibly in code in
-      pwned-passwords-django. This can happen if, for example, the Pwned
+      ``pwned-passwords-django``. This can happen if, for example, the Pwned
       Passwords API begins returning responses in a different format than
       expected and so parsing of the response fails.
 
@@ -73,7 +73,7 @@ encountered, such as an ``httpx.TimeoutException`` or
 it, your code is responsible for catching and handling any
 :exc:`PwnedPasswordsError` it raises.
 
-When other parts of pwned-passwords-django encounter a
+When other parts of ``pwned-passwords-django`` encounter a
 :exc:`PwnedPasswordsError` raised from the client, they will behave as follows:
 
 * :ref:`The password validator <validator>` will catch the exception, log a
@@ -97,9 +97,9 @@ When other parts of pwned-passwords-django encounter a
 Filtering sensitive information
 -------------------------------
 
-Because pwned-passwords-django works with values that are (or, in the case of
-the middleware, are likely to be) passwords or password-like credentials, care
-must be taken to avoid accidentally exposing those values in their raw
+Because ``pwned-passwords-django`` works with values that are (or, in the case
+of the middleware, are likely to be) passwords or password-like credentials,
+care must be taken to avoid accidentally exposing those values in their raw
 form. This can easily happen by accident, for example, if an exception occurs
 while trying to check a password, since the password will usually be a local
 variable of the stack frame where the exception was raised, and thus is
@@ -109,10 +109,10 @@ its way into the message of an exception.
 Django provides `some tools to filter sensitive information from error reports
 <https://docs.djangoproject.com/en/stable/howto/error-reporting/#filtering-sensitive-information>`_,
 and it is strongly recommended that if you write code which interacts with
-pwned-passwords-django directly -- for example, via :ref:`the API <api>` -- you
-take care to use those tools.
+``pwned-passwords-django`` directly -- for example, via :ref:`the API <api>` --
+you take care to use those tools.
 
-Internally, pwned-passwords-django takes the following measures:
+Internally, ``pwned-passwords-django`` takes the following measures:
 
 * The ``validate()`` method of :ref:`the validator <validator>` is decorated
   with :func:`~django.views.decorators.debug.sensitive_variables` which will

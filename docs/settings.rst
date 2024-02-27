@@ -5,13 +5,14 @@
 Configuration via Django settings
 =================================
 
-Some of pwned-passwords-django's behavior is configurable via Django
+Some of ``pwned-passwords-django``'s behavior is configurable via Django
 settings. To do so, add the following new setting to your Django settings
 module:
 
 .. data:: PWNED_PASSWORDS
 
-   A :class:`dict` containing configuration specific to pwned-passwords-django.
+   A :class:`dict` containing configuration specific to
+   ``pwned-passwords-django``.
 
    The default values, if not set, are equivalent to:
 

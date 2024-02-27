@@ -20,8 +20,8 @@ Using the API client class
 
 If you want even finer-grained control over interaction with Pwned Passwords,
 there is also an API client class -- which is what :func:`check_password` and
-:func:`check_password_async` and all other public API of pwned-passwords-django
-passes through to -- provided:
+:func:`check_password_async` and all other public API of
+``pwned-passwords-django`` passes through to -- provided:
 
 .. autoclass:: PwnedPasswords
 
@@ -37,7 +37,7 @@ passes through to -- provided:
 
       A :class:`str` containing the value to send in the HTTP ``User-Agent``
       header. Defaults to a string listing the versions of
-      pwned-passwords-django, Python, and ``httpx``.
+      ``pwned-passwords-django``, Python, and ``httpx``.
 
    Also, in a subclass you can override the constructor to control how the
    following values are set:

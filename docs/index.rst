@@ -22,8 +22,8 @@ There are three main components to this application:
 * :ref:`An API client <api>` providing direct access (both sync and async) to
   the Pwned Passwords database.
 
-All three use a secure, anonymized API which never transmits any password or
-its full hash to any third party. To learn more, see :ref:`the FAQ <faq>`.
+All three use a secure, anonymized API which :ref:`never transmits any password
+or its full hash to any third party <api-safety>`.
 
 
 Usage

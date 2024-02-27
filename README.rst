@@ -14,20 +14,25 @@ rejecting common or weak passwords.
 
 There are three main components to this application:
 
-* A password validator which integrates with `Django's
-  password-validation tools
+* `A password validator
+  <https://pwned-passwords-django.readthedocs.io/en/latest/validator.html>`_
+  which integrates with `Django's password-validation tools
   <https://docs.djangoproject.com/en/5.0/topics/auth/passwords/#module-django.contrib.auth.password_validation>`_
   and checks the Pwned Passwords database.
 
-* A Django middleware (supporting both sync and async requests) which
-  automatically checks certain request payloads against the Pwned
-  Passwords database.
+* `A Django middleware
+  <https://pwned-passwords-django.readthedocs.io/en/latest/middleware.html>`_
+  (supporting both sync and async requests) which automatically checks
+  certain request payloads against the Pwned Passwords database.
 
-* An API client providing direct access (both sync and async) to the
-  Pwned Passwords database.
+* `An API client
+  <https://pwned-passwords-django.readthedocs.io/en/latest/api.html>`_
+  providing direct access (both sync and async) to the Pwned Passwords
+  database.
 
-All three use a secure, anonymized API which never transmits any
-password or its full hash to any third party.
+All three use a secure, anonymized API which `never transmits any
+password or its full hash to any third party
+<https://pwned-passwords-django.readthedocs.io/en/latest/faq.html#api-safety>`_.
 
 
 Usage

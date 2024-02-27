@@ -11,7 +11,7 @@ Using the password validator
    Django's auth system (located in ``django.contrib.auth``) includes `a
    configurable password-validation framework
    <https://docs.djangoproject.com/en/stable/topics/auth/passwords/#module-django.contrib.auth.password_validation>`_
-   with several built-in validators, and pwned-passwords-django provides an
+   with several built-in validators, and ``pwned-passwords-django`` provides an
    additional validator which checks the Pwned Passwords database. To enable
    it, set your :setting:`AUTH_PASSWORD_VALIDATORS` setting to include the new
    validator, like so:
@@ -30,8 +30,8 @@ Using the password validator
 
    .. warning:: **API failures**
 
-      pwned-passwords-django needs to communicate with the Pwned Passwords API
-      in order to check passwords. If Pwned Passwords is down or timing out
+      ``pwned-passwords-django`` needs to communicate with the Pwned Passwords
+      API in order to check passwords. If Pwned Passwords is down or timing out
       (the default connection timeout is 1 second), or if any other error
       occurs when checking the password, this validator will fall back to using
       Django's

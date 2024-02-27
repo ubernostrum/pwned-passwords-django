@@ -5,7 +5,7 @@ Changelog
 =========
 
 This document lists changes between released versions of
-pwned-passwords-django.
+``pwned-passwords-django``.
 
 2.1 -- released 2024-02-??
 --------------------------
@@ -29,11 +29,11 @@ The following changes in 2.0 are backwards-incompatible with 1.x releases:
 Configuration changes
 ~~~~~~~~~~~~~~~~~~~~~
 
-In 1.x, pwned-passwords-django was configured by two top-level Django settings:
-``PWNED_PASSWORDS_API_TIMEOUT`` and ``PWNED_PASSWORDS_REGEX``. As of 2.0,
-configuration uses one top-level Django setting, ``PWNED_PASSWORDS``, which is
-a :class:`dict` containing any of :ref:`several optional keys <settings>` to
-configure behavior.
+In 1.x, ``pwned-passwords-django`` was configured by two top-level Django
+settings: ``PWNED_PASSWORDS_API_TIMEOUT`` and ``PWNED_PASSWORDS_REGEX``. As of
+2.0, configuration uses one top-level Django setting, ``PWNED_PASSWORDS``,
+which is a :class:`dict` containing any of :ref:`several optional keys
+<settings>` to configure behavior.
 
 Here is an example of old 1.x configuration:
 
@@ -131,14 +131,14 @@ Error handling changes
 ~~~~~~~~~~~~~~~~~~~~~~
 
 In 1.x, errors were caught and handled in a variety of different ways by
-different parts of pwned-passwords-django. In 2.0, error handling is much more
-unified:
+different parts of ``pwned-passwords-django``. In 2.0, error handling is much
+more unified:
 
 * All external exceptions raised when communicating with Pwned Passwords are
   caught and wrapped in
   :exc:`~pwned_passwords_django.exceptions.PwnedPasswordsError`, meaning that
-  code which works with pwned-passwords-django should only need to catch and be
-  able to understand that one exception class.
+  code which works with ``pwned-passwords-django`` should only need to catch
+  and be able to understand that one exception class.
 
 * All exception paths also consistently log messages of log level
   :data:`logging.ERROR`.
@@ -148,13 +148,13 @@ unified:
   the event of errors communicating with Pwned Passwords.
 
 Additionally, as a side effect of better/more unified error handling, code
-paths in pwned-passwords-django that handle passwords or likely passwords now
-have had Django's :func:`~django.views.decorators.debug.sensitive_variables`
-decorator applied to help prevent accidental appearance of raw password values
-in error reports, and the explicit error-handling code in
-pwned-passwords-django deliberately minimizes the amount of information
-reported for unknown/unanticipated exceptions, to further reduce the risk of
-this issue.
+paths in ``pwned-passwords-django`` that handle passwords or likely passwords
+now have had Django's
+:func:`~django.views.decorators.debug.sensitive_variables` decorator applied to
+help prevent accidental appearance of raw password values in error reports, and
+the explicit error-handling code in ``pwned-passwords-django`` deliberately
+minimizes the amount of information reported for unknown/unanticipated
+exceptions, to further reduce the risk of this issue.
 
 See :ref:`the error-handling documentation <error-handling>` for details.
 
@@ -176,7 +176,7 @@ synchronous HTTP client, if desired (though see the note in the documentation
 of :class:`~pwned_passwords_django.api.PwnedPasswords` regarding error handling
 with alternate HTTP clients).
 
-In 1.x, the test suite and continuous integration of pwned-passwords-django
+In 1.x, the test suite and continuous integration of ``pwned-passwords-django``
 were orchestrated using the ``tox`` automation tool. In 2.0, they are
 orchestrated using `nox <https://nox.thea.codes/en/stable/>`_ instead.
 
@@ -184,24 +184,24 @@ orchestrated using `nox <https://nox.thea.codes/en/stable/>`_ instead.
 1.6.1 -- released 2022-12-26
 ----------------------------
 
-"Bugfix" release: the Pwned Passwords API now sometimes returns the
-count as a value with a comma in it, which requires additional
-handling. No other changes; a release for official compatibility with
-Python 3.11 and Django 4.1 will occur later.
+"Bugfix" release: the Pwned Passwords API now sometimes returns the count as a
+value with a comma in it, which requires additional handling. No other changes;
+a release for official compatibility with Python 3.11 and Django 4.1 will occur
+later.
 
 1.6 -- released 2022-05-19
 --------------------------
 
-No new features. No new bug fixes. Django 4.0 is now supported. Python
-3.6, Django 2.2, and Django 3.1 are no longer supported, as they have
-reached the end of their upstream support cycles.
+No new features. No new bug fixes. Django 4.0 is now supported. Python 3.6,
+Django 2.2, and Django 3.1 are no longer supported, as they have reached the
+end of their upstream support cycles.
 
 1.5 -- released 2021-06-21
 --------------------------
 
-No new features. No bug fixes. Django 3.2 is now supported; Django 3.0
-and Python 3.5 are no longer supported, as they have both reached the
-end of their upstream support cycles.
+No new features. No bug fixes. Django 3.2 is now supported; Django 3.0 and
+Python 3.5 are no longer supported, as they have both reached the end of their
+upstream support cycles.
 
 1.4 -- released 2020-01-28
 --------------------------
@@ -209,45 +209,44 @@ end of their upstream support cycles.
 New features:
 ~~~~~~~~~~~~~
 
-* The
-  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator`
-  is now serializable. This is unlikely to be useful, however, as the
-  validator is not intended to be attached to a model.
+* The :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator` is
+  now serializable. This is unlikely to be useful, however, as the validator is
+  not intended to be attached to a model.
 
 Other changes:
 ~~~~~~~~~~~~~~
 
-* The supported versions of Django are now 2.2 and 3.0. This means
-  Python 2 support is dropped; if you still need to use
-  pwned-passwords-django on Python 2 with Django 1.11, stay with the
-  1.3 release series of pwned-passwords-django.
+* The supported versions of Django are now 2.2 and 3.0. This means Python 2
+  support is dropped; if you still need to use ``pwned-passwords-django`` on
+  Python 2 with Django 1.11, stay with the 1.3 release series of
+  ``pwned-passwords-django``.
 
 1.3.2 -- released 2019-05-07
 ----------------------------
 
-No new features. No bug fixes. Released to add explicit markers of
-Django 2.2 compatibility.
+No new features. No bug fixes. Released to add explicit markers of Django 2.2
+compatibility.
 
 
 1.3.1 -- released 2018-09-18
 ----------------------------
 
-Released to include documentation updates which were inadvertently
-left out of the 1.3 package.
+Released to include documentation updates which were inadvertently left out of
+the 1.3 package.
 
 
 1.3 -- released 2018-09-18
 --------------------------
 
-No new features. No bug fixes. Released only to add explicit markers of
-Python 3.7 and Django 2.1 compatibility.
+No new features. No bug fixes. Released only to add explicit markers of Python
+3.7 and Django 2.1 compatibility.
 
 
 1.2.1 -- released 2018-06-18
 ----------------------------
 
-Released to correct the date of the 1.2 release listed in this
-changelog document. No other changes.
+Released to correct the date of the 1.2 release listed in this changelog
+document. No other changes.
 
 
 1.2 -- released 2018-06-18
@@ -259,21 +258,19 @@ New features:
 * Password-validator error messages are now :ref:`customizable
   <validator-messages>`.
 
-* The request-timeout value for contacting the Pwned Passwords API
-  defaults to one second, and is customizable via the setting
+* The request-timeout value for contacting the Pwned Passwords API defaults to
+  one second, and is customizable via the setting
   :data:`~django.conf.settings.PWNED_PASSWORDS_API_TIMEOUT`.
 
-* When a request to the Pwned Passwords API times out, or encounters
-  an error, it logs the problem with a message of level
-  :data:`logging.WARNING`. The
-  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator`
-  will fall back to
+* When a request to the Pwned Passwords API times out, or encounters an error,
+  it logs the problem with a message of level :data:`logging.WARNING`. The
+  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator` will fall
+  back to
   :class:`~django.contrib.auth.password_validation.CommonPasswordValidator`,
   which has a smaller list of common passwords. The
-  :class:`~pwned_passwords_django.middleware.PwnedPasswordsMiddleware`
-  does not have a fallback behavior;
-  :func:`~pwned_passwords_django.api.pwned_password` will return
-  :data:`None` to indicate the error case.
+  :class:`~pwned_passwords_django.middleware.PwnedPasswordsMiddleware` does not
+  have a fallback behavior; :func:`~pwned_passwords_django.api.pwned_password`
+  will return :data:`None` to indicate the error case.
 
 Bugs fixed:
 ~~~~~~~~~~~
@@ -285,31 +282,29 @@ Other changes:
 
 * :func:`~pwned_passwords_django.api.pwned_password` will now raise
   :exc:`TypeError` if its argument is not a Unicode string (the type
-  :class:`unicode` on Python 2, :class:`str` on Python 3). This is
-  debatably backwards-incompatible;
-  :func:`~pwned_passwords_django.api.pwned_password` encodes its
-  argument to UTF-8 bytes, which will raise :exc:`AttributeError` if
-  attempted on a :class:`bytes` object in Python 3. As a result, all
-  supported environments other than Python 2.7/Django 1.11 would
-  already raise :exc:`AttributeError` (due to :class:`bytes` objects
-  lacking the :meth:`~str.encode` method) in both 1.0 and
-  1.1. Enforcing the :exc:`TypeError` on all supported environments
-  ensures users of pwned-passwords-django do not write code that
-  accidentally works in one and only one environment, and supplies a
-  more accurate and comprehensible exception than the
-  :exc:`AttributeError` which would have been raised in previous
-  versions.
+  :class:`unicode` on Python 2, :class:`str` on Python 3). This is debatably
+  backwards-incompatible; :func:`~pwned_passwords_django.api.pwned_password`
+  encodes its argument to UTF-8 bytes, which will raise :exc:`AttributeError`
+  if attempted on a :class:`bytes` object in Python 3. As a result, all
+  supported environments other than Python 2.7/Django 1.11 would already raise
+  :exc:`AttributeError` (due to :class:`bytes` objects lacking the
+  :meth:`~str.encode` method) in both 1.0 and 1.1. Enforcing the
+  :exc:`TypeError` on all supported environments ensures users of
+  ``pwned-passwords-django`` do not write code that accidentally works in one
+  and only one environment, and supplies a more accurate and comprehensible
+  exception than the :exc:`AttributeError` which would have been raised in
+  previous versions.
 
 * The default error and help messages of
-  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator`
-  now match the messages of Django's
+  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator` now match
+  the messages of Django's
   :class:`~django.contrib.auth.password_validation.CommonPasswordValidator`. Since
-  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator`
-  falls back to
+  :class:`~pwned_passwords_django.validators.PwnedPasswordsValidator` falls
+  back to
   :class:`~django.contrib.auth.password_validation.CommonPasswordValidator`
-  when the Pwned Passwords API is unresponsive, this provides
-  consistency of messages, and also ensures the messages are
-  translated (Django provides translations for its built-in messages).
+  when the Pwned Passwords API is unresponsive, this provides consistency of
+  messages, and also ensures the messages are translated (Django provides
+  translations for its built-in messages).
 
 
 1.1 -- released 2018-03-06
@@ -323,10 +318,9 @@ N/A
 Bugs fixed:
 ~~~~~~~~~~~
 
-* Case sensitivity issue. The Pwned Passwords API always uses
-  uppercase hexadecimal digits for password hashes;
-  pwned-passwords-django was using lowercase. Fixed by switching
-  pwned-passwords-django to use uppercase.
+* Case sensitivity issue. The Pwned Passwords API always uses uppercase
+  hexadecimal digits for password hashes; ``pwned-passwords-django`` was using
+  lowercase. Fixed by switching ``pwned-passwords-django`` to use uppercase.
 
 Other changes
 ~~~~~~~~~~~~~

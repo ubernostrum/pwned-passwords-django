@@ -4,15 +4,15 @@
 Frequently asked questions
 ==========================
 
-The following notes answer some common questions, and may be useful to
-you when using pwned-passwords-django.
+The following notes answer some common questions, and may be useful to you when
+using ``pwned-passwords-django``.
 
 
 What versions of Django and Python are supported?
 -------------------------------------------------
 
-pwned-passwords-django |release| supports Django 3.2, 4.2, and 5.0, and Python
-3.8 through 3.12. See `Django's Python support matrix
+``pwned-passwords-django`` |release| supports Django 3.2, 4.2, and 5.0, and
+Python 3.8 through 3.12. See `Django's Python support matrix
 <https://docs.djangoproject.com/en/dev/faq/install/#what-python-version-can-i-use-with-django>`_
 for details of which Python versions are compatible with each version of
 Django.
@@ -36,8 +36,8 @@ neither the validator nor the middleware is sufficient.
 I'm getting timeouts from the Pwned Passwords API. What can I do?
 -----------------------------------------------------------------
 
-By default, pwned-passwords-django makes requests to the Pwned Passwords API
-with a timeout of one second. You can change this by specifying the Django
+By default, ``pwned-passwords-django`` makes requests to the Pwned Passwords
+API with a timeout of one second. You can change this by specifying the Django
 setting :data:`~django.conf.settings.PWNED_PASSWORDS` and setting the key
 ``API_TIMEOUT`` in it to a :class:`float` indicating your preferred timeout in
 seconds. For example, to have a timeout of one and a half seconds, you'd set:
@@ -49,6 +49,8 @@ seconds. For example, to have a timeout of one and a half seconds, you'd set:
   }
 
 
+.. _api-safety:
+
 How can this be secure? It's sending passwords to some random site!
 -------------------------------------------------------------------
 
@@ -59,22 +61,22 @@ Pwned Passwords
 <https://www.troyhunt.com/ive-just-launched-pwned-passwords-version-2/>`_, but
 the summary of how it works is:
 
-1. pwned-passwords-django hashes the password, and sends only the first five
-   digits of the hexadecimal digest of the hash to Pwned Passwords.
+1. ``pwned-passwords-django`` hashes the password, and sends only the first
+   five digits of the hexadecimal digest of the hash to Pwned Passwords.
 
 2. Pwned Passwords responds with a list of hash suffixes (all the digits of the
    hash *except* the first five) for every entry in its database matching the
    submitted five-digit prefix.
 
-3. pwned-passwords-django checks that list to see if the remainder of the
+3. ``pwned-passwords-django`` checks that list to see if the remainder of the
    password hash is present, and if so treats the password as compromised.
 
 This means that neither the password, nor the full hash of the password, is
-ever sent to any third-party site or service by pwned-passwords-django.
+ever sent to any third-party site or service by ``pwned-passwords-django``.
 
 .. warning:: **You can still accidentally disclose passwords!**
 
-   pwned-passwords-django uses an API that never discloses the password or its
+   ``pwned-passwords-django`` uses an API that never discloses the password or its
    hash, but that doesn't mean the rest of your code or third-party libraries
    won't.
 
@@ -83,9 +85,9 @@ ever sent to any third-party site or service by pwned-passwords-django.
    <https://docs.djangoproject.com/en/stable/howto/error-reporting/#filtering-sensitive-information>`_
    to ensure that your logging and monitoring systems don't accidentally log or
    expose raw passwords or their hashes. The utilities inside
-   pwned-passwords-django :ref:`do what they can to mitigate this
+   ``pwned-passwords-django`` :ref:`do what they can to mitigate this
    <filter-sensitive>`, but other code that interacts with
-   pwned-passwords-django may need take its own measures.
+   ``pwned-passwords-django`` may need take its own measures.
 
    You should also be extremely conservative about allowing third-party
    JavaScript to run on your site, and periodically audit all JavaScript you
@@ -96,12 +98,13 @@ ever sent to any third-party site or service by pwned-passwords-django.
 How do I run the tests?
 -----------------------
 
-pwned-passwords-django's tests are run using `nox <https://nox.thea.codes/>`_,
-but typical installation of pwned-passwords-django (via ``pip install
-pwned-passwords-django``) will not install the tests.
+``pwned-passwords-django``'s tests are run using `nox
+<https://nox.thea.codes/>`_, but typical installation of
+``pwned-passwords-django`` (via ``pip install pwned-passwords-django``) will
+not install the tests.
 
 To run the tests, download the source (`.tar.gz`) distribution of
-pwned-passwords-django |release| from `its page on the Python Package Index
+``pwned-passwords-django`` |release| from `its page on the Python Package Index
 <https://pypi.org/project/pwned-passwords-django/>`_, unpack it (``tar zxvf
 pwned-passwords-django-|version|.tar.gz`` on most Unix-like operating systems),
 and in the unpacked directory run the following at a command prompt:
@@ -147,11 +150,11 @@ installed, test runs for Python 3.7, 3.10, and 3.11 would be skipped.
 How am I allowed to use this code?
 ----------------------------------
 
-The pwned-passwords-django module is distributed under a `three-clause BSD
-license <http://opensource.org/licenses/BSD-3-Clause>`_. This is an open-source
-license which grants you broad freedom to use, redistribute, modify and
-distribute modified versions of pwned-passwords-django. For details, see the
-file ``LICENSE`` in the source distribution of pwned-passwords-django.
+``pwned-passwords-django`` is distributed under a `three-clause BSD license
+<http://opensource.org/licenses/BSD-3-Clause>`_. This is an open-source license
+which grants you broad freedom to use, redistribute, modify and distribute
+modified versions of ``pwned-passwords-django``. For details, see the file
+``LICENSE`` in the source distribution of ``pwned-passwords-django``.
 
 .. _three-clause BSD license: http://opensource.org/licenses/BSD-3-Clause
 
@@ -159,6 +162,6 @@ file ``LICENSE`` in the source distribution of pwned-passwords-django.
 I found a bug or want to make an improvement!
 ---------------------------------------------
 
-The canonical development repository for pwned-passwords-django is online at
-<https://github.com/ubernostrum/pwned-passwords-django>. Issues and pull
+The canonical development repository for ``pwned-passwords-django`` is online
+at <https://github.com/ubernostrum/pwned-passwords-django>. Issues and pull
 requests can both be filed there.
