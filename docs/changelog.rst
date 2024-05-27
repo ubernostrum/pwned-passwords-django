@@ -73,6 +73,8 @@ Released May 2024
 
 * Supported Django versions are now 4.2 and 5.0.
 
+* Expanded/reorganized documentation.
+
 
 Releases not under DjangoVer
 ----------------------------

@@ -2,8 +2,8 @@
 
 .. _api:
 
-Using the Pwned Passwords API directly
-======================================
+Direct Pwned Passwords API access
+=================================
 
 If :ref:`the validator <validator>` and :ref:`middleware <middleware>` do not
 meet your needs, you can also directly check a password against Pwned

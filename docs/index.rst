@@ -60,14 +60,26 @@ Documentation contents
 ----------------------
 
 .. toctree::
+   :caption: Installation and usage
    :maxdepth: 1
 
    install
+   usage
+
+.. toctree::
+   :caption: API reference
+   :maxdepth: 1
+
    validator
    middleware
    api
    exceptions
    settings
+
+.. toctree::
+   :caption: Other documentation
+   :maxdepth: 1
+
    faq
    changelog
 

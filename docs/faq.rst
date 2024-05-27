@@ -144,7 +144,7 @@ for Python 3.10 only, you could run:
 
 By default, ``nox`` will only run the tasks whose associated Python versions
 are available on your system. For example, if you have only Python 3.8 and 3.9
-installed, test runs for Python 3.7, 3.10, and 3.11 would be skipped.
+installed, test runs for Python 3.10, 3.11, and 3.12 would be skipped.
 
 
 How am I allowed to use this code?

@@ -3,8 +3,8 @@
 .. _middleware:
 
 
-Using the middleware
-====================
+The password-checking middleware
+================================
 
 To help with situations where a potentially-compromised password is used
 :ref:`in ways Django's password validators won't catch

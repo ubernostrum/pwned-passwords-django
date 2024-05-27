@@ -3,8 +3,8 @@
 .. _validator:
 
 
-Using the password validator
-============================
+The password validator
+======================
 
 .. class:: PwnedPasswordsValidator
 
