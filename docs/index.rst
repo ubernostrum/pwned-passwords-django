@@ -1,5 +1,5 @@
-``pwned-passwords-django`` |release|
-====================================
+pwned-passwords-django |release|
+================================
 
 ``pwned-passwords-django`` provides helpers for working with the `Pwned
 Passwords database from Have I Been Pwned
