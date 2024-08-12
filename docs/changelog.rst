@@ -67,7 +67,7 @@ Releases under DjangoVer
 Version 5.1.0
 ~~~~~~~~~~~~~
 
-*Under development*
+Released August 2024
 
 * Supported Django versions are now 4.2, 5.0, and 5.1.
 
