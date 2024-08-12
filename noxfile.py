@@ -58,7 +58,7 @@ def clean(paths: typing.Iterable[os.PathLike] = ARTIFACT_PATHS) -> None:
 @nox.parametrize(
     "python,django",
     [
-        # Python/Django testing matrix. Tests Django 4. and, 5.0, on Python 3.8 through
+        # Python/Django testing matrix. Tests Django 4.0, 5.0, and 5.1, on Python 3.8 through
         # 3.12, skipping unsupported combinations.
         (python, django)
         for python in ["3.8", "3.9", "3.10", "3.11", "3.12"]
