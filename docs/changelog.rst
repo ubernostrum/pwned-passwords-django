@@ -67,7 +67,7 @@ Releases under DjangoVer
 Version 5.1.1
 ~~~~~~~~~~~~~
 
-*Under development*
+Released November 2024
 
 * Supported Python versions are now 3.9, 3.10, 3.11, 3.12, and 3.13.
 
