@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [project]
 authors = [
-  {name = "James Bennett", email = "james@b-list.org"}
+    {name = "James Bennett"},
 ]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -18,52 +18,53 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Utilities",
 ]
 name = "pwned-passwords-django"
 description = "A Pwned Passwords implementation for Django sites."
 dependencies = [
-  "Django>=4.2",
-  "httpx"
+    "Django>=4.2",
+    "httpx",
 ]
-dynamic = ["version"]
 keywords = ["django", "security", "passwords", "auth", "authentication"]
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
+version = "5.1.1a1"
+
+[dependency-groups]
+tests = ["nox"]
 
 [project.urls]
-Documentation = "https://pwned-passwords-django.readthedocs.io/"
-Homepage = "https://github.com/ubernostrum/pwned-passwords-django"
-
-[project.optional-dependencies]
-docs = [
-  "furo",
-  "sphinx",
-  "sphinx-copybutton",
-  "sphinx-inline-tabs",
-  "sphinx-notfound-page",
-  "sphinxcontrib-django",
-  "sphinxext-opengraph",
-]
-tests = [
-  "coverage",
-  "tomli; python_full_version < '3.11.0a7'",
-]
+"Documentation" = "https://pwned-passwords-django.readthedocs.io/"
+"Source Code" = "https://github.com/ubernostrum/pwned-passwords-django"
 
 [tool.bandit]
-skips = ["B101"]
+# B113 is only skipped right now because of a bug in Bandit. Bandit 1.8 should fix it:
+# https://github.com/PyCQA/bandit/issues/1175
+skips = ["B101", "B113"]
 
 [tool.black]
-target-version = ["py38", "py39", "py310", "py311", "py312"]
+target-version = ["py39", "py310", "py311", "py312", "py313"]
+
+[tool.coverage.paths]
+source = ["src", ".nox/tests_with_coverage*/**/site-packages"]
 
 [tool.coverage.report]
 fail_under = 100
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "*/_backports.py",
+]
+source = ["pwned-passwords-django"]
 
 [tool.interrogate]
 ignore-init-method = true
@@ -71,6 +72,24 @@ ignore-init-module = true
 
 [tool.isort]
 profile = "black"
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+source-includes = [
+    ".editorconfig",
+    ".flake8",
+    ".pre-commit-config.yaml",
+    ".readthedocs.yaml",
+    "AUTHORS",
+    "CONTRIBUTING.rst",
+    "docs/",
+    "noxfile.py",
+    "pdm.lock",
+    "runtests.py",
+    "tests/",
+]
 
 [tool.pylint]
 disable = ["W1203"]

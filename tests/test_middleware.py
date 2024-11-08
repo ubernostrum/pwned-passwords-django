@@ -35,9 +35,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         sync_mock, async_mock = self.api_mocks()
 
-        with mock.patch(
-            "pwned_passwords_django.api.check_password", sync_mock
-        ), mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
+        with (
+            mock.patch("pwned_passwords_django.api.check_password", sync_mock),
+            mock.patch("pwned_passwords_django.api.check_password_async", async_mock),
+        ):
             for payload in (
                 {"password": self.sample_password},
                 {"passphrase": self.sample_password},
@@ -69,9 +70,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         sync_mock, async_mock = self.api_mocks()
 
-        with mock.patch(
-            "pwned_passwords_django.api.check_password", sync_mock
-        ), mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
+        with (
+            mock.patch("pwned_passwords_django.api.check_password", sync_mock),
+            mock.patch("pwned_passwords_django.api.check_password_async", async_mock),
+        ):
             for payload in (
                 {"password": self.sample_password},
                 {"passphrase": self.sample_password},
@@ -102,9 +104,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         sync_mock, async_mock = self.api_mocks()
 
-        with mock.patch(
-            "pwned_passwords_django.api.check_password", sync_mock
-        ), mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
+        with (
+            mock.patch("pwned_passwords_django.api.check_password", sync_mock),
+            mock.patch("pwned_passwords_django.api.check_password_async", async_mock),
+        ):
             self.client.get(self.test_clean, data={"password": self.sample_password})
             sync_mock.assert_not_called()
             async_mock.assert_not_called()
@@ -116,9 +119,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         sync_mock, async_mock = self.api_mocks()
 
-        with mock.patch(
-            "pwned_passwords_django.api.check_password", sync_mock
-        ), mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
+        with (
+            mock.patch("pwned_passwords_django.api.check_password", sync_mock),
+            mock.patch("pwned_passwords_django.api.check_password_async", async_mock),
+        ):
             await self.async_client.get(
                 self.test_clean_async, data={"password": self.sample_password}
             )
@@ -181,9 +185,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         sync_mock, async_mock = self.api_mocks()
 
-        with mock.patch(
-            "pwned_passwords_django.api.check_password", sync_mock
-        ), mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
+        with (
+            mock.patch("pwned_passwords_django.api.check_password", sync_mock),
+            mock.patch("pwned_passwords_django.api.check_password_async", async_mock),
+        ):
             for payload in (
                 {"token": self.sample_password},
                 {"authtoken": self.sample_password},
@@ -211,9 +216,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         sync_mock, async_mock = self.api_mocks()
 
-        with mock.patch(
-            "pwned_passwords_django.api.check_password", sync_mock
-        ), mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
+        with (
+            mock.patch("pwned_passwords_django.api.check_password", sync_mock),
+            mock.patch("pwned_passwords_django.api.check_password_async", async_mock),
+        ):
             for payload in (
                 {"token": self.sample_password},
                 {"authtoken": self.sample_password},

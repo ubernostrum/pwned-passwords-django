@@ -1,14 +1,13 @@
 """
 Automated testing via nox (https://nox.thea.codes/).
 
-Combined with a working installation of nox (``python -m pip install nox``), this file
-specifies a matrix of tests, linters, and other quality checks which can be run
-individually or as a suite.
+Combined with a working installation of nox (``pip install nox``), this file specifies a
+matrix of tests, linters, and other quality checks which can be run individually or as a
+suite.
 
-To see available tasks, run ``python -m nox --list``. To run all available tasks --
-which requires a functioning installation of at least one supported Python version --
-run ``python -m nox``. To run a single task, use ``python -m nox -s`` with the name of
-that task.
+To see available tasks, run ``nox --list``. To run all available tasks -- which requires
+a functioning installation of at least one supported Python version -- run ``nox``. To
+run a single task, use ``nox -s`` with the name of that task.
 
 """
 
@@ -24,6 +23,7 @@ import nox
 nox.options.default_venv_backend = "venv"
 nox.options.reuse_existing_virtualenvs = True
 
+IS_CI = bool(os.getenv("CI", False))
 PACKAGE_NAME = "pwned_passwords_django"
 
 NOXFILE_PATH = pathlib.Path(__file__).parents[0]
@@ -38,11 +38,15 @@ ARTIFACT_PATHS = (
 )
 
 
-def clean(paths: typing.Iterable[os.PathLike] = ARTIFACT_PATHS) -> None:
+def clean(paths: typing.Iterable[pathlib.Path] = ARTIFACT_PATHS) -> None:
     """
     Clean up after a test run.
 
     """
+    # This cleanup is only useful for the working directory of a local checkout; in CI
+    # we don't need it because CI environments are ephemeral anyway.
+    if IS_CI:
+        return
     [
         shutil.rmtree(path) if path.is_dir() else path.unlink()
         for path in paths
@@ -58,18 +62,13 @@ def clean(paths: typing.Iterable[os.PathLike] = ARTIFACT_PATHS) -> None:
 @nox.parametrize(
     "python,django",
     [
-        # Python/Django testing matrix. Tests Django 4.0, 5.0, and 5.1, on Python 3.8 through
+        # Python/Django testing matrix. Tests Django 4.2, 5.0, 5.1 on Python 3.9 through
         # 3.12, skipping unsupported combinations.
         (python, django)
-        for python in ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        for python in ["3.9", "3.10", "3.11", "3.12", "3.13"]
         for django in ["4.2", "5.0", "5.1"]
         if (python, django)
-        not in [
-            ("3.8", "5.0"),
-            ("3.9", "5.0"),
-            ("3.8", "5.1"),
-            ("3.9", "5.1"),
-        ]
+        not in [("3.9", "5.0"), ("3.9", "5.1"), ("3.13", "4.2"), ("3.13", "5.0")]
     ],
 )
 def tests_with_coverage(session: nox.Session, django: str) -> None:
@@ -77,7 +76,12 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
     Run the package's unit tests, with coverage report.
 
     """
-    session.install(f"Django~={django}.0", ".[tests]")
+    session.install(
+        f"Django~={django}.0",
+        ".[tests]",
+        "coverage",
+        'tomli; python_full_version < "3.11.0a7"',
+    )
     python_version = session.run(
         f"{session.bin}/python{session.python}", "--version", silent=True
     ).strip()
@@ -101,38 +105,58 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
         "runtests.py",
         env={"DJANGO_SETTINGS_MODULE": "tests.settings"},
     )
-    session.run(
-        f"{session.bin}/python{session.python}",
-        "-Im",
-        "coverage",
-        "report",
-        "--show-missing",
-    )
     clean()
+
+
+@nox.session(python=["3.13"], tags=["tests"])
+def coverage_report(session: nox.Session) -> None:
+    """
+    Combine coverage from the various test runs and output the report.
+
+    """
+    # In CI this job does not run because we substitute one that integrates with the CI
+    # system.
+    if IS_CI:
+        session.skip(
+            "Running in CI -- skipping nox coverage job in favor of CI coverage job"
+        )
+    session.install("coverage[toml]")
+    session.run(f"python{session.python}", "-Im", "coverage", "combine")
+    session.run(
+        f"python{session.python}", "-Im", "coverage", "report", "--show-missing"
+    )
+    session.run(f"python{session.python}", "-Im", "coverage", "erase")
 
 
 # Tasks which test the package's documentation.
 # -----------------------------------------------------------------------------------
 
 
+# The documentation jobs ordinarily would want to use the latest Python version, but
+# currently that's 3.13 and Read The Docs doesn't yet support it. So to ensure the
+# documentation jobs are as closely matched to what would happen on RTD, these jobs stay
+# on 3.12 for now.
 @nox.session(python=["3.12"], tags=["docs"])
 def docs_build(session: nox.Session) -> None:
     """
     Build the package's documentation as HTML.
 
     """
-    session.install(".[docs]")
-    session.chdir("docs")
+    session.install(".", "-r", "docs/requirements.txt")
+    build_dir = session.create_tmp()
     session.run(
         f"{session.bin}/python{session.python}",
         "-Im",
         "sphinx",
-        "-b",
+        "--builder",
         "html",
-        "-d",
-        f"{session.bin}/../tmp/doctrees",
-        ".",
-        f"{session.bin}/../tmp/html",
+        "--write-all",
+        "-c",
+        "docs/",
+        "--doctree-dir",
+        f"{build_dir}/doctrees",
+        "docs/",
+        f"{build_dir}/html",
     )
     clean()
 
@@ -166,19 +190,21 @@ def docs_spellcheck(session: nox.Session) -> None:
     Spell-check the package's documentation.
 
     """
-    session.install("pyenchant", "sphinxcontrib-spelling", ".[docs]")
+    session.install(".", "-r", "docs/requirements.txt")
+    session.install("pyenchant", "sphinxcontrib-spelling")
     build_dir = session.create_tmp()
-    session.chdir("docs")
     session.run(
         f"{session.bin}/python{session.python}",
         "-Im",
         "sphinx",
         "-W",  # Promote warnings to errors, so that misspelled words fail the build.
-        "-b",
+        "--builder",
         "spelling",
-        "-d",
+        "-c",
+        "docs/",
+        "--doctree-dir",
         f"{build_dir}/doctrees",
-        ".",
+        "docs/",
         f"{build_dir}/html",
         # On Apple Silicon Macs, this environment variable needs to be set so
         # pyenchant can find the "enchant" C library. See
@@ -195,13 +221,13 @@ def docs_spellcheck(session: nox.Session) -> None:
 # -----------------------------------------------------------------------------------
 
 
-@nox.session(python=["3.12"], tags=["formatters"])
+@nox.session(python=["3.13"], tags=["formatters"])
 def format_black(session: nox.Session) -> None:
     """
     Check code formatting with Black.
 
     """
-    session.install("black>=24.0,<25.0")
+    session.install("black")
     session.run(f"{session.bin}/python{session.python}", "-Im", "black", "--version")
     session.run(
         f"{session.bin}/python{session.python}",
@@ -217,7 +243,7 @@ def format_black(session: nox.Session) -> None:
     clean()
 
 
-@nox.session(python=["3.12"], tags=["formatters"])
+@nox.session(python=["3.13"], tags=["formatters"])
 def format_isort(session: nox.Session) -> None:
     """
     Check code formating with Black.
@@ -243,7 +269,7 @@ def format_isort(session: nox.Session) -> None:
 # -----------------------------------------------------------------------------------
 
 
-@nox.session(python=["3.12"], tags=["linters", "security"])
+@nox.session(python=["3.13"], tags=["linters", "security"])
 def lint_bandit(session: nox.Session) -> None:
     """
     Lint code with the Bandit security analyzer.
@@ -264,7 +290,7 @@ def lint_bandit(session: nox.Session) -> None:
     clean()
 
 
-@nox.session(python=["3.12"], tags=["linters"])
+@nox.session(python=["3.13"], tags=["linters"])
 def lint_flake8(session: nox.Session) -> None:
     """
     Lint code with flake8.
@@ -284,26 +310,25 @@ def lint_flake8(session: nox.Session) -> None:
     clean()
 
 
-@nox.session(python=["3.12"], tags=["linters"])
+@nox.session(python=["3.13"], tags=["linters"])
 def lint_pylint(session: nox.Session) -> None:
     """
-    Lint code with Pyling.
+    Lint code with Pylint.
 
     """
-    # Pylint requires that all dependencies be importable during the run. This package
-    # does not have any direct dependencies, nor does the normal test suite, but the
-    # full conformance suite does require a few extra libraries, so they're installed
-    # here.
-    session.install("pylint", "pylint-django", "django", "httpx")
+    # Pylint requires that all dependencies be importable during the run, so unlike
+    # other lint tasks we just install the package.
+    session.install("pylint", "pylint-django", ".[tests]")
     session.run(f"python{session.python}", "-Im", "pylint", "--version")
     session.run(f"python{session.python}", "-Im", "pylint", "src/", "tests/")
+    clean()
 
 
 # Packaging checks.
 # -----------------------------------------------------------------------------------
 
 
-@nox.session(python=["3.12"], tags=["packaging"])
+@nox.session(python=["3.13"], tags=["packaging"])
 def package_build(session: nox.Session) -> None:
     """
     Check that the package builds.
@@ -315,7 +340,7 @@ def package_build(session: nox.Session) -> None:
     session.run(f"{session.bin}/python{session.python}", "-Im", "build")
 
 
-@nox.session(python=["3.12"], tags=["packaging"])
+@nox.session(python=["3.13"], tags=["packaging"])
 def package_description(session: nox.Session) -> None:
     """
     Check that the package description will render on the Python Package Index.
@@ -343,12 +368,15 @@ def package_description(session: nox.Session) -> None:
     clean()
 
 
-@nox.session(python=["3.12"], tags=["packaging"])
+@nox.session(python=["3.13"], tags=["packaging"])
 def package_manifest(session: nox.Session) -> None:
     """
-    Check that the set of files in the package matches the set under version control.
+    Check that the set of files in the package matches the set under version
+    control.
 
     """
+    if IS_CI:
+        session.skip("check-manifest already run by earlier CI steps.")
     session.install("check-manifest")
     session.run(
         f"{session.bin}/python{session.python}", "-Im", "check_manifest", "--version"
@@ -359,7 +387,7 @@ def package_manifest(session: nox.Session) -> None:
     clean()
 
 
-@nox.session(python=["3.12"], tags=["packaging"])
+@nox.session(python=["3.13"], tags=["packaging"])
 def package_pyroma(session: nox.Session) -> None:
     """
     Check package quality with pyroma.
@@ -375,7 +403,7 @@ def package_pyroma(session: nox.Session) -> None:
     clean()
 
 
-@nox.session(python=["3.12"], tags=["packaging"])
+@nox.session(python=["3.13"], tags=["packaging"])
 def package_wheel(session: nox.Session) -> None:
     """
     Check the built wheel package for common errors.

@@ -10,12 +10,13 @@ import hashlib
 import logging
 import sys
 import typing
+from importlib.metadata import version
 
 import httpx
 from django.conf import settings
 from django.views.decorators.debug import sensitive_variables
 
-from . import __version__, exceptions
+from . import exceptions
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +48,7 @@ class PwnedPasswords:
     api_endpoint: str = "https://api.pwnedpasswords.com/range/"
 
     user_agent: str = (
-        f"pwned-passwords-django/{__version__} "
+        f"pwned-passwords-django/{version('pwned-passwords-django')}"
         f"(Python/{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro} "
         f"| httpx/{httpx.__version__})"
     )
