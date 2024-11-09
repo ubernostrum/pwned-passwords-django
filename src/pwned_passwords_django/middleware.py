@@ -6,10 +6,10 @@ potentially-compromised passwords using the Pwned Passwords API.
 
 # SPDX-License-Identifier: BSD-3-Clause
 
-import asyncio
 import logging
 import re
 import typing
+from inspect import iscoroutinefunction
 
 from django import http
 from django.conf import settings
@@ -173,7 +173,7 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
     # should return an async middleware that uses an async HTTP client to talk to Pwned
     # Passwords. We determine that by checking whether the get_response() callable is a
     # coroutine -- if so, we're on the async path.
-    if asyncio.iscoroutinefunction(get_response):
+    if iscoroutinefunction(get_response):
 
         async def middleware(request: http.HttpRequest) -> http.HttpResponse:
             """
@@ -183,13 +183,6 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
             """
             request.pwned_passwords = []
             if request.method == "POST":
-                # A bug in Django's async test client causes access to request.POST to
-                # throw an exception unless preceded by an access to
-                # request.body. Future versions of Django will fix this, but for now we
-                # do a throwaway access of request.body as a workaround.
-                #
-                # See https://code.djangoproject.com/ticket/34063 for details.
-                request.body  # pylint: disable=pointless-statement
                 request.pwned_passwords = await _scan_payload_async(request)
             response = await get_response(request)
             return response
