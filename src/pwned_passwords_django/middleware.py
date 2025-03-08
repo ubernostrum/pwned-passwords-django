@@ -83,7 +83,7 @@ def _scan_payload_sync(request: http.HttpRequest) -> typing.List[str]:
             "Falling back to Django CommonPasswordValidator due "
             "to error contacting Pwned Passwords."
         )
-        return [key for key in keys_to_search if _fallback(key)]
+        return [key for key in keys_to_search if _fallback(request.POST[key])]
 
 
 @sync_and_async_middleware
@@ -195,7 +195,7 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
             containing likely passwords against the Pwned Passwords database.
 
             """
-            request.pwned_passwords = {}
+            request.pwned_passwords = []
             if request.method == "POST":
                 request.pwned_passwords = _scan_payload_sync(request)
             response = get_response(request)
