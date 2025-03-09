@@ -35,7 +35,7 @@ keywords = ["django", "security", "passwords", "auth", "authentication"]
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
 requires-python = ">=3.9"
-version = "5.1.2a0"
+version = "5.1.2"
 
 [dependency-groups]
 tests = ["nox"]

@@ -64,6 +64,15 @@ The API stability/deprecation policy for ``pwned-passwords-django`` is as follow
 Releases under DjangoVer
 ------------------------
 
+Version 5.1.2
+~~~~~~~~~~~~~
+
+Released March 2025
+
+* Fixed a bug where the fallback to Django's common-password validator `would
+  pass the wrong value to the fallback validator
+  <https://github.com/ubernostrum/pwned-passwords-django/pull/43>`_.
+
 Version 5.1.1
 ~~~~~~~~~~~~~
 
