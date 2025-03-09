@@ -27,7 +27,7 @@ async def async_view(request):
     return HttpResponse("Content.")
 
 
-def breach_count(request, field):
+def breach(request, field):
     """
     A view which asserts that it received a compromised password, in the given
     ``field``.
@@ -39,7 +39,7 @@ def breach_count(request, field):
     return HttpResponse("Content.")
 
 
-async def async_breach_count(request, field):
+async def async_breach(request, field):
     """
     An async view which asserts that it received a compromised password, in the
     given ``field``.
@@ -84,14 +84,10 @@ urlpatterns = [
         async_view,
         name="pwned-middleware-async",
     ),
-    path(
-        "pwned-passwords-django/tests/<str:field>/",
-        breach_count,
-        name="pwned-breach",
-    ),
+    path("pwned-passwords-django/tests/<str:field>/", breach, name="pwned-breach"),
     path(
         "pwned-passwords-django/tests/async/<str:field>/",
-        async_breach_count,
+        async_breach,
         name="pwned-breach-async",
     ),
     path(

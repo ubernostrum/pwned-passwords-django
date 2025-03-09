@@ -241,8 +241,8 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
 
     def test_error_handler(self):
         """
-        The middleware will catch a PwnedPasswordsError and set
-        ``request.pwned_passwords`` based on CommonPasswordValidator.
+        If the sync middleware fails and the submitted password is not in
+        Django's common passwords list, request.pwned_passwords will be empty.
 
         """
         sync_mock, _ = self.api_error_mocks()
@@ -251,14 +251,38 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
                 self.test_clean, data={"password": get_random_string(length=20)}
             )
 
-    async def test_error_handler_async(self):
+    def test_error_handler_bad_password(self):
         """
-        The async middleware will catch a PwnedPasswordsError and set
-        ``request.pwned_passwords`` to an empty dictionary.
+        If the sync mdidleware fails and the submitted password is in Django's
+        common passwords list, the request.pwned_passwords list is still
+        correctly populated.
 
         """
-        async_mock, _ = self.api_error_mocks()
+        sync_mock, _ = self.api_error_mocks()
+        with mock.patch("pwned_passwords_django.api.check_password", sync_mock):
+            self.client.post(self.test_breach, data={"password": "password"})
+
+    async def test_error_handler_async(self):
+        """
+        If the async middleware fails and the submitted password is not in
+        Django's common passwords list, request.pwned_passwords will be empty.
+
+        """
+        _, async_mock = self.api_error_mocks()
         with mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
             await self.async_client.post(
                 self.test_clean_async, data={"password": get_random_string(length=20)}
+            )
+
+    async def test_error_handler_async_bad_password(self):
+        """
+        If the async mdidleware fails and the submitted password is in Django's
+        common passwords list, the request.pwned_passwords list is still
+        correctly populated.
+
+        """
+        _, async_mock = self.api_error_mocks()
+        with mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
+            await self.async_client.post(
+                self.test_breach_async, data={"password": "password"}
             )
