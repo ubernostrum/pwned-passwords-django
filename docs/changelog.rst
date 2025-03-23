@@ -64,6 +64,18 @@ The API stability/deprecation policy for ``pwned-passwords-django`` is as follow
 Releases under DjangoVer
 ------------------------
 
+Version 5.1.3
+~~~~~~~~~~~~~
+
+Released March 2025
+
+* Ensured multi-value POST payloads are correctly checked by the middleware. This is
+  likely an edge case since even when multiple submissions of a password are desired
+  they are typically differently-named fields in the payload (i.e., a "password" and
+  "confirm password" field in a signup or password change form), but for completeness'
+  sake they should still be handled correctly.
+
+
 Version 5.1.2
 ~~~~~~~~~~~~~
 
@@ -72,6 +84,7 @@ Released March 2025
 * Fixed a bug where the fallback to Django's common-password validator `would
   pass the wrong value to the fallback validator
   <https://github.com/ubernostrum/pwned-passwords-django/pull/43>`_.
+
 
 Version 5.1.1
 ~~~~~~~~~~~~~

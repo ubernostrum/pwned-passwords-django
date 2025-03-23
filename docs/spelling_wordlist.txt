@@ -23,5 +23,6 @@ pwned
 Quickstart
 regex
 serializable
+signup
 validator
 validators

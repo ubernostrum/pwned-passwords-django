@@ -307,8 +307,8 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
                         get_random_string(length=20),
                         # Django's QueryDict.__getitem__() returns the last value for a
                         # multi-valued key, so to properly test checking of multi-value
-                        # submissions the bad value needs to occur before the last
-                        # position.
+                        # submissions, the bad value has to occur somewhere other than
+                        # the last position.
                         "password",
                         get_random_string(length=10),
                     ]
