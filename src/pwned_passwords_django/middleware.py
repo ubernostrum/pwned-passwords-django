@@ -38,52 +38,64 @@ def _fallback(password: str) -> bool:
         return True
 
 
+def _get_potential_passwords(
+    payload: http.QueryDict, pattern: re.Pattern
+) -> list[tuple[str, str]]:
+    """
+    Return the set of keys in the request payload which are potentially passwords
+    (according to the given pattern).
+
+    """
+    potential_passwords = []
+    for key, value in payload.lists():
+        if pattern.search(key):
+            # This is the only potentially tricky bit. If multiple values were submitted
+            # for the same key, we want to make sure we check all of them.
+            for item in value:
+                potential_passwords.append((key, item))
+    return potential_passwords
+
+
 @sensitive_variables()
-async def _scan_payload_async(request: http.HttpRequest) -> typing.List[str]:
+async def _scan_payload_async(
+    keys_to_search: list[tuple[str, str]],
+) -> typing.List[str]:
     """
     Asynchronous helper function which performs the scan of the request's payload.
 
     """
-    settings_dict = getattr(settings, "PWNED_PASSWORDS", {})
-    search_re = re.compile(settings_dict.get("PASSWORD_REGEX", r"PASS"), re.IGNORECASE)
-
-    keys_to_search = [key for key in request.POST.keys() if search_re.search(key)]
     if not keys_to_search:
         return []
     try:
         return [
             key
-            for key in keys_to_search
-            if await api.check_password_async(request.POST[key])
+            for key, value in keys_to_search
+            if await api.check_password_async(value)
         ]
     except exceptions.PwnedPasswordsError:
         logger.error(
             "Falling back to Django CommonPasswordValidator due "
             "to error contacting Pwned Passwords."
         )
-        return [key for key in keys_to_search if _fallback(request.POST[key])]
+        return [key for key, value in keys_to_search if _fallback(value)]
 
 
 @sensitive_variables()
-def _scan_payload_sync(request: http.HttpRequest) -> typing.List[str]:
+def _scan_payload_sync(keys_to_search: list[tuple[str, str]]) -> typing.List[str]:
     """
     Helper function which performs the scan of the request's payload.
 
     """
-    settings_dict = getattr(settings, "PWNED_PASSWORDS", {})
-    search_re = re.compile(settings_dict.get("PASSWORD_REGEX", r"PASS"), re.IGNORECASE)
-
-    keys_to_search = [key for key in request.POST.keys() if search_re.search(key)]
     if not keys_to_search:
         return []
     try:
-        return [key for key in keys_to_search if api.check_password(request.POST[key])]
+        return [key for key, value in keys_to_search if api.check_password(value)]
     except exceptions.PwnedPasswordsError:
         logger.error(
             "Falling back to Django CommonPasswordValidator due "
             "to error contacting Pwned Passwords."
         )
-        return [key for key in keys_to_search if _fallback(request.POST[key])]
+        return [key for key, value in keys_to_search if _fallback(value)]
 
 
 @sync_and_async_middleware
@@ -169,6 +181,9 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
     to look for. See :ref:`the settings documentation <settings>` for details.
 
     """
+    settings_dict = getattr(settings, "PWNED_PASSWORDS", {})
+    search_re = re.compile(settings_dict.get("PASSWORD_REGEX", r"PASS"), re.IGNORECASE)
+
     # We need to know whether or not the request we're handling is async: if it is, we
     # should return an async middleware that uses an async HTTP client to talk to Pwned
     # Passwords. We determine that by checking whether the get_response() callable is a
@@ -183,7 +198,9 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
             """
             request.pwned_passwords = []
             if request.method == "POST":
-                request.pwned_passwords = await _scan_payload_async(request)
+                request.pwned_passwords = await _scan_payload_async(
+                    _get_potential_passwords(request.POST, search_re)
+                )
             response = await get_response(request)
             return response
 
@@ -197,7 +214,9 @@ def pwned_passwords_middleware(get_response: typing.Callable) -> typing.Callable
             """
             request.pwned_passwords = []
             if request.method == "POST":
-                request.pwned_passwords = _scan_payload_sync(request)
+                request.pwned_passwords = _scan_payload_sync(
+                    _get_potential_passwords(request.POST, search_re)
+                )
             response = get_response(request)
             return response
 

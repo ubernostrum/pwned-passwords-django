@@ -5,6 +5,7 @@ Tests for pwned-passwords-django's middleware.
 
 # SPDX-License-Identifier: BSD-3-Clause
 
+
 from unittest import mock
 
 from django.test import override_settings
@@ -260,7 +261,10 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         sync_mock, _ = self.api_error_mocks()
         with mock.patch("pwned_passwords_django.api.check_password", sync_mock):
-            self.client.post(self.test_breach, data={"password": "password"})
+            self.client.post(
+                reverse(self.test_breach, kwargs={"field": "password"}),
+                data={"password": "password"},
+            )
 
     async def test_error_handler_async(self):
         """
@@ -284,5 +288,48 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         _, async_mock = self.api_error_mocks()
         with mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
             await self.async_client.post(
-                self.test_breach_async, data={"password": "password"}
+                reverse(self.test_breach_async, kwargs={"field": "password"}),
+                data={"password": "password"},
+            )
+
+    def test_multiple_values_bad_password(self):
+        """
+        If the request contains multiple values for a single POST key, only one of which
+        is a compromised password, the middleware will detect it.
+
+        """
+        sync_mock, _ = self.api_error_mocks()
+        with mock.patch("pwned_passwords_django.api.check_password", sync_mock):
+            self.client.post(
+                reverse(self.test_breach, kwargs={"field": "password"}),
+                data={
+                    "password": [
+                        get_random_string(length=20),
+                        # Django's QueryDict.__getitem__() returns the last value for a
+                        # multi-valued key, so to properly test checking of multi-value
+                        # submissions the bad value needs to occur before the last
+                        # position.
+                        "password",
+                        get_random_string(length=10),
+                    ]
+                },
+            )
+
+    async def test_multiple_values_bad_password_async(self):
+        """
+        If the request contains multiple values for a single POST key, only one of which
+        is a compromised password, the async middleware will detect it.
+
+        """
+        _, async_mock = self.api_error_mocks()
+        with mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
+            self.async_client.post(
+                reverse(self.test_breach_async, kwargs={"field": "password"}),
+                data={
+                    "password": [
+                        get_random_string(length=20),
+                        "password",
+                        get_random_string(length=10),
+                    ]
+                },
             )
