@@ -323,7 +323,7 @@ class PwnedPasswordsMiddlewareTests(PwnedPasswordsTests):
         """
         _, async_mock = self.api_error_mocks()
         with mock.patch("pwned_passwords_django.api.check_password_async", async_mock):
-            self.async_client.post(
+            await self.async_client.post(
                 reverse(self.test_breach_async, kwargs={"field": "password"}),
                 data={
                     "password": [
