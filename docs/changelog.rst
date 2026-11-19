@@ -68,7 +68,7 @@ Unreleased
 ~~~~~~~~~~
 
 * Supported Django versions are now 4.2, 5.1, 5.2, 6.0, and 6.1, and supported Python
-  versions are now 3.9 through 3.15.
+  versions are now 3.10 through 3.15. Support for Python 3.9 has been dropped.
 
 
 Version 5.2

@@ -5,7 +5,7 @@ Installation guide
 ==================
 
 ``pwned-passwords-django`` |release| supports Django 4.2, 5.1, 5.2, 6.0, and 6.1,
-and Python 3.9 through 3.15. See `Django's Python support matrix
+and Python 3.10 through 3.15. See `Django's Python support matrix
 <https://docs.djangoproject.com/en/dev/faq/install/#what-python-version-can-i-use-with-django>`_
 for details of which Python versions are compatible with each version of
 Django.

@@ -63,11 +63,11 @@ def clean(paths: typing.Iterable[pathlib.Path] = ARTIFACT_PATHS) -> None:
     "python,django",
     [
         # Python/Django testing matrix. Tests Django 4.2, 5.1, 5.2, 6.0 and 6.1 on
-        # Python 3.9 through 3.15, on the Python versions each Django release
+        # Python 3.10 through 3.15, on the Python versions each Django release
         # supports.
         (python, django)
         for django, pythons in [
-            ("4.2", ["3.9", "3.10", "3.11", "3.12"]),
+            ("4.2", ["3.10", "3.11", "3.12"]),
             ("5.1", ["3.10", "3.11", "3.12", "3.13"]),
             ("5.2", ["3.10", "3.11", "3.12", "3.13", "3.14"]),
             ("6.0", ["3.12", "3.13", "3.14"]),
