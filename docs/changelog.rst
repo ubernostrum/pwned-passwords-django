@@ -64,6 +64,13 @@ The API stability/deprecation policy for ``pwned-passwords-django`` is as follow
 Releases under DjangoVer
 ------------------------
 
+Unreleased
+~~~~~~~~~~
+
+* Supported Django versions are now 4.2, 5.1, 5.2, 6.0, and 6.1, and supported Python
+  versions are now 3.9 through 3.15.
+
+
 Version 5.2
 ~~~~~~~~~~~
 
